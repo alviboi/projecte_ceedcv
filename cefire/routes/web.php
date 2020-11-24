@@ -41,5 +41,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resources([
     'cefire' => App\Http\Controllers\cefireController::class,
-    'permis' => App\Http\Controllers\permisController::class
+    'centres' => App\Http\Controllers\centresController::class,
+    'compensa' => App\Http\Controllers\compensaController::class,
+    'curs' => App\Http\Controllers\cursController::class,
+    'guardia' => App\Http\Controllers\guardiaController::class,
+    'lectura_rfid' => App\Http\Controllers\lectura_rfidController::class,
+    'notificacions' => App\Http\Controllers\notificacionsController::class,
+    'permis' => App\Http\Controllers\permisController::class,
+    'user' => App\Http\Controllers\UserController::class,
+    'visita' => App\Http\Controllers\visitaController::class,
 ]);
