@@ -21,37 +21,37 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::view('/demo', 'demo')->name('demo');
 
 // Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
-Route::get('/user_cefire/{num}', 'App\Http\Controllers\UserController@este')->name('user_cefire');
+Route::get('/user_cefire/{num}', 'UserController@este')->name('user_cefire');
 
 
 Route::resources([
-    'cefire' => App\Http\Controllers\cefireController::class,
-    'centres' => App\Http\Controllers\centresController::class,
-    'compensa' => App\Http\Controllers\compensaController::class,
-    'curs' => App\Http\Controllers\cursController::class,
-    'guardia' => App\Http\Controllers\guardiaController::class,
-    'lectura_rfid' => App\Http\Controllers\lectura_rfidController::class,
-    'notificacions' => App\Http\Controllers\notificacionsController::class,
-    'permis' => App\Http\Controllers\permisController::class,
-    'user' => App\Http\Controllers\UserController::class,
-    'visita' => App\Http\Controllers\visitaController::class,
+    'cefire' => cefireController::class,
+    'centres' => centresController::class,
+    'compensa' => compensaController::class,
+    'curs' => cursController::class,
+    'guardia' => guardiaController::class,
+    'lectura_rfid' => lectura_rfidController::class,
+    'notificacions' => notificacionsController::class,
+    'permis' => permisController::class,
+    'user' => UserController::class,
+    'visita' => visitaController::class,
 ]);
