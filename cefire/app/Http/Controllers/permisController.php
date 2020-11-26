@@ -48,6 +48,7 @@ class permisController extends Controller
     public function show(permis $permis)
     {
         //
+
     }
 
     /**

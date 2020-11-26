@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -18,19 +19,10 @@ class UserController extends Controller
         //
         return User::get();
     }
-    /**
-     * Get the comments cefire data.
-     */
-    public function cefire()
+    public function este(String $num)
     {
-        return $this->hasMany('App\Models\cefire');
-    }
-    /**
-     * Get the comments permis data.
-     */
-    public function permis()
-    {
-        return $this->hasMany('App\Models\permis');
+        //
+        return User::find(1)->cefire();
     }
     /**
      * Handle the incoming request.

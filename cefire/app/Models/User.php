@@ -12,6 +12,60 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * Get the comments cefire data.
+     */
+    public function cefire()
+    {
+        return $this->hasMany('App\Models\cefire');
+    }
+    /**
+     * Get the comments permis data.
+     */
+    public function centres()
+    {
+        return $this->hasMany('App\Models\centres');
+    }
+      /**
+     * Get the comments permis data.
+     */
+    public function compensa()
+    {
+        return $this->hasMany('App\Models\compensa');
+    }
+      /**
+     * Get the comments permis data.
+     */
+    public function curs()
+    {
+        return $this->hasMany('App\Models\curs');
+    }
+      /**
+     * Get the comments permis data.
+     */
+    public function lectura_rfid()
+    {
+        return $this->hasMany('App\Models\lectura_rfid');
+    }
+      /**
+     * Get the comments permis data.
+     */
+    public function notificacions()
+    {
+        return $this->hasMany('App\Models\notificacions');
+    }
+      /**
+     * Get the comments permis data.
+     */
+    public function permis()
+    {
+        return $this->hasMany('App\Models\permis');
+    }
+    public function visita()
+    {
+        return $this->hasMany('App\Models\visita');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
