@@ -21,26 +21,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-// Auth::routes();
-
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-// Auth::routes();
-
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-// Auth::routes();
-
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::view('/demo', 'demo')->name('demo');
 
-// Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
-Route::get('/user_cefire/{num}', 'UserController@este')->name('user_cefire');
+Route::get('/user_cefire/{num}/', 'UserController@este')->name('user_cefire');
 
 
 Route::resources([

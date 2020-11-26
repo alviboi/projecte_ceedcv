@@ -19,10 +19,10 @@ class UserController extends Controller
         //
         return User::get();
     }
-    public function este(String $num)
+    public function este(Request $request, $num)
     {
         //
-        return User::find(1)->cefire();
+        return User::find($num)->cefire()->get();
     }
     /**
      * Handle the incoming request.
