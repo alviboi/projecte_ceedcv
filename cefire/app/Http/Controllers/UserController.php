@@ -22,7 +22,7 @@ class UserController extends Controller
     public function este(Request $request, $num)
     {
         //
-        return User::find($num)->cefire()->get();
+        return User::find(auth()->id())->cefire()->get();
     }
     /**
      * Handle the incoming request.
