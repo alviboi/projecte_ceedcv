@@ -12,3 +12,10 @@ $global-primary-background: #491165;
 @import "~uikit/src/scss/mixins.scss";
 
 @import "~uikit/src/scss/uikit.scss";
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+}

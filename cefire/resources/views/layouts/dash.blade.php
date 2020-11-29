@@ -90,8 +90,8 @@
 			<div class="left-nav-wrap">
 				<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
 					<li class="uk-nav-header">ACTIONS</li>
-					<li><a href="#" onclick="canvi('messages')"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Messages</a></li>
-					<li><a href="#"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Friends</a></li>
+					<li><a href="#" onclick="canvi('calendar')"><span data-uk-icon="icon: calendar" class="uk-margin-small-right"></span>Calendar</a></li>
+					<li><a href="#" onclick="canvi('messages')"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Friends</a></li>
 					<li class="uk-parent"><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Templates</a>
 						<ul class="uk-nav-sub">
 							<li><a title="Article" href="https://zzseba78.github.io/Kick-Off/article.html">Article</a></li>
@@ -153,9 +153,23 @@
 			</div>
 		</aside>
         <!-- /LEFT BAR -->
-       <div id="mycontent">
-        @yield('content')
-       </div>
+
+        <div id="content" data-uk-height-viewport="expand: true">
+			<div class="uk-container uk-container-expand">
+				<div class="uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-2 uk-child-width-1-4@l uk-child-width-1-5@xl" data-uk-grid>
+
+				</div>
+				<hr>
+				<div class="uk-grid uk-grid-medium" data-uk-grid>
+
+					<!-- panel -->
+					<div id="app" class="uk-width-1-1@l">
+						@yield('content')
+					</div>
+				</div>
+			</div>
+        </div>
+
 
 
 
@@ -189,9 +203,9 @@
         <!-- JS FILES -->
         {{-- <script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit-icons.min.js"></script> --}}
-
+{{--
 		<script src="js/Chart.min.js"></script>
-        <script src="js/chartScripts.js"></script>
+        <script src="js/chartScripts.js"></script> --}}
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('js/home.js') }}"></script>
 	</body>

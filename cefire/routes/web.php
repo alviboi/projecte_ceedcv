@@ -23,15 +23,16 @@ Auth::routes();
 
 Route::view('/demo', 'demo')->name('demo');
 
+Route::view('/prova', 'prova')->name('prova');
 
-
-Route::get('/home2', function () {
-    return view('home')->with(['seccio' => 'contents.messages']);
+Route::get('/seccio/{pag?}', function ($pag="principal") {
+    return view('contents.'.$pag)->render();
 });
 
 Route::get('/home', function () {
     return view('home')->with(['seccio' => 'contents.principal']);
 });
+
 
 
 

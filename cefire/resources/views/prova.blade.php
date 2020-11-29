@@ -1,7 +1,7 @@
 @extends('layouts.dash')
 
 @section('content')
-{{-- <calendar-component/> --}}
-@include($seccio)
+
+<calendar-component/>
 
 @endsection
