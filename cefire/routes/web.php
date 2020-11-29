@@ -21,11 +21,22 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
 Route::view('/demo', 'demo')->name('demo');
 
 
-Route::get('home', 'HomeController@index')->name('home');
+
+Route::get('/home2', function () {
+    return view('home')->with(['seccio' => 'contents.messages']);
+});
+
+Route::get('/home', function () {
+    return view('home')->with(['seccio' => 'contents.principal']);
+});
+
+
+
+// Route::get('home', 'HomeController@index')->name('home');
+
 Route::get('/user_cefire/{num}/', 'UserController@este')->name('user_cefire')->middleware('auth');
 
 Route::group(['middleware' => 'auth'], function() {

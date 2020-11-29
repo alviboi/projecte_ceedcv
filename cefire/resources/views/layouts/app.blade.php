@@ -13,7 +13,6 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-<div id="app">
     <div class="uk-background-primary uk-light">
         <nav class="uk-navbar-container uk-navbar-transparent">
             <div class="uk-container">
@@ -116,7 +115,8 @@
             </div>
         </div>
     </footer>
-</div>
+
 <script src="{{ asset('js/app.js') }}" defer></script>
+<script src="{{ asset('js/home.js') }}" defer></script>
 </body>
 </html>
