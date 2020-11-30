@@ -21,6 +21,8 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('calendar-component', require('./components/CalendarComponent.vue').default);
+Vue.component('dia-component', require('./components/DiaComponent.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -36,21 +38,4 @@ const app = new Vue({
     //       './components/CalendarComponent.vue'
     //     ),
     // }
-    methods: {
-        beforeLeave(element) {
-          this.prevHeight = getComputedStyle(element).height;
-        },
-        enter(element) {
-          const { height } = getComputedStyle(element);
-
-          element.style.height = this.prevHeight;
-
-          setTimeout(() => {
-            element.style.height = height;
-          });
-        },
-        afterEnter(element) {
-          element.style.height = 'auto';
-        },
-      },
 });

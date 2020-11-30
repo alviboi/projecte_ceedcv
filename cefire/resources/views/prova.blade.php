@@ -2,6 +2,6 @@
 
 @section('content')
 
-<calendar-component/>
+<dia-component />
 
 @endsection
