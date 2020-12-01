@@ -1986,7 +1986,245 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      cefire: {},
+      compensa: {},
+      curs: {},
+      visita: {},
+      guardia: {},
+      data: new Date("2020-11-23"),
+      curs_i: "",
+      compensa_i: "",
+      visita_i: ""
+    };
+  },
+  methods: {
+    pilla: function pilla() {
+      var _this = this;
+
+      axios.get("cefire").then(function (res) {
+        console.log(res.data);
+        _this.cefire = res.data;
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    afegix: function afegix(desti) {
+      var _this2 = this;
+
+      //alert(this.data);
+      var dia = this.data.getDate();
+      var mes = this.data.getMonth() + 1;
+      var an = this.data.getFullYear();
+      var params = {
+        data: an + "-" + mes + "-" + dia,
+        inici: "9:00:00",
+        fi: "14:00:00"
+      };
+      axios.post(desti, params).then(function (res) {
+        console.log(res);
+
+        if (Object.keys(_this2[desti]).length !== 0) {
+          _this2[desti].push(res.data);
+        } else {
+          _this2[desti] = [res.data];
+        }
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    salva: function salva(desti) {
+      var _this3 = this;
+
+      var varNom = desti + "_i";
+      var dia = this.data.getDate();
+      var mes = this.data.getMonth() + 1;
+      var an = this.data.getFullYear();
+      var params = {
+        data: an + "-" + mes + "-" + dia,
+        inici: "9:00:00",
+        fi: "14:00:00",
+        motiu: this[varNom]
+      };
+      axios.post(desti, params).then(function (res) {
+        console.log(res);
+
+        if (Object.keys(_this3[desti]).length !== 0) {
+          _this3[desti].push(res.data);
+        } else {
+          _this3[desti] = [res.data];
+        }
+      })["catch"](function (err) {
+        console.error(err);
+      });
+      this[varNom] = "";
+      UIkit.modal("#curs-modal").hide();
+    }
+  }
+});
 
 /***/ }),
 
@@ -2035,7 +2273,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 2px solid;\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(0px);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(-3px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n}\n.baix {\n  grid-area: 5/1/6/5;\n  border: 2px solid gray;\n}\n.principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n}\n.principal .s-, .principal .s-curs, .principal .s-visita, .principal .s-guardia, .principal .s-compensa, .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n}\n.principal .s-cefire {\n  background-color: blue;\n  content: \"CEFIRE\";\n  font-weight: 300;\n  color: #fff;\n}\n.principal .s-compensa {\n  background-color: gray;\n}\n.principal .s-guardia {\n  background-color: red;\n}\n.principal .s-visita {\n  background-color: blue;\n}\n.principal .s-curs {\n  background-color: yellow;\n}\n.principal .s-:after, .principal .s-cefire:after, .principal .s-compensa:after, .principal .s-guardia:after, .principal .s-visita:after, .principal .s-curs:after {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  content: \"\\F2ED\";\n  margin-left: 10px;\n  color: #fff;\n  font-weight: 300;\n  cursor: pointer;\n}\n.principal .s-:after:active, .principal .s-cefire:after:active, .principal .s-compensa:after:active, .principal .s-guardia:after:active, .principal .s-visita:after:active, .principal .s-curs:after:active {\n  display: none;\n}\n.flex-container {\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.flex-container .button {\n  flex: 0 1 auto;\n  margin: 1px;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 10;\n}\n.dia .principal .s-, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n}\n.dia .principal .s-cefire {\n  background-color: blue;\n}\n.dia .principal .s-cefire:before {\n  content: \"CEFIRE\";\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n.dia .principal .s-compensa:before {\n  content: \"COMPENSA\";\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n.dia .principal .s-guardia:before {\n  content: \"GUARDIA\";\n}\n.dia .principal .s-visita {\n  background-color: blue;\n}\n.dia .principal .s-visita:before {\n  content: \"VISITA\";\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-:after, .dia .principal .s-cefire:after, .dia .principal .s-compensa:after, .dia .principal .s-guardia:after, .dia .principal .s-visita:after, .dia .principal .s-curs:after {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  content: \"\\F2ED\";\n  margin-left: 10px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container .button {\n  flex: 0 1 auto;\n  margin: 1px;\n}", ""]);
 
 // exports
 
@@ -43653,68 +43891,273 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "dia" }, [
-    _c("div", { staticClass: "lateral_esquerre flex-container" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary btn-sm",
-          attrs: {
-            "data-toggle": "tooltip",
-            "data-placement": "bottom",
-            title: "CEFIRE"
-          },
-          on: {
-            click: function($event) {
-              return _vm.cefire("CEFIRE")
+  return _c("div", [
+    _c("div", { staticClass: "dia" }, [
+      _c("div", { staticClass: "lateral_esquerre flex-container" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary btn-sm",
+            attrs: {
+              "data-toggle": "tooltip",
+              "data-placement": "bottom",
+              title: "CEFIRE"
+            },
+            on: {
+              click: function($event) {
+                return _vm.afegix("cefire")
+              }
             }
-          }
-        },
-        [_c("i", { staticClass: "fas fa-check" })]
-      ),
+          },
+          [_c("i", { staticClass: "fas fa-check" })]
+        ),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary btn-sm",
+            attrs: {
+              "data-toggle": "tooltip",
+              "data-placement": "bottom",
+              title: "GUARDIA"
+            },
+            on: {
+              click: function($event) {
+                return _vm.afegix("guardia")
+              }
+            }
+          },
+          [_c("i", { staticClass: "fas fa-dog" })]
+        ),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm._m(2)
+      ]),
       _vm._v(" "),
       _c(
-        "button",
-        {
-          staticClass: "btn btn-primary btn-sm",
-          attrs: {
-            "data-toggle": "tooltip",
-            "data-placement": "bottom",
-            title: "CURS"
-          },
-          on: {
-            click: function($event) {
-              return _vm.cefire("CURS")
-            }
-          }
-        },
-        [_c("i", { staticClass: "fas fa-chalkboard-teacher" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary btn-sm",
-          attrs: {
-            "data-toggle": "tooltip",
-            "data-placement": "bottom",
-            title: "GUARDIA"
-          },
-          on: {
-            click: function($event) {
-              return _vm.cefire("GUARDIA")
-            }
-          }
-        },
-        [_c("i", { staticClass: "fas fa-dog" })]
-      ),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _vm._m(1)
+        "div",
+        { staticClass: "principal", attrs: { id: "principal" } },
+        [
+          _vm._l(_vm.cefire, function(cef) {
+            return _c("div", {
+              key: cef.id,
+              staticClass: "s-cefire",
+              attrs: {
+                "data-uk-tooltip": "pos: right; animation: true; offset: 12;",
+                title: cef.data
+              }
+            })
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.compensa, function(com) {
+            return _c("div", { key: com.id, staticClass: "s-compensa" })
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.curs, function(cur) {
+            return _c("div", { key: cur.id, staticClass: "s-curs" })
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.visita, function(vis) {
+            return _c("div", { key: vis.id, staticClass: "s-visita" })
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.guardia, function(gua) {
+            return _c("div", { key: gua.id, staticClass: "s-guardia" })
+          })
+        ],
+        2
+      )
     ]),
     _vm._v(" "),
-    _vm._m(2)
+    _c("button", { on: { click: _vm.afegix } }, [_vm._v("Prova")]),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.pilla } }, [_vm._v("Prova")]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "uk-button",
+        attrs: { "data-uk-tooltip": "{pos:'right}", title: "dsadsadas" }
+      },
+      [_vm._v("\n    ...dsa\n  ")]
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "uk-button uk-button-default uk-margin-small-right",
+        attrs: { type: "button", "uk-toggle": "target: #curs-modal" }
+      },
+      [_vm._v("\n    Open\n  ")]
+    ),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "curs-modal", "uk-modal": "" } }, [
+      _c("div", { staticClass: "uk-modal-dialog uk-modal-body" }, [
+        _c("fieldset", { staticClass: "uk-fieldset" }, [
+          _c("div", { staticClass: "uk-margin" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.curs_i,
+                  expression: "curs_i"
+                }
+              ],
+              staticClass: "uk-form-large data-uk-input uk-width-1-1",
+              attrs: { type: "text", placeholder: "Curs a realitzar" },
+              domProps: { value: _vm.curs_i },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.curs_i = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "uk-text-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-default uk-modal-close",
+              attrs: { type: "button" }
+            },
+            [_vm._v("\n          Cancel·la\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-primary uk-modal-close",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.salva("curs")
+                }
+              }
+            },
+            [_vm._v("\n          Salva\n        ")]
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "compensa-modal", "uk-modal": "" } }, [
+      _c("div", { staticClass: "uk-modal-dialog uk-modal-body" }, [
+        _c("fieldset", { staticClass: "uk-fieldset" }, [
+          _c("div", { staticClass: "uk-margin" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.compensa_i,
+                  expression: "compensa_i"
+                }
+              ],
+              staticClass: "uk-form-large data-uk-input uk-width-1-1",
+              attrs: { type: "text", placeholder: "Motiu pel que compenses" },
+              domProps: { value: _vm.compensa_i },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.compensa_i = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "uk-text-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-default uk-modal-close",
+              attrs: { type: "button" }
+            },
+            [_vm._v("\n          Cancel·la\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-primary uk-modal-close",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.salva("compensa")
+                }
+              }
+            },
+            [_vm._v("\n          Salva\n        ")]
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "visita-modal", "uk-modal": "" } }, [
+      _c("div", { staticClass: "uk-modal-dialog uk-modal-body" }, [
+        _c("fieldset", { staticClass: "uk-fieldset" }, [
+          _c("div", { staticClass: "uk-margin" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.visita_i,
+                  expression: "visita_i"
+                }
+              ],
+              staticClass: "uk-form-large data-uk-input uk-width-1-1",
+              attrs: { type: "text", placeholder: "Visita a realitzar" },
+              domProps: { value: _vm.visita_i },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.visita_i = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "uk-text-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-default uk-modal-close",
+              attrs: { type: "button" }
+            },
+            [_vm._v("\n          Cancel·la\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-primary uk-modal-close",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.salva("visita")
+                }
+              }
+            },
+            [_vm._v("\n          Salva\n        ")]
+          )
+        ])
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -43725,14 +44168,30 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-primary dropdown-toggle btn-sm",
+        staticClass: "btn btn-primary btn-sm",
+        attrs: {
+          "data-toggle": "tooltip",
+          "data-placement": "bottom",
+          title: "CURS",
+          "uk-toggle": "target: #curs-modal"
+        }
+      },
+      [_c("i", { staticClass: "fas fa-chalkboard-teacher" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-primary btn-sm",
         attrs: {
           "data-toggle-second": "tooltip",
+          "data-placement": "bottom",
           title: "COMPENSA",
-          type: "button",
-          "data-toggle": "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false"
+          "uk-toggle": "target: #compensa-modal"
         }
       },
       [_c("i", { staticClass: "fas fa-umbrella-beach" })]
@@ -43745,34 +44204,16 @@ var staticRenderFns = [
     return _c(
       "button",
       {
-        staticClass: "btn btn-primary dropdown-toggle btn-sm",
+        staticClass: "btn btn-primary btn-sm",
         attrs: {
           "data-toggle-second": "tooltip",
+          "data-placement": "bottom",
           title: "VISITA",
-          type: "button",
-          "data-toggle": "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false"
+          "uk-toggle": "target: #visita-modal"
         }
       },
       [_c("i", { staticClass: "fas fa-school" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "principal" }, [
-      _c("div", { staticClass: "s-cefire" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "s-compensa" }, [_vm._v("COMPENSA")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "s-curs" }, [_vm._v("Curs")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "s-visita" }, [_vm._v("visita")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "s-guardia" }, [_vm._v("guardia")])
-    ])
   }
 ]
 render._withStripped = true
