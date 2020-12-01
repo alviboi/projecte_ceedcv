@@ -13,10 +13,13 @@ $global-primary-background: #491165;
 
 @import "~uikit/src/scss/uikit.scss";
 
+$fa-font-path: "../webfonts";
 @import '~@fortawesome/fontawesome-free/scss/brands';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
+
+
 
 .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;

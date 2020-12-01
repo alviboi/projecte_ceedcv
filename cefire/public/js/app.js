@@ -1979,6 +1979,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -2028,7 +2035,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".dia {\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 2px solid;\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(0px);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(-3px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n}\n.baix {\n  grid-area: 5/1/6/5;\n  border: 2px solid gray;\n}\n.principal {\n  grid-area: 1/2/5/5;\n}\n.flex-container {\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.flex-container .button {\n  flex: 0 1 auto;\n  margin: 1px;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 2px solid;\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(0px);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(-3px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n}\n.baix {\n  grid-area: 5/1/6/5;\n  border: 2px solid gray;\n}\n.principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n}\n.principal .s-, .principal .s-curs, .principal .s-visita, .principal .s-guardia, .principal .s-compensa, .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n}\n.principal .s-cefire {\n  background-color: blue;\n  content: \"CEFIRE\";\n  font-weight: 300;\n  color: #fff;\n}\n.principal .s-compensa {\n  background-color: gray;\n}\n.principal .s-guardia {\n  background-color: red;\n}\n.principal .s-visita {\n  background-color: blue;\n}\n.principal .s-curs {\n  background-color: yellow;\n}\n.principal .s-:after, .principal .s-cefire:after, .principal .s-compensa:after, .principal .s-guardia:after, .principal .s-visita:after, .principal .s-curs:after {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  content: \"\\F2ED\";\n  margin-left: 10px;\n  color: #fff;\n  font-weight: 300;\n  cursor: pointer;\n}\n.principal .s-:after:active, .principal .s-cefire:after:active, .principal .s-compensa:after:active, .principal .s-guardia:after:active, .principal .s-visita:after:active, .principal .s-curs:after:active {\n  display: none;\n}\n.flex-container {\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.flex-container .button {\n  flex: 0 1 auto;\n  margin: 1px;\n}", ""]);
 
 // exports
 
@@ -43705,7 +43712,9 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       _vm._m(1)
-    ])
+    ]),
+    _vm._v(" "),
+    _vm._m(2)
   ])
 }
 var staticRenderFns = [
@@ -43748,6 +43757,22 @@ var staticRenderFns = [
       },
       [_c("i", { staticClass: "fas fa-school" })]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "principal" }, [
+      _c("div", { staticClass: "s-cefire" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "s-compensa" }, [_vm._v("COMPENSA")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "s-curs" }, [_vm._v("Curs")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "s-visita" }, [_vm._v("visita")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "s-guardia" }, [_vm._v("guardia")])
+    ])
   }
 ]
 render._withStripped = true

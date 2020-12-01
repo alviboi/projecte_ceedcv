@@ -11,17 +11,27 @@
             <i class="fas fa-school"></i>
         </button>
     </div>
+    <div class="principal">
+        <div class="s-cefire"></div>
+        <div class="s-compensa">COMPENSA</div>
+        <div class="s-curs">Curs</div>
+        <div class="s-visita">visita</div>
+        <div class="s-guardia">guardia</div>
+    </div>
 </div>
 </template>
 
 <script>
+
 export default {
 
 }
 </script>
 
 <style lang="sass">
+
     .dia
+        max-width: 150px
         display: grid
         grid-template-columns: min-content repeat(3, 1em)
         grid-template-rows: repeat(5, 1fr)
@@ -55,20 +65,62 @@ export default {
         grid-area: 5 / 1 / 6 / 5
         border: 2px solid gray
 
-
     .principal
-        grid-area: 1 / 2 / 5 / 5
+        grid-area: 1 / 1 / 6 / 6
+        display: inline-flex
+        flex-wrap: wrap
+        flex-direction: column
+        justify-content: flex-start
+        align-items: auto
+        align-content: flex-start
+        padding: 5px
+        .s-
+            flex: 0 1 auto
+            margin: 1px
+            border: 1px solid
+            border-radius: 5px
+            padding: 3px
+            &cefire
+                @extend .s-
+                background-color: blue
+                content: "CEFIRE"
+                font-weight: 300
+                color: #fff
+            &compensa
+                @extend .s-
+                background-color: gray
+            &guardia
+                @extend .s-
+                background-color: red
+            &visita
+                @extend .s-
+                background-color: blue
+            &curs
+                @extend .s-
+                background-color: yellow
+            &:after
+                font-family: "Font Awesome 5 Free"
+                text-align: right
+                float: right
+                content: "\f2ed"
+                margin-left: 10px
+                color: #fff
+                font-weight: 300
+                cursor: pointer
+                &:active
+                    display: none
 
-.flex-container
-    display: flex
-    flex-wrap: wrap
-    flex-direction: column
-    justify-content: flex-start
-    align-items: auto
-    align-content: flex-start
-    .button
-        flex: 0 1 auto
-        margin: 1px
+
+    .flex-container
+        display: flex
+        flex-wrap: wrap
+        flex-direction: column
+        justify-content: flex-start
+        align-items: auto
+        align-content: flex-start
+        .button
+            flex: 0 1 auto
+            margin: 1px
 
 
 
