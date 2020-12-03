@@ -1,5 +1,12 @@
 // This is how you might override UIkit default variables
 $global-primary-background: #491165;
+$fondo: #f7f7f7;
+$charcoal: #264653ff;
+$persian-green: #2a9d8fff;
+$orange-yellow-crayola: #e9c46aff;
+$sandy-brown: #f4a261ff;
+$burnt-sienna: #e76f51ff;
+
 
 @import "~uikit/src/scss/variables-theme.scss";
 @import "~uikit/src/scss/mixins-theme.scss";
@@ -20,10 +27,16 @@ $fa-font-path: "../webfonts";
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 
 
-
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
+.list-complete2-item {
+    transition: all 0.5s;
+    display: inline-block;
+    // margin-right: 10px;
   }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .list-complete2-enter, .list-complete2-leave-to
+  /* .list-complete-leave-active below version 2.1.8 */ {
     opacity: 0;
-}
+    transform: translateY(10px);
+  }
+  .list-complete2-leave-active {
+    position: absolute;
+  }

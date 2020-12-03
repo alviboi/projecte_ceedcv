@@ -7,3 +7,12 @@ window.canvi = function(url) {
         });
     });
 }
+
+window.data_db = function (data) {
+    let dia = data.getDate();
+    let mes = data.getMonth() + 1;
+    let an = data.getFullYear();
+    let ret = an + "-" + mes + "-" + dia;
+    return ret;
+}
+

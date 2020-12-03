@@ -52,30 +52,37 @@
       <!-- COLUMNA LATERAL DESPLEGABLE -->
       <!-- ESPAI ON ES POSEN LES ETIQUETES -->
       <div id="principal" class="principal">
+  <transition-group name="list-complete2" tag="div">
+
+
         <div
           v-for="cef in cefire"
-          class="s-cefire"
-          :key="cef.id"
+          class="s-cefire list-complete2-item"
+          :key="'c'+cef.id"
           data-uk-tooltip="pos: right; animation: true; offset: 12;"
-          :title="cef.data"
-        ></div>
-        <div v-for="com in compensa" class="s-compensa" :key="com.id"></div>
-        <div v-for="cur in curs" class="s-curs" :key="cur.id"></div>
-        <div v-for="vis in visita" class="s-visita" :key="vis.id"></div>
-        <div v-for="gua in guardia" class="s-guardia" :key="gua.id"></div>
+          :title="cef.id"
+        ><span @click="borra_par('cefire',cef.id)" class="cerrar"/></div>
 
-        <!-- <div class="s-cefire"></div>
-        <div class="s-compensa"></div>
+
+            <div v-for="com in compensa" class="s-compensa list-complete2-item" :key="'com'+com.id"><span @click="borra_par('compensa',com.id)" class="cerrar"/></div>
+
+        <div v-for="cur in curs" class="s-curs list-complete2-item" :key="'cur'+cur.id"><span @click="borra_par('curs',com.id)" class="cerrar"/></div>
+        <div v-for="vis in visita" class="s-visita list-complete2-item" :key="'vis'+vis.id"><span @click="borra_par('visita',com.id)" class="cerrar"/></div>
+        <div v-for="gua in guardia" class="s-guardia list-complete2-item" :key="'gua'+gua.id"><span @click="borra_par('guardia',com.id)" class="cerrar"/></div>
+        <div v-for="perm in permis" class="s-guardia list-complete2-item" :key="'perm'+perm.id"><span @click="borra_par('permis',perm.id)" class="cerrar"/></div>
+        </transition-group>
+
+
+        <!-- <div class="s-compensa"></div>
         <div class="s-curs"></div>
         <div class="s-visita"></div>
         <div class="s-guardia"></div> -->
       </div>
       <!-- ESPAI ON ES POSEN LES ETIQUETES -->
     </div>
-    <button @click="afegix">Prova</button>
-    <button @click="pilla">Prova</button>
+    <button @click="get_de_bd">Prova</button>
     <button class="uk-button" data-uk-tooltip="{pos:'right}" title="dsadsadas">
-      ...dsa
+      fsdfsafds
     </button>
     <!-- This is a button toggling the modal -->
     <button
@@ -191,6 +198,7 @@ export default {
       curs: {},
       visita: {},
       guardia: {},
+      permis: {},
       data: new Date("2020-11-23"),
       curs_i: "",
       compensa_i: "",
@@ -198,12 +206,27 @@ export default {
     };
   },
   methods: {
-    pilla() {
+    borra_par (bd,id) {
+        let url=bd+'/'+id;
+        axios.delete(url)
+        .then(res => {
+            console.log(res);
+            for (let index = 0; index < this[bd].length; index++) {
+                if (this[bd][index].id == id) {
+                    this[bd].splice(index, 1);
+                }
+            }
+        })
+        .catch(err => {
+            console.error(err);
+        })
+    },
+    get_de_bd(bd) {
       axios
-        .get("cefire")
+        .get(bd)
         .then((res) => {
           console.log(res.data);
-          this.cefire = res.data;
+          this[bd] = res.data;
         })
         .catch((err) => {
           console.error(err);
@@ -211,11 +234,9 @@ export default {
     },
     afegix(desti) {
       //alert(this.data);
-      let dia = this.data.getDate();
-      let mes = this.data.getMonth() + 1;
-      let an = this.data.getFullYear();
+
       var params = {
-        data: an + "-" + mes + "-" + dia,
+        data: data_db(this.data),
         inici: "9:00:00",
         fi: "14:00:00",
       };
@@ -235,11 +256,8 @@ export default {
     },
     salva(desti) {
       let varNom = desti + "_i";
-      let dia = this.data.getDate();
-      let mes = this.data.getMonth() + 1;
-      let an = this.data.getFullYear();
       var params = {
-        data: an + "-" + mes + "-" + dia,
+        data: data_db(this.data),
         inici: "9:00:00",
         fi: "14:00:00",
         motiu: this[varNom],
@@ -261,10 +279,19 @@ export default {
       UIkit.modal("#curs-modal").hide();
     },
   },
+  mounted() {
+      this.get_de_bd('cefire')
+      this.get_de_bd('compensa')
+      this.get_de_bd('curs')
+      this.get_de_bd('visita')
+      this.get_de_bd('guardia')
+      this.get_de_bd('permis')
+  },
 };
 </script>
 
 <style lang="sass">
+$fondo:  #f1faee
 .dia
     max-width: 150px
     display: grid
@@ -274,6 +301,7 @@ export default {
     grid-row-gap: 2px
     border: 1px solid gray
     border-radius: 7px
+    background-color: white
     &:hover > .lateral_esquerre
         visibility: visible
         opacity: 1
@@ -302,7 +330,9 @@ export default {
         align-items: auto
         align-content: flex-start
         padding: 5px
-        z-index: 10
+        z-index: 1
+        background-color: $fondo
+        border-radius: 10px
         .s-
             flex: 0 1 auto
             margin: 1px
@@ -312,6 +342,7 @@ export default {
             font-weight: bold
             color: #373444
             width: 95%
+            max-width: 150px
             &cefire
                 @extend .s-
                 background-color: blue
@@ -341,16 +372,17 @@ export default {
                 &:before
                     content: "CURS"
 
-            &:after
-                font-family: "Font Awesome 5 Free"
-                text-align: right
-                float: right
-                content: "\f2ed"
-                margin-left: 10px
-                color: #373444
-                font-weight: bold
-                cursor: pointer
-                pointers: all
+    .cerrar
+        font-family: "Font Awesome 5 Free"
+        text-align: right
+        float: right
+        margin-right: 3px
+        color: #373444
+        font-weight: bold
+        cursor: pointer
+        pointers: all
+        &:before
+            content: "\f2ed"
 
     .flex-container
         display: flex

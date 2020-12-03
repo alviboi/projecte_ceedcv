@@ -92,5 +92,6 @@ class cefireController extends Controller
     public function destroy(cefire $cefire)
     {
         //
+        $cefire->delete();
     }
 }

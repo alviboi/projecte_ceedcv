@@ -6,18 +6,7 @@
     <dia-component />
 
 </div>
-<div>
-    <dia-component />
 
-</div>
-<div>
-    <dia-component />
-
-</div>
-<div>
-    <dia-component />
-
-</div>
 
 
 @endsection

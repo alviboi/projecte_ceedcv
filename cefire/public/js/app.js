@@ -2147,6 +2147,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2155,6 +2162,7 @@ __webpack_require__.r(__webpack_exports__);
       curs: {},
       visita: {},
       guardia: {},
+      permis: {},
       data: new Date("2020-11-23"),
       curs_i: "",
       compensa_i: "",
@@ -2162,52 +2170,40 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    pilla: function pilla() {
+    borra_par: function borra_par(bd, id) {
       var _this = this;
 
-      axios.get("cefire").then(function (res) {
-        console.log(res.data);
-        _this.cefire = res.data;
-      })["catch"](function (err) {
-        console.error(err);
-      });
-    },
-    afegix: function afegix(desti) {
-      var _this2 = this;
-
-      //alert(this.data);
-      var dia = this.data.getDate();
-      var mes = this.data.getMonth() + 1;
-      var an = this.data.getFullYear();
-      var params = {
-        data: an + "-" + mes + "-" + dia,
-        inici: "9:00:00",
-        fi: "14:00:00"
-      };
-      axios.post(desti, params).then(function (res) {
+      var url = bd + '/' + id;
+      axios["delete"](url).then(function (res) {
         console.log(res);
 
-        if (Object.keys(_this2[desti]).length !== 0) {
-          _this2[desti].push(res.data);
-        } else {
-          _this2[desti] = [res.data];
+        for (var index = 0; index < _this[bd].length; index++) {
+          if (_this[bd][index].id == id) {
+            _this[bd].splice(index, 1);
+          }
         }
       })["catch"](function (err) {
         console.error(err);
       });
     },
-    salva: function salva(desti) {
+    get_de_bd: function get_de_bd(bd) {
+      var _this2 = this;
+
+      axios.get(bd).then(function (res) {
+        console.log(res.data);
+        _this2[bd] = res.data;
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    afegix: function afegix(desti) {
       var _this3 = this;
 
-      var varNom = desti + "_i";
-      var dia = this.data.getDate();
-      var mes = this.data.getMonth() + 1;
-      var an = this.data.getFullYear();
+      //alert(this.data);
       var params = {
-        data: an + "-" + mes + "-" + dia,
+        data: data_db(this.data),
         inici: "9:00:00",
-        fi: "14:00:00",
-        motiu: this[varNom]
+        fi: "14:00:00"
       };
       axios.post(desti, params).then(function (res) {
         console.log(res);
@@ -2220,9 +2216,39 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.error(err);
       });
+    },
+    salva: function salva(desti) {
+      var _this4 = this;
+
+      var varNom = desti + "_i";
+      var params = {
+        data: data_db(this.data),
+        inici: "9:00:00",
+        fi: "14:00:00",
+        motiu: this[varNom]
+      };
+      axios.post(desti, params).then(function (res) {
+        console.log(res);
+
+        if (Object.keys(_this4[desti]).length !== 0) {
+          _this4[desti].push(res.data);
+        } else {
+          _this4[desti] = [res.data];
+        }
+      })["catch"](function (err) {
+        console.error(err);
+      });
       this[varNom] = "";
       UIkit.modal("#curs-modal").hide();
     }
+  },
+  mounted: function mounted() {
+    this.get_de_bd('cefire');
+    this.get_de_bd('compensa');
+    this.get_de_bd('curs');
+    this.get_de_bd('visita');
+    this.get_de_bd('guardia');
+    this.get_de_bd('permis');
   }
 });
 
@@ -2273,7 +2299,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 10;\n}\n.dia .principal .s-, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n}\n.dia .principal .s-cefire {\n  background-color: blue;\n}\n.dia .principal .s-cefire:before {\n  content: \"CEFIRE\";\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n.dia .principal .s-compensa:before {\n  content: \"COMPENSA\";\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n.dia .principal .s-guardia:before {\n  content: \"GUARDIA\";\n}\n.dia .principal .s-visita {\n  background-color: blue;\n}\n.dia .principal .s-visita:before {\n  content: \"VISITA\";\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-:after, .dia .principal .s-cefire:after, .dia .principal .s-compensa:after, .dia .principal .s-guardia:after, .dia .principal .s-visita:after, .dia .principal .s-curs:after {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  content: \"\\F2ED\";\n  margin-left: 10px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container .button {\n  flex: 0 1 auto;\n  margin: 1px;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n}\n.dia .principal .s-, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n  max-width: 150px;\n}\n.dia .principal .s-cefire {\n  background-color: blue;\n}\n.dia .principal .s-cefire:before {\n  content: \"CEFIRE\";\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n.dia .principal .s-compensa:before {\n  content: \"COMPENSA\";\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n.dia .principal .s-guardia:before {\n  content: \"GUARDIA\";\n}\n.dia .principal .s-visita {\n  background-color: blue;\n}\n.dia .principal .s-visita:before {\n  content: \"VISITA\";\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container .button {\n  flex: 0 1 auto;\n  margin: 1px;\n}", ""]);
 
 // exports
 
@@ -43941,40 +43967,143 @@ var render = function() {
         "div",
         { staticClass: "principal", attrs: { id: "principal" } },
         [
-          _vm._l(_vm.cefire, function(cef) {
-            return _c("div", {
-              key: cef.id,
-              staticClass: "s-cefire",
-              attrs: {
-                "data-uk-tooltip": "pos: right; animation: true; offset: 12;",
-                title: cef.data
-              }
-            })
-          }),
-          _vm._v(" "),
-          _vm._l(_vm.compensa, function(com) {
-            return _c("div", { key: com.id, staticClass: "s-compensa" })
-          }),
-          _vm._v(" "),
-          _vm._l(_vm.curs, function(cur) {
-            return _c("div", { key: cur.id, staticClass: "s-curs" })
-          }),
-          _vm._v(" "),
-          _vm._l(_vm.visita, function(vis) {
-            return _c("div", { key: vis.id, staticClass: "s-visita" })
-          }),
-          _vm._v(" "),
-          _vm._l(_vm.guardia, function(gua) {
-            return _c("div", { key: gua.id, staticClass: "s-guardia" })
-          })
+          _c(
+            "transition-group",
+            { attrs: { name: "list-complete2", tag: "div" } },
+            [
+              _vm._l(_vm.cefire, function(cef) {
+                return _c(
+                  "div",
+                  {
+                    key: "c" + cef.id,
+                    staticClass: "s-cefire list-complete2-item",
+                    attrs: {
+                      "data-uk-tooltip":
+                        "pos: right; animation: true; offset: 12;",
+                      title: cef.id
+                    }
+                  },
+                  [
+                    _c("span", {
+                      staticClass: "cerrar",
+                      on: {
+                        click: function($event) {
+                          return _vm.borra_par("cefire", cef.id)
+                        }
+                      }
+                    })
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.compensa, function(com) {
+                return _c(
+                  "div",
+                  {
+                    key: "com" + com.id,
+                    staticClass: "s-compensa list-complete2-item"
+                  },
+                  [
+                    _c("span", {
+                      staticClass: "cerrar",
+                      on: {
+                        click: function($event) {
+                          return _vm.borra_par("compensa", com.id)
+                        }
+                      }
+                    })
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.curs, function(cur) {
+                return _c(
+                  "div",
+                  {
+                    key: "cur" + cur.id,
+                    staticClass: "s-curs list-complete2-item"
+                  },
+                  [
+                    _c("span", {
+                      staticClass: "cerrar",
+                      on: {
+                        click: function($event) {
+                          return _vm.borra_par("curs", _vm.com.id)
+                        }
+                      }
+                    })
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.visita, function(vis) {
+                return _c(
+                  "div",
+                  {
+                    key: "vis" + vis.id,
+                    staticClass: "s-visita list-complete2-item"
+                  },
+                  [
+                    _c("span", {
+                      staticClass: "cerrar",
+                      on: {
+                        click: function($event) {
+                          return _vm.borra_par("visita", _vm.com.id)
+                        }
+                      }
+                    })
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.guardia, function(gua) {
+                return _c(
+                  "div",
+                  {
+                    key: "gua" + gua.id,
+                    staticClass: "s-guardia list-complete2-item"
+                  },
+                  [
+                    _c("span", {
+                      staticClass: "cerrar",
+                      on: {
+                        click: function($event) {
+                          return _vm.borra_par("guardia", _vm.com.id)
+                        }
+                      }
+                    })
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.permis, function(perm) {
+                return _c(
+                  "div",
+                  {
+                    key: "perm" + perm.id,
+                    staticClass: "s-guardia list-complete2-item"
+                  },
+                  [
+                    _c("span", {
+                      staticClass: "cerrar",
+                      on: {
+                        click: function($event) {
+                          return _vm.borra_par("permis", perm.id)
+                        }
+                      }
+                    })
+                  ]
+                )
+              })
+            ],
+            2
+          )
         ],
-        2
+        1
       )
     ]),
     _vm._v(" "),
-    _c("button", { on: { click: _vm.afegix } }, [_vm._v("Prova")]),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.pilla } }, [_vm._v("Prova")]),
+    _c("button", { on: { click: _vm.get_de_bd } }, [_vm._v("Prova")]),
     _vm._v(" "),
     _c(
       "button",
@@ -43982,7 +44111,7 @@ var render = function() {
         staticClass: "uk-button",
         attrs: { "data-uk-tooltip": "{pos:'right}", title: "dsadsadas" }
       },
-      [_vm._v("\n    ...dsa\n  ")]
+      [_vm._v("\n    fsdfsafds\n  ")]
     ),
     _vm._v(" "),
     _c(
@@ -62282,6 +62411,8 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./home */ "./resources/js/home.js");
+
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /**
  * The following block of code may be used to automatically register your
@@ -62332,6 +62463,17 @@ UIkit.use(window.Icons);
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+var token = document.head.querySelector('meta[name="csrf-token"]');
+
+if (token) {
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+} // window.axios.defaults.headers.common = {
+//     'X-Requested-With': 'XMLHttpRequest',
+//     'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+// };
+
 
 try {
   window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
@@ -62594,6 +62736,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/home.js":
+/*!******************************!*\
+  !*** ./resources/js/home.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
+    delay = _require.delay;
+
+window.canvi = function (url) {
+  $("#app").fadeOut(500, function () {
+    $("#app").load("seccio/" + url, function () {
+      $("#app").fadeIn(500);
+    });
+  });
+};
+
+window.data_db = function (data) {
+  var dia = data.getDate();
+  var mes = data.getMonth() + 1;
+  var an = data.getFullYear();
+  var ret = an + "-" + mes + "-" + dia;
+  return ret;
+};
 
 /***/ }),
 

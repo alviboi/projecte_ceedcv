@@ -17333,6 +17333,14 @@ window.canvi = function (url) {
   });
 };
 
+window.data_db = function (data) {
+  var dia = data.getDate();
+  var mes = data.getMonth() + 1;
+  var an = data.getFullYear();
+  var ret = an + "-" + mes + "-" + dia;
+  return ret;
+};
+
 /***/ }),
 
 /***/ 1:
