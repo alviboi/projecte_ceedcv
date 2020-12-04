@@ -37,6 +37,14 @@ class cursController extends Controller
     public function store(Request $request)
     {
         //
+        $dat = new curs();
+        $dat->data = $request->data;
+        $dat->inici = $request->inici;
+        $dat->fi = $request->fi;
+        $dat->user_id = auth()->id();
+        $dat->curs = $request->motiu;
+        $dat->save();
+        return $dat->toArray();
     }
 
     /**
@@ -82,5 +90,6 @@ class cursController extends Controller
     public function destroy(curs $curs)
     {
         //
+        $curs->delete();
     }
 }

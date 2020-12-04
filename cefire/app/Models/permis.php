@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class permis extends Model
 {
+    public $table = 'permis';
     use HasFactory;
 }

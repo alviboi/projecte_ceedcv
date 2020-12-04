@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class curs extends Model
 {
+    public $table = 'curs';
+
     use HasFactory;
 }

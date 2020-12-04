@@ -36107,6 +36107,7 @@ readers do not read off random characters that represent icons */
 .list-complete2-item {
   transition: all 0.5s;
   display: inline-block;
+  margin-right: 10px;
 }
 
 .list-complete2-enter,

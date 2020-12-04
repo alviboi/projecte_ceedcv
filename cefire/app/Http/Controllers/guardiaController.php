@@ -37,6 +37,13 @@ class guardiaController extends Controller
     public function store(Request $request)
     {
         //
+        $dat = new guardia();
+        $dat->data = $request->data;
+        $dat->inici = $request->inici;
+        $dat->fi = $request->fi;
+        $dat->user_id = auth()->id();
+        $dat->save();
+        return $dat->toArray();
     }
 
     /**
@@ -82,5 +89,6 @@ class guardiaController extends Controller
     public function destroy(guardia $guardia)
     {
         //
+        $guardia->delete();
     }
 }

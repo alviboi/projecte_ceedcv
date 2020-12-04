@@ -37,6 +37,14 @@ class compensaController extends Controller
     public function store(Request $request)
     {
         //
+        $dat = new compensa();
+        $dat->data = $request->data;
+        $dat->inici = $request->inici;
+        $dat->fi = $request->fi;
+        $dat->user_id = auth()->id();
+        $dat->motiu = $request->motiu;
+        $dat->save();
+        return $dat->toArray();
     }
 
     /**
@@ -82,5 +90,6 @@ class compensaController extends Controller
     public function destroy(compensa $compensa)
     {
         //
+        $compensa->delete();
     }
 }

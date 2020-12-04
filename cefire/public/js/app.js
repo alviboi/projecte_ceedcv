@@ -2154,6 +2154,129 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+UIkit.upload('.js-upload', {
+  url: '',
+  multiple: true,
+  beforeSend: function beforeSend() {
+    console.log('beforeSend', arguments);
+  },
+  beforeAll: function beforeAll() {
+    console.log('beforeAll', arguments);
+  },
+  load: function load() {
+    console.log('load', arguments);
+  },
+  error: function error() {
+    console.log('error', arguments);
+  },
+  complete: function complete() {
+    console.log('complete', arguments);
+  },
+  loadStart: function loadStart(e) {
+    console.log('loadStart', arguments);
+    bar.removeAttribute('hidden');
+    bar.max = e.total;
+    bar.value = e.loaded;
+  },
+  progress: function progress(e) {
+    console.log('progress', arguments);
+    bar.max = e.total;
+    bar.value = e.loaded;
+  },
+  loadEnd: function loadEnd(e) {
+    console.log('loadEnd', arguments);
+    bar.max = e.total;
+    bar.value = e.loaded;
+  },
+  completeAll: function completeAll() {
+    console.log('completeAll', arguments);
+    setTimeout(function () {
+      bar.setAttribute('hidden', 'hidden');
+    }, 1000);
+    alert('Upload Completed');
+  }
+});
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2166,14 +2289,18 @@ __webpack_require__.r(__webpack_exports__);
       data: new Date("2020-11-23"),
       curs_i: "",
       compensa_i: "",
-      visita_i: ""
+      visita_i: "",
+      permis_i: ""
     };
   },
   methods: {
+    merda: function merda() {
+      UIkit.modal("#curs-modal").show();
+    },
     borra_par: function borra_par(bd, id) {
       var _this = this;
 
-      var url = bd + '/' + id;
+      var url = bd + "/" + id;
       axios["delete"](url).then(function (res) {
         console.log(res);
 
@@ -2243,12 +2370,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.get_de_bd('cefire');
-    this.get_de_bd('compensa');
-    this.get_de_bd('curs');
-    this.get_de_bd('visita');
-    this.get_de_bd('guardia');
-    this.get_de_bd('permis');
+    this.get_de_bd("cefire");
+    this.get_de_bd("compensa");
+    this.get_de_bd("curs");
+    this.get_de_bd("visita");
+    this.get_de_bd("guardia");
+    this.get_de_bd("permis");
   }
 });
 
@@ -2299,7 +2426,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n}\n.dia .principal .s-, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n  max-width: 150px;\n}\n.dia .principal .s-cefire {\n  background-color: blue;\n}\n.dia .principal .s-cefire:before {\n  content: \"CEFIRE\";\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n.dia .principal .s-compensa:before {\n  content: \"COMPENSA\";\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n.dia .principal .s-guardia:before {\n  content: \"GUARDIA\";\n}\n.dia .principal .s-visita {\n  background-color: blue;\n}\n.dia .principal .s-visita:before {\n  content: \"VISITA\";\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container .button {\n  flex: 0 1 auto;\n  margin: 1px;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n}\n.dia .principal .s-, .dia .principal .s-permis, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n  max-width: 150px;\n}\n.dia .principal .s-cefire {\n  background-color: blue;\n}\n.dia .principal .s-cefire:before {\n  content: \"CEFIRE\";\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n.dia .principal .s-compensa:before {\n  content: \"COMPENSA\";\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n.dia .principal .s-guardia:before {\n  content: \"GUARDIA\";\n}\n.dia .principal .s-visita {\n  background-color: pink;\n}\n.dia .principal .s-visita:before {\n  content: \"VISITA\";\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-permis {\n  background-color: green;\n}\n.dia .principal .s-permis:before {\n  content: \"PERM\\CDS\";\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: wrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container .button {\n  flex: 0 1 auto;\n  margin: 1px;\n}", ""]);
 
 // exports
 
@@ -43960,7 +44087,9 @@ var render = function() {
         _vm._v(" "),
         _vm._m(1),
         _vm._v(" "),
-        _vm._m(2)
+        _vm._m(2),
+        _vm._v(" "),
+        _vm._m(3)
       ]),
       _vm._v(" "),
       _c(
@@ -43976,12 +44105,7 @@ var render = function() {
                   "div",
                   {
                     key: "c" + cef.id,
-                    staticClass: "s-cefire list-complete2-item",
-                    attrs: {
-                      "data-uk-tooltip":
-                        "pos: right; animation: true; offset: 12;",
-                      title: cef.id
-                    }
+                    staticClass: "s-cefire list-complete2-item"
                   },
                   [
                     _c("span", {
@@ -44001,7 +44125,12 @@ var render = function() {
                   "div",
                   {
                     key: "com" + com.id,
-                    staticClass: "s-compensa list-complete2-item"
+                    staticClass: "s-compensa list-complete2-item",
+                    attrs: {
+                      "data-uk-tooltip":
+                        "pos: right; animation: true; offset: 12;",
+                      title: com.motiu
+                    }
                   },
                   [
                     _c("span", {
@@ -44021,14 +44150,19 @@ var render = function() {
                   "div",
                   {
                     key: "cur" + cur.id,
-                    staticClass: "s-curs list-complete2-item"
+                    staticClass: "s-curs list-complete2-item",
+                    attrs: {
+                      "data-uk-tooltip":
+                        "pos: right; animation: true; offset: 12;",
+                      title: cur.curs
+                    }
                   },
                   [
                     _c("span", {
                       staticClass: "cerrar",
                       on: {
                         click: function($event) {
-                          return _vm.borra_par("curs", _vm.com.id)
+                          return _vm.borra_par("curs", cur.id)
                         }
                       }
                     })
@@ -44041,14 +44175,19 @@ var render = function() {
                   "div",
                   {
                     key: "vis" + vis.id,
-                    staticClass: "s-visita list-complete2-item"
+                    staticClass: "s-visita list-complete2-item",
+                    attrs: {
+                      "data-uk-tooltip":
+                        "pos: right; animation: true; offset: 12;",
+                      title: vis.centre
+                    }
                   },
                   [
                     _c("span", {
                       staticClass: "cerrar",
                       on: {
                         click: function($event) {
-                          return _vm.borra_par("visita", _vm.com.id)
+                          return _vm.borra_par("visita", vis.id)
                         }
                       }
                     })
@@ -44068,7 +44207,7 @@ var render = function() {
                       staticClass: "cerrar",
                       on: {
                         click: function($event) {
-                          return _vm.borra_par("guardia", _vm.com.id)
+                          return _vm.borra_par("guardia", gua.id)
                         }
                       }
                     })
@@ -44081,7 +44220,12 @@ var render = function() {
                   "div",
                   {
                     key: "perm" + perm.id,
-                    staticClass: "s-guardia list-complete2-item"
+                    staticClass: "s-permis list-complete2-item",
+                    attrs: {
+                      "data-uk-tooltip":
+                        "pos: right; animation: true; offset: 12;",
+                      title: perm.motiu
+                    }
                   },
                   [
                     _c("span", {
@@ -44118,7 +44262,8 @@ var render = function() {
       "button",
       {
         staticClass: "uk-button uk-button-default uk-margin-small-right",
-        attrs: { type: "button", "uk-toggle": "target: #curs-modal" }
+        attrs: { type: "button" },
+        on: { click: _vm.merda }
       },
       [_vm._v("\n    Open\n  ")]
     ),
@@ -44286,6 +44431,63 @@ var render = function() {
           )
         ])
       ])
+    ]),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "permis-modal", "uk-modal": "" } }, [
+      _c("div", { staticClass: "uk-modal-dialog uk-modal-body" }, [
+        _c("fieldset", { staticClass: "uk-fieldset" }, [
+          _c("div", { staticClass: "uk-margin" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.permis_i,
+                  expression: "permis_i"
+                }
+              ],
+              staticClass: "uk-form-large data-uk-input uk-width-1-1",
+              attrs: { type: "text", placeholder: "Motiu del permís" },
+              domProps: { value: _vm.permis_i },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.permis_i = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm._m(4)
+          ])
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "uk-text-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-default uk-modal-close",
+              attrs: { type: "button" }
+            },
+            [_vm._v("\n          Cancel·la\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-primary uk-modal-close",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.salva("permis")
+                }
+              }
+            },
+            [_vm._v("\n          Salva\n        ")]
+          )
+        ])
+      ])
     ])
   ])
 }
@@ -44342,6 +44544,46 @@ var staticRenderFns = [
         }
       },
       [_c("i", { staticClass: "fas fa-school" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-primary btn-sm",
+        attrs: {
+          "data-toggle-second": "tooltip",
+          "data-placement": "bottom",
+          title: "PERMIS",
+          "uk-toggle": "target: #permis-modal"
+        }
+      },
+      [_c("i", { staticClass: "fas fa-virus" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "js-upload uk-placeholder uk-text-center" },
+      [
+        _c("span", { attrs: { "uk-icon": "icon: cloud-upload" } }),
+        _vm._v(" "),
+        _c("span", { staticClass: "uk-text-middle" }, [
+          _vm._v("Puja o arrastra l'arxiu justificant")
+        ]),
+        _vm._v(" "),
+        _c("div", { attrs: { "uk-form-custom": "" } }, [
+          _c("input", { attrs: { type: "file", multiple: "" } }),
+          _vm._v(" "),
+          _c("span", { staticClass: "uk-link" }, [_vm._v("selecting one")])
+        ])
+      ]
     )
   }
 ]
