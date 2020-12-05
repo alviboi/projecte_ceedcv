@@ -83,12 +83,14 @@ class guardiaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\guardia  $guardia
+     * @param  \App\Models\cefire  $cefire
      * @return \Illuminate\Http\Response
      */
-    public function destroy(guardia $guardia)
+    public function destroy($guardia)
     {
         //
-        $guardia->delete();
+        guardia::find($guardia)->delete();
+
     }
+
 }

@@ -60,9 +60,19 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\permis');
     }
+    /**
+     * Get the comments visita data.
+     */
     public function visita()
     {
         return $this->hasMany('App\Models\visita');
+    }
+    /**
+     * Get the comments guardia data.
+     */
+    public function guardia()
+    {
+        return $this->hasMany('App\Models\guardia');
     }
 
     /**

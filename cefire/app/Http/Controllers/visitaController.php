@@ -87,9 +87,8 @@ class visitaController extends Controller
      * @param  \App\Models\visita  $visita
      * @return \Illuminate\Http\Response
      */
-    public function destroy(visita $visita)
+    public function destroy($visita)
     {
         //
-        $visita->delete();
-    }
+        visita::find($visita)->delete();    }
 }

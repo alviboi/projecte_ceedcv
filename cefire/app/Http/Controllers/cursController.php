@@ -87,9 +87,9 @@ class cursController extends Controller
      * @param  \App\Models\curs  $curs
      * @return \Illuminate\Http\Response
      */
-    public function destroy(curs $curs)
+    public function destroy($curs)
     {
         //
-        $curs->delete();
+        curs::find($curs)->delete();
     }
 }

@@ -40,6 +40,14 @@ Route::get('/home', function () {
 
 Route::get('/user_cefire/{num}/', 'UserController@este')->name('user_cefire')->middleware('auth');
 
+Route::get('/dia_cefire/{dia}/{mati}', 'UserController@dia_cefire')->name('dia_cefire')->middleware('auth');
+Route::get('/dia_compensa/{dia}/{mati}', 'UserController@dia_compensa')->name('dia_compensa')->middleware('auth');
+Route::get('/dia_curs/{dia}/{mati}', 'UserController@dia_curs')->name('dia_curs')->middleware('auth');
+Route::get('/dia_visita/{dia}/{mati}', 'UserController@dia_visita')->name('dia_vista')->middleware('auth');
+Route::get('/dia_guardia/{dia}/{mati}', 'UserController@dia_guardia')->name('dia_guardia')->middleware('auth');
+Route::get('/dia_permis/{dia}/{mati}', 'UserController@dia_permis')->name('dia_permis')->middleware('auth');
+
+
 Route::group(['middleware' => 'auth'], function() {
     Route::resources([
         'cefire' => cefireController::class,

@@ -88,9 +88,9 @@ class permisController extends Controller
      * @param  \App\Models\permis  $permis
      * @return \Illuminate\Http\Response
      */
-    public function destroy(permis $permis)
+    public function destroy($permis)
     {
         //
-        $permis->delete();
+        permis::find($permis)->delete();
     }
 }

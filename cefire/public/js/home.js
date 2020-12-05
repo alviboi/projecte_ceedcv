@@ -17341,6 +17341,14 @@ window.data_db = function (data) {
   return ret;
 };
 
+window.getDiumenge = function (d) {
+  d = new Date(d);
+  var day = d.getDay(),
+      diff = d.getDate() - day; // ajustar
+
+  return new Date(d.setDate(diff));
+};
+
 /***/ }),
 
 /***/ 1:

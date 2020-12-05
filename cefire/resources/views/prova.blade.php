@@ -3,7 +3,7 @@
 @section('content')
 <div class="container" style="z-index: 2;"></div>
 <div>
-    <dia-component />
+    <fitxar-component />
 
 </div>
 

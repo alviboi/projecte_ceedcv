@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="titulet" data-uk-tooltip="animation: true; offset: 2;" :title="data">{{ nom_dia }} {{ dia_mes }} {{ mati }}</div>
     <div class="dia">
       <!-- COLUMNA LATERAL DESPLEGABLE -->
       <div class="lateral_esquerre flex-container">
@@ -16,7 +17,7 @@
           data-toggle="tooltip"
           data-placement="bottom"
           title="CURS"
-          uk-toggle="target: #curs-modal"
+          :uk-toggle="'target: #curs-modal'+this._uid"
           class="btn btn-primary btn-sm"
         >
           <i class="fas fa-chalkboard-teacher"></i>
@@ -35,7 +36,7 @@
           data-placement="bottom"
           title="COMPENSA"
           class="btn btn-primary btn-sm"
-          uk-toggle="target: #compensa-modal"
+          :uk-toggle="'target: #compensa-modal'+this._uid"
         >
           <i class="fas fa-umbrella-beach"></i>
         </button>
@@ -44,7 +45,7 @@
           data-placement="bottom"
           title="VISITA"
           class="btn btn-primary btn-sm"
-          uk-toggle="target: #visita-modal"
+          :uk-toggle="'target: #visita-modal'+this._uid"
         >
           <i class="fas fa-school"></i>
         </button>
@@ -53,7 +54,7 @@
           data-placement="bottom"
           title="PERMIS"
           class="btn btn-primary btn-sm"
-          uk-toggle="target: #permis-modal"
+          :uk-toggle="'target: #permis-modal'+this._uid"
         >
           <i class="fas fa-virus"></i>
         </button>
@@ -66,6 +67,8 @@
             v-for="cef in cefire"
             class="s-cefire list-complete2-item"
             :key="'c' + cef.id"
+            data-uk-tooltip="pos: right; animation: true; offset: 12;"
+            :title="cef.inici+'-'+cef.fi"
           >
             <span @click="borra_par('cefire', cef.id)" class="cerrar" />
           </div>
@@ -123,21 +126,10 @@
       </div>
       <!-- ESPAI ON ES POSEN LES ETIQUETES -->
     </div>
-    <button @click="get_de_bd">Prova</button>
-    <button class="uk-button" data-uk-tooltip="{pos:'right}" title="dsadsadas">
-      fsdfsafds
-    </button>
-    <!-- This is a button toggling the modal -->
-    <button
-      @click="merda"
-      class="uk-button uk-button-default uk-margin-small-right"
-      type="button"
-    >
-      Open
-    </button>
+
     <!-- MODALS DE LES FINESTRES -->
     <!-- Curs modal -->
-    <div id="curs-modal" uk-modal>
+    <div :id="'curs-modal'+this._uid" uk-modal>
       <div class="uk-modal-dialog uk-modal-body">
         <fieldset class="uk-fieldset">
           <div class="uk-margin">
@@ -168,7 +160,7 @@
     </div>
 
     <!-- Compensa modal -->
-    <div id="compensa-modal" uk-modal>
+    <div :id="'compensa-modal'+this._uid" uk-modal>
       <div class="uk-modal-dialog uk-modal-body">
         <fieldset class="uk-fieldset">
           <div class="uk-margin">
@@ -199,7 +191,7 @@
     </div>
 
     <!-- Visita modal -->
-    <div id="visita-modal" uk-modal>
+    <div :id="'visita-modal'+this._uid" uk-modal>
       <div class="uk-modal-dialog uk-modal-body">
         <fieldset class="uk-fieldset">
           <div class="uk-margin">
@@ -229,7 +221,7 @@
       </div>
     </div>
     <!-- Permis modal -->
-    <div id="permis-modal" uk-modal>
+    <div :id="'permis-modal'+this._uid" uk-modal>
       <div class="uk-modal-dialog uk-modal-body">
         <fieldset class="uk-fieldset">
           <div class="uk-margin">
@@ -328,22 +320,40 @@ UIkit.upload('.js-upload', {
 export default {
   data() {
     return {
+      id: null,
       cefire: {},
       compensa: {},
       curs: {},
       visita: {},
       guardia: {},
       permis: {},
-      data: new Date("2020-11-23"),
+    //   data: new Date("2020-01-20"),
       curs_i: "",
       compensa_i: "",
       visita_i: "",
-      permis_i: ""
+      permis_i: "",
+    //   mati: "m",
+      dies: [
+            'Diumenge',
+            'Dilluns',
+            'Dimarts',
+            'Dimecres',
+            'Dijous',
+            'Divendres',
+            'Dissabte',
+            'Diumenge',
+    ],
+    nom_dia: "",
+    dia_mes: 0
     };
   },
+  props: ['mati','data'],
   methods: {
-    merda() {
-      UIkit.modal("#curs-modal").show();
+    get_nom_dia() {
+        this.nom_dia = this.dies[this.data.getDay()]
+    },
+    get_dia_mes() {
+        this.dia_mes = this.data.getDate()
     },
     borra_par(bd, id) {
       let url = bd + "/" + id;
@@ -363,7 +373,7 @@ export default {
     },
     get_de_bd(bd) {
       axios
-        .get(bd)
+        .get("dia_"+bd+"/"+data_db(this.data)+"/"+this.mati) ///dia_cefire/{dia}/{mati}
         .then((res) => {
           console.log(res.data);
           this[bd] = res.data;
@@ -374,11 +384,18 @@ export default {
     },
     afegix(desti) {
       //alert(this.data);
-
+      let inici,fi;
+      if (this.mati=='m'){
+        inici="9:00:00";
+        fi="14:00:00";
+      } else {
+        inici="16:00:00";
+        fi="20:00:00";
+      }
       var params = {
         data: data_db(this.data),
-        inici: "9:00:00",
-        fi: "14:00:00",
+        inici: inici,
+        fi: fi,
       };
       axios
         .post(desti, params)
@@ -396,10 +413,18 @@ export default {
     },
     salva(desti) {
       let varNom = desti + "_i";
+      let inici,fi;
+      if (this.mati=='m'){
+        inici="9:00:00";
+        fi="14:00:00";
+      } else {
+        inici="16:00:00";
+        fi="20:00:00";
+      }
       var params = {
         data: data_db(this.data),
-        inici: "9:00:00",
-        fi: "14:00:00",
+        inici: inici,
+        fi: fi,
         motiu: this[varNom],
       };
       axios
@@ -416,7 +441,7 @@ export default {
           console.error(err);
         });
       this[varNom] = "";
-      UIkit.modal("#curs-modal").hide();
+      UIkit.modal("#"+desti+"-modal"+this._uid).hide();
     },
   },
   mounted() {
@@ -426,12 +451,20 @@ export default {
     this.get_de_bd("visita");
     this.get_de_bd("guardia");
     this.get_de_bd("permis");
+    this.get_nom_dia();
+    this.get_dia_mes();
+    this.id = this._uid
   },
 };
 </script>
 
-<style lang="sass">
+<style lang="sass" scope>
 $fondo:  #f1faee
+.titulet
+    font-size: 1.2em
+    margin-left: 10px
+    font-color: gray
+
 .dia
     max-width: 150px
     display: grid
@@ -464,7 +497,7 @@ $fondo:  #f1faee
     .principal
         grid-area: 1 / 1 / 6 / 6
         display: inline-flex
-        flex-wrap: wrap
+        // flex-wrap: wrap
         flex-direction: column
         justify-content: flex-start
         align-items: auto

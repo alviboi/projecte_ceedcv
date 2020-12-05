@@ -25,6 +25,7 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('calendar-component', require('./components/CalendarComponent.vue').default);
 Vue.component('dia-component', require('./components/DiaComponent.vue').default);
+Vue.component('fitxar-component', require('./components/FitxarComponent.vue').default);
 
 
 /**
