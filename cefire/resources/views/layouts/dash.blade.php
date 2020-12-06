@@ -68,7 +68,7 @@
 			</div>
 			<div class="left-content-box  content-box-dark">
 				{{-- <img src="img/avatar.svg" alt="" class="uk-border-circle profile-img"> --}}
-				<h4 class="uk-text-center uk-margin-remove-vertical text-light">John Doe</h4>
+				<h4 class="uk-text-center uk-margin-remove-vertical text-light">{{ Auth::user()->name }}</h4>
 
 				<div class="uk-position-relative uk-text-center uk-display-block">
 				    <a href="#" class="uk-text-small uk-text-muted uk-display-block uk-text-center" data-uk-icon="icon: triangle-down; ratio: 0.7">Admin</a>
@@ -90,9 +90,9 @@
 
 			<div class="left-nav-wrap">
 				<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
-					<li class="uk-nav-header">ACTIONS</li>
+                    <li class="uk-nav-header">ACTIONS</li>
+                    <li><a href="#" onclick="canvi('horari')"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Horari</a></li>
 					<li><a href="#" onclick="canvi('calendar')"><span data-uk-icon="icon: calendar" class="uk-margin-small-right"></span>Calendar</a></li>
-					<li><a href="#" onclick="canvi('messages')"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Friends</a></li>
 					<li class="uk-parent"><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Templates</a>
 						<ul class="uk-nav-sub">
 							<li><a title="Article" href="https://zzseba78.github.io/Kick-Off/article.html">Article</a></li>
@@ -157,10 +157,10 @@
 
         <div id="content" data-uk-height-viewport="expand: true">
 			<div class="uk-container uk-container-expand">
-				<div class="uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-2 uk-child-width-1-4@l uk-child-width-1-5@xl" data-uk-grid>
+				{{-- <div class="uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-2 uk-child-width-1-4@l uk-child-width-1-5@xl" data-uk-grid>
 
 				</div>
-				<hr>
+				<hr> --}}
 				<div class="uk-grid uk-grid-medium" data-uk-grid>
 
 					<!-- panel -->

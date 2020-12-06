@@ -36105,18 +36105,30 @@ readers do not read off random characters that represent icons */
 }
 
 .list-complete2-item {
-  transition: all 0.5s;
-  display: inline-block;
-  margin-right: 10px;
+  transition: all 0.8s;
+  margin-right: 0px;
+  width: 20%;
 }
 
 .list-complete2-enter,
 .list-complete2-leave-to {
   opacity: 0;
-  transform: translateY(10px);
+  transition: all 0.8s;
+  width: 20%;
 }
 
 .list-complete2-leave-active {
   position: absolute;
+  width: 20%;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 

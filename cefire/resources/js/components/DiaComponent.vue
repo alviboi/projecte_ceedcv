@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="titulet" data-uk-tooltip="animation: true; offset: 2;" :title="data">{{ nom_dia }} {{ dia_mes }} {{ mati }}</div>
+
+        <div class="titulet" data-uk-tooltip="animation: true; offset: 2;" :title="data">{{ nom_dia }} {{ dia_mes }} {{ mati }}</div>
+
     <div class="dia">
       <!-- COLUMNA LATERAL DESPLEGABLE -->
       <div class="lateral_esquerre flex-container">
@@ -455,6 +457,12 @@ export default {
     this.get_dia_mes();
     this.id = this._uid
   },
+  watch: {
+      data(){
+          this.componentKey++;
+      }
+
+  },
 };
 </script>
 
@@ -475,6 +483,9 @@ $fondo:  #f1faee
     border: 1px solid gray
     border-radius: 7px
     background-color: white
+    box-shadow: 0px 0px 34px 5px rgba(187,187,187,0.58)
+    -webkit-box-shadow: 0px 0px 34px 5px rgba(187,187,187,0.58)
+    -moz-box-shadow: 0px 0px 34px 5px rgba(187,187,187,0.58)
     &:hover > .lateral_esquerre
         visibility: visible
         opacity: 1
@@ -515,7 +526,7 @@ $fondo:  #f1faee
             font-weight: bold
             color: #373444
             width: 95%
-            max-width: 150px
+            max-width: 130px
             &cefire
                 @extend .s-
                 background-color: blue

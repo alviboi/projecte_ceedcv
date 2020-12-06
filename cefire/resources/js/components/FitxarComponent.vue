@@ -1,52 +1,113 @@
 <template>
-<div class="general">
+  <div class="general2">
+    <div class="cabecal">
+        <div class="arrere">
+            <button @click="canvia('arr')" class="uk-button uk-button-primary uk-button-large uk-float-left"><span uk-icon="arrow-left"></span></button>
+        </div>
+        <div class="mig uk-align-center">
+                <Datepicker
+                :language="ca"
+                :monday-first="true"
+                v-model="dia_aux"
+                @selected="canvia_data()"
+                placeholder="Escollix data a buscar"
+                value=""
+                >
+
+                </Datepicker>
 
 
-
-<div class="grid-container">
-    <div v-for="(key,index) in 7" :key="key" :class='"d"+(index+1)'>
-        <dia-component :data="lloc[index+1]" mati="m"/>
-        <dia-component :data="lloc[index+1]" mati="v"/>
+        </div>
+        <div class="avant">
+            <button @click="canvia('av')" class="uk-button uk-button-primary uk-button-large uk-float-right"><span uk-icon="arrow-right"></span></button>
+        </div>
     </div>
-</div>
+	<hr>
 
-</div>
+    <div class="grid-container">
+      <div v-for="(key, index) in 7" :key="key" :class="'d' + (index + 1)">
+        <dia-component
+          class="sombra"
+          :data="lloc[index + 1]"
+          mati="m"
+          :key="componentKey"
+        />
+        <dia-component
+          class="sombra"
+          :data="lloc[index + 1]"
+          mati="v"
+          :key="componentKey+3"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                dia: new Date(),
-                lloc: []
-            }
-        },
-        methods: {
-            async emplena_lloc () {
-                let aux_dia = getDiumenge(this.dia);
-                this.lloc[0]=aux_dia;
-                for (let index = 1; index < 8; index++) {
-                    this.lloc[index] = new Date(aux_dia.setTime( aux_dia.getTime() + 1 * 86400000 ));
-                }
-            }
-        },
-        created() {
-            this.emplena_lloc();
-        },
-        watch: {
-            dia() {
-                emplena_lloc();
-            }
-        },
-    }
+import Datepicker from "vuejs-datepicker";
+import { ca } from "vuejs-datepicker/dist/locale";
+export default {
+  data() {
+    return {
+      dia: new Date(),
+      componentKey: 0,
+      lloc: [],
+      fecha_escollida: null,
+      ca: ca,
+      dia_aux: null
+    };
+  },
+  methods: {
+    // datepickerClosedFunction() {
+    //     this.componentKey++;
+    // },
 
+    canvia_data (val) {
+        let aux = new Date(val);
+        this.dia=aux;
+        this.emplena_lloc();
+        this.componentKey++;
+
+    },
+    canvia(ar) {
+      let result = ar == "arr" ? -7 : 7;
+      this.dia = new Date(
+        this.dia.setTime(this.dia.getTime() + result * 86400000)
+      );
+      this.emplena_lloc();
+      this.componentKey++;
+    },
+    async emplena_lloc() {
+      let aux_dia = getDiumenge(this.dia);
+      this.lloc[0] = aux_dia;
+      for (let index = 1; index < 8; index++) {
+        this.lloc[index] = new Date(
+          aux_dia.setTime(aux_dia.getTime() + 1 * 86400000)
+        );
+      }
+    },
+  },
+  created() {
+    this.emplena_lloc();
+  },
+  components: {
+        Datepicker,
+  },
+  watch: {
+    dia_aux(newValue, oldValue) {
+      this.canvia_data(newValue);
+    },
+  },
+};
 </script>
 
 <style lang="sass" scope>
-.general
+.general2
     padding: 1%
+    width: 100%
 .grid-container
     display: grid
+    margin-left: 2%
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr
     gap: 10px
     grid-template-areas: "d1 d2 d3 d4 d5 d6 d7"
@@ -54,5 +115,20 @@
         .d#{$var}
             grid-area: d#{$var}
 
+.cabecal
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr 1fr
+    grid-template-rows: 1fr
+    gap: 0px 20px
+    grid-template-areas: "arrere mig mig avant"
+    .arrere
+        grid-area: arrere
+    .mig
+        grid-area: mig
+        text-align: center
+        margin-bottom: 0px
+        margin-top: 5px
+    .avant
+        grid-area: avant
 
 </style>
