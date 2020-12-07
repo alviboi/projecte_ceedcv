@@ -68,7 +68,6 @@ class UserController extends Controller
     }
 
 
-
     public function este(Request $request, $num)
     {
         //

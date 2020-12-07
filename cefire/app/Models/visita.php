@@ -9,4 +9,8 @@ class visita extends Model
 {
     public $table = 'visita';
     use HasFactory;
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

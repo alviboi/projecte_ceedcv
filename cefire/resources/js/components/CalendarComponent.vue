@@ -1,15 +1,15 @@
 <template>
 	<div>
         <div class="uk-grid">
-        <div class="uk-width-1-4"><button @click="este">Este</button></div>
-        <div class="uk-width-1-4"><button @click="borrar">borrar</button></div>
+        <div class="uk-width-1-4"><button @click="agafa_users">Este</button></div>
+        <div class="uk-width-1-4"><button @click="get_totes_guardies">Guardies</button></div>
         <div class="uk-width-1-4"><button @click="drag_prova">drag prova</button></div>
-        <div class="uk-width-1-4"><button>a</button></div><label draggable="true" @drag="comenca_drag">Example Label</label>
+        <div class="uk-width-1-4"><button>a</button></div><label @drag="comenca_drag">Example Label</label>
     </div>
     <div  class="grid-calendar">
         <div  class="calendari">
             <calendar-view
-                :show-date="showDate"
+                :show-date="dia"
                 :items="items"
                 :enable-date-selection="true"
                 :enableDragDrop="true"
@@ -33,22 +33,14 @@
                     slot="header"
                     slot-scope="{ headerProps }"
                     :header-props="headerProps"
-                    :previous-year-label="themeOptions.previousYearLabel"
                     :previous-period-label="themeOptions.previousPeriodLabel"
                     :next-period-label="themeOptions.nextPeriodLabel"
-                    :next-year-label="themeOptions.nextYearLabel"
-                    @input="setShowDate"
+                    @input="setdia"
                 />
             </calendar-view>
         </div>
         <div  class="costat">
-            <label draggable="true" @drag="comenca_drag">Example Label</label>
-            <label draggable="true" @drag="comenca_drag">Example Label</label>
-            <label draggable="true" @drag="comenca_drag">Example Label</label>
-            <label draggable="true" @drag="comenca_drag">Example Label</label>
-            <label draggable="true" @drag="comenca_drag">Example Label</label>
-            <label draggable="true" @drag="comenca_drag">Example Label</label>
-            <label draggable="true" @drag="comenca_drag">Example Label</label>
+            <div v-for="(user, key) in users" :key="key" :id="user.id" data-uk-tooltip="pos: left; animation: true; offset: 12;" :title="user.name" draggable="true" @drag="comenca_drag">{{user.name}}</div>
         </div>
     </div>
 	</div>
@@ -69,61 +61,91 @@ export default {
 	},
 	data: function () {
 		return {
-            drag: {},
-			showDate: new Date(),
+            users: [],
+            id_drag: null,
+			dia: new Date(),
 			selectionStart: null,
 			selectionEnd: null,
 			theme: "gcal",
-			items: Array(25)
-				.fill()
-				.map((_, i) => this.getRandomEvent(i)),
+			items: Array()
+				// .fill()
+				// .map((_, i) => this.getRandomEvent(i)),
 		}
 	},
 	computed: {
 		themeOptions() {
             let ret = {
+                        index: 1,
+                        users: [],
 						top: "1.4em",
 						height: "1.4em",
 						border: "2px",
-						previousYearLabel: "<span uk-icon='chevron-double-left'>",
+						previousYearLabel: "<<",
 						previousPeriodLabel: "<",
 						nextPeriodLabel: ">",
 						nextYearLabel: ">>",
 						currentPeriodLabel: "",
 				};
             return ret;
-
-            	// 			? {
-				// 		top: "2.6em",
-				// 		height: "2.1em",
-				// 		border: "0px",
-				// 		previousYearLabel: "\uE5CB\uE5CB",
-				// 		previousPeriodLabel: "\uE5CB",
-				// 		nextPeriodLabel: "\uE5CC",
-				// 		nextYearLabel: "\uE5CC\uE5CC",
-				// 		currentPeriodLabel: "Today",
-				//   }
-
 		},
 	},
 	methods: {
+        agafa_users(){
+            axios.get("user")
+            .then(res => {
+                console.log(res);
+                this.users=res.data;
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        },
+        get_totes_guardies(){
+            var result = []
+            let any=this.dia.getFullYear();
+            let mes=this.dia.getMonth();
+            axios.get("guardia/totes/"+mes+"/"+any)
+            .then(res => {
+                console.log(res);
+                result=res.data;
+            })
+            .catch(err => {
+                console.error(err);
+            });
+            result.forEach(element => {
+                let mati = (element['inici']=="09:00:00") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                let fechas = element['data'].split('-');
+                let i = {
+                    id: index,
+                    title: mati+" "+element['name'],
+                    startDate: Date.UTC(fechas[0], fechas[1], fechas[2]),
+                    // endDate: Date.UTC(2020, 11, 10),
+                    classes: "custom-date-class-blue",
+                };
+                this.index++;
+                this.items.push(i);
+            });
+
+        },
         comenca_drag(e){
-            console.log("començant drag");
-            this.drag = {
-				id: 100006,
-				title: "<span uk-icon='heart'></span>Event prova</div>",
-				startDate: Date.UTC(2020, 11, 1),
-				endDate: Date.UTC(2020, 11, 13),
-				classes: "custom-date-class-blue",
-            };
+            console.log(e.target.id);
+            this.id_drag=e.target.id;
 
         },
         drag_on_prova(calendarItem, date, windowEvent) {
             //@drop-on-date([calendarItem, date, windowEvent])
             console.log(calendarItem);
             console.log(date);
-            console.log(windowEvent);
-            this.items.push(this.drag);
+            let fetxa = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()+1);
+            let este = data_db(date);
+            let drag_item = {
+				id: 100006,
+				title: este,
+                startDate: fetxa,
+                // endDate: fetxa,
+				classes: "custom-date-class-blue",
+            };
+            this.items.push(drag_item);
         },
         drag_prova(item,e) {
             //[calendarItem, windowEvent]
@@ -148,8 +170,8 @@ export default {
             //[calendarItem, windowEvent]
             this.items.splice(1,1);
 		},
-		setShowDate(d) {
-			this.showDate = d
+		setdia(d) {
+			this.dia = d
 		},
 		setSelection(dateRange) {
 			this.selectionEnd = dateRange[1]
@@ -158,19 +180,19 @@ export default {
 		finishSelection(dateRange) {
 			this.setSelection(dateRange)
 		},
-		getRandomEvent(index) {
-			const startDay = Math.floor(Math.random() * 28 + 1)
-			const endDay = Math.floor(Math.random() * 4) + startDay
-			var d = new Date()
-			var i = {
-				id: index,
-				title: "Event " + (index + 1),
-				startDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), startDay),
-				endDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), endDay),
-				classes: Math.random() > 0.9 ? ["custom-date-class-red"] : null,
-			}
-			return i
-		},
+		// getRandomEvent(index) {
+		// 	const startDay = Math.floor(Math.random() * 28 + 1)
+		// 	const endDay = Math.floor(Math.random() * 4) + startDay
+		// 	var d = new Date()
+		// 	var i = {
+		// 		id: index,
+		// 		title: "Event " + (index + 1),
+		// 		startDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), startDay),
+		// 		endDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), endDay),
+		// 		classes: "custom-date-class-red",
+		// 	}
+		// 	return i
+		// },
 	},
 }
 </script>
@@ -218,4 +240,18 @@ export default {
 .costat
     padding: 3%
     grid-area: costat
+    & div
+        max-width: 10em
+        vertical-align: top
+        height: 1.3em
+        line-height: 1.3em
+        font-size: 0.9em
+        white-space: nowrap
+        overflow: hidden
+        display: block
+        cursor: pointer
+        border: 1px solid black
+        border-radius: 5px
+        background-color: white
+        margin: 1px
 </style>

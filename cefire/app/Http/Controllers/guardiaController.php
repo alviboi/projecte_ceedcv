@@ -17,6 +17,23 @@ class guardiaController extends Controller
         //
         return guardia::get();
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_data_index($mes, $any)
+    {
+        //
+        // return guardia::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->user()->get();
+        $ret = array();
+        $guardies = guardia::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+        foreach ($guardies as $guardia) {
+            array_push($ret, [$guardia->user['name'],$guardia->data,$guardia->inici]);
+        }
+        return $ret;
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -90,7 +107,5 @@ class guardiaController extends Controller
     {
         //
         guardia::find($guardia)->delete();
-
     }
-
 }

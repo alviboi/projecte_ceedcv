@@ -10,4 +10,8 @@ class curs extends Model
     public $table = 'curs';
 
     use HasFactory;
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

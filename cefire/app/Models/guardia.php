@@ -10,4 +10,8 @@ class guardia extends Model
 {
     public $table = 'guardia';
     use HasFactory;
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

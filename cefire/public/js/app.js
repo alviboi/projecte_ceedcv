@@ -1970,14 +1970,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
  // The next two lines are processed by webpack. If you're using the component without webpack compilation,
 // you should just create <link> elements for these. Both are optional, you can create your own theme if you prefer.
 
@@ -1994,60 +1986,91 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
     CalendarViewHeader: vue_simple_calendar__WEBPACK_IMPORTED_MODULE_0__["CalendarViewHeader"]
   },
   data: function data() {
-    var _this = this;
-
     return {
-      drag: {},
-      showDate: new Date(),
+      users: [],
+      id_drag: null,
+      dia: new Date(),
       selectionStart: null,
       selectionEnd: null,
       theme: "gcal",
-      items: Array(25).fill().map(function (_, i) {
-        return _this.getRandomEvent(i);
-      })
+      items: Array() // .fill()
+      // .map((_, i) => this.getRandomEvent(i)),
+
     };
   },
   computed: {
     themeOptions: function themeOptions() {
       var ret = {
+        index: 1,
+        users: [],
         top: "1.4em",
         height: "1.4em",
         border: "2px",
-        previousYearLabel: "<span uk-icon='chevron-double-left'>",
+        previousYearLabel: "<<",
         previousPeriodLabel: "<",
         nextPeriodLabel: ">",
         nextYearLabel: ">>",
         currentPeriodLabel: ""
       };
-      return ret; // 			? {
-      // 		top: "2.6em",
-      // 		height: "2.1em",
-      // 		border: "0px",
-      // 		previousYearLabel: "\uE5CB\uE5CB",
-      // 		previousPeriodLabel: "\uE5CB",
-      // 		nextPeriodLabel: "\uE5CC",
-      // 		nextYearLabel: "\uE5CC\uE5CC",
-      // 		currentPeriodLabel: "Today",
-      //   }
+      return ret;
     }
   },
   methods: {
+    agafa_users: function agafa_users() {
+      var _this = this;
+
+      axios.get("user").then(function (res) {
+        console.log(res);
+        _this.users = res.data;
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    get_totes_guardies: function get_totes_guardies() {
+      var _this2 = this;
+
+      var result = [];
+      var any = this.dia.getFullYear();
+      var mes = this.dia.getMonth();
+      axios.get("guardia/totes/" + mes + "/" + any).then(function (res) {
+        console.log(res);
+        result = res.data;
+      })["catch"](function (err) {
+        console.error(err);
+      });
+      result.forEach(function (element) {
+        var mati = element['inici'] == "09:00:00" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        var fechas = element['data'].split('-');
+        var i = {
+          id: index,
+          title: mati + " " + element['name'],
+          startDate: Date.UTC(fechas[0], fechas[1], fechas[2]),
+          // endDate: Date.UTC(2020, 11, 10),
+          classes: "custom-date-class-blue"
+        };
+        _this2.index++;
+
+        _this2.items.push(i);
+      });
+    },
     comenca_drag: function comenca_drag(e) {
-      console.log("començant drag");
-      this.drag = {
-        id: 100006,
-        title: "<span uk-icon='heart'></span>Event prova</div>",
-        startDate: Date.UTC(2020, 11, 1),
-        endDate: Date.UTC(2020, 11, 13),
-        classes: "custom-date-class-blue"
-      };
+      console.log(e.target.id);
+      this.id_drag = e.target.id;
     },
     drag_on_prova: function drag_on_prova(calendarItem, date, windowEvent) {
       //@drop-on-date([calendarItem, date, windowEvent])
       console.log(calendarItem);
       console.log(date);
-      console.log(windowEvent);
-      this.items.push(this.drag);
+      var fetxa = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1);
+      var este = data_db(date);
+      var drag_item = {
+        id: 100006,
+        title: este,
+        startDate: fetxa,
+        // endDate: fetxa,
+        classes: "custom-date-class-blue"
+      };
+      this.items.push(drag_item);
     },
     drag_prova: function drag_prova(item, e) {
       //[calendarItem, windowEvent]
@@ -2072,8 +2095,8 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       //[calendarItem, windowEvent]
       this.items.splice(1, 1);
     },
-    setShowDate: function setShowDate(d) {
-      this.showDate = d;
+    setdia: function setdia(d) {
+      this.dia = d;
     },
     setSelection: function setSelection(dateRange) {
       this.selectionEnd = dateRange[1];
@@ -2081,20 +2104,20 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
     },
     finishSelection: function finishSelection(dateRange) {
       this.setSelection(dateRange);
-    },
-    getRandomEvent: function getRandomEvent(index) {
-      var startDay = Math.floor(Math.random() * 28 + 1);
-      var endDay = Math.floor(Math.random() * 4) + startDay;
-      var d = new Date();
-      var i = {
-        id: index,
-        title: "Event " + (index + 1),
-        startDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), startDay),
-        endDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), endDay),
-        classes: Math.random() > 0.9 ? ["custom-date-class-red"] : null
-      };
-      return i;
-    }
+    } // getRandomEvent(index) {
+    // 	const startDay = Math.floor(Math.random() * 28 + 1)
+    // 	const endDay = Math.floor(Math.random() * 4) + startDay
+    // 	var d = new Date()
+    // 	var i = {
+    // 		id: index,
+    // 		title: "Event " + (index + 1),
+    // 		startDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), startDay),
+    // 		endDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), endDay),
+    // 		classes: "custom-date-class-red",
+    // 	}
+    // 	return i
+    // },
+
   }
 });
 
@@ -2738,7 +2761,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".altura {\n  padding-bottom: 30px !important;\n}\n.general {\n  font-family: Avenir, Arial, Helvetica, sans-serif;\n  display: flex;\n  height: 87vh;\n  width: 100%;\n}\n.cv-item.custom-date-class-red {\n  background-color: #ff6666;\n}\n.cv-item.custom-date-class-blue {\n  background-color: #7d66ff;\n}\n.cabecal {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 20px;\n  grid-template-areas: \"arrere mig mig avant\";\n}\n.cabecal .arrere {\n  grid-area: arrere;\n}\n.cabecal .mig {\n  grid-area: mig;\n  text-align: center;\n  margin-bottom: 0px;\n  margin-top: 5px;\n}\n.cabecal .avant {\n  grid-area: avant;\n}\n.grid-calendar {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 0px;\n  height: 87vh;\n  grid-template-areas: \"calendari calendari calendari calendari calendari calendari calendari calendari calendari costat\";\n}\n.calendari {\n  grid-area: calendari;\n}\n.costat {\n  padding: 3%;\n  grid-area: costat;\n}", ""]);
+exports.push([module.i, ".altura {\n  padding-bottom: 30px !important;\n}\n.general {\n  font-family: Avenir, Arial, Helvetica, sans-serif;\n  display: flex;\n  height: 87vh;\n  width: 100%;\n}\n.cv-item.custom-date-class-red {\n  background-color: #ff6666;\n}\n.cv-item.custom-date-class-blue {\n  background-color: #7d66ff;\n}\n.cabecal {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 20px;\n  grid-template-areas: \"arrere mig mig avant\";\n}\n.cabecal .arrere {\n  grid-area: arrere;\n}\n.cabecal .mig {\n  grid-area: mig;\n  text-align: center;\n  margin-bottom: 0px;\n  margin-top: 5px;\n}\n.cabecal .avant {\n  grid-area: avant;\n}\n.grid-calendar {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 0px;\n  height: 87vh;\n  grid-template-areas: \"calendari calendari calendari calendari calendari calendari calendari calendari calendari costat\";\n}\n.calendari {\n  grid-area: calendari;\n}\n.costat {\n  padding: 3%;\n  grid-area: costat;\n}\n.costat div {\n  max-width: 10em;\n  vertical-align: top;\n  height: 1.3em;\n  line-height: 1.3em;\n  font-size: 0.9em;\n  white-space: nowrap;\n  overflow: hidden;\n  display: block;\n  cursor: pointer;\n  border: 1px solid black;\n  border-radius: 5px;\n  background-color: white;\n  margin: 1px;\n}", ""]);
 
 // exports
 
@@ -45139,11 +45162,13 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "uk-grid" }, [
       _c("div", { staticClass: "uk-width-1-4" }, [
-        _c("button", { on: { click: _vm.este } }, [_vm._v("Este")])
+        _c("button", { on: { click: _vm.agafa_users } }, [_vm._v("Este")])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "uk-width-1-4" }, [
-        _c("button", { on: { click: _vm.borrar } }, [_vm._v("borrar")])
+        _c("button", { on: { click: _vm.get_totes_guardies } }, [
+          _vm._v("Guardies")
+        ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "uk-width-1-4" }, [
@@ -45151,11 +45176,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _vm._m(0),
-      _c(
-        "label",
-        { attrs: { draggable: "true" }, on: { drag: _vm.comenca_drag } },
-        [_vm._v("Example Label")]
-      )
+      _c("label", { on: { drag: _vm.comenca_drag } }, [_vm._v("Example Label")])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "grid-calendar" }, [
@@ -45167,7 +45188,7 @@ var render = function() {
             staticClass: "holiday-us-traditional holiday-us-official",
             class: "theme-" + _vm.theme,
             attrs: {
-              "show-date": _vm.showDate,
+              "show-date": _vm.dia,
               items: _vm.items,
               "enable-date-selection": true,
               enableDragDrop: true,
@@ -45195,13 +45216,11 @@ var render = function() {
                   return _c("calendar-view-header", {
                     attrs: {
                       "header-props": headerProps,
-                      "previous-year-label": _vm.themeOptions.previousYearLabel,
                       "previous-period-label":
                         _vm.themeOptions.previousPeriodLabel,
-                      "next-period-label": _vm.themeOptions.nextPeriodLabel,
-                      "next-year-label": _vm.themeOptions.nextYearLabel
+                      "next-period-label": _vm.themeOptions.nextPeriodLabel
                     },
-                    on: { input: _vm.setShowDate }
+                    on: { input: _vm.setdia }
                   })
                 }
               }
@@ -45211,49 +45230,27 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "costat" }, [
-        _c(
-          "label",
-          { attrs: { draggable: "true" }, on: { drag: _vm.comenca_drag } },
-          [_vm._v("Example Label")]
-        ),
-        _vm._v(" "),
-        _c(
-          "label",
-          { attrs: { draggable: "true" }, on: { drag: _vm.comenca_drag } },
-          [_vm._v("Example Label")]
-        ),
-        _vm._v(" "),
-        _c(
-          "label",
-          { attrs: { draggable: "true" }, on: { drag: _vm.comenca_drag } },
-          [_vm._v("Example Label")]
-        ),
-        _vm._v(" "),
-        _c(
-          "label",
-          { attrs: { draggable: "true" }, on: { drag: _vm.comenca_drag } },
-          [_vm._v("Example Label")]
-        ),
-        _vm._v(" "),
-        _c(
-          "label",
-          { attrs: { draggable: "true" }, on: { drag: _vm.comenca_drag } },
-          [_vm._v("Example Label")]
-        ),
-        _vm._v(" "),
-        _c(
-          "label",
-          { attrs: { draggable: "true" }, on: { drag: _vm.comenca_drag } },
-          [_vm._v("Example Label")]
-        ),
-        _vm._v(" "),
-        _c(
-          "label",
-          { attrs: { draggable: "true" }, on: { drag: _vm.comenca_drag } },
-          [_vm._v("Example Label")]
-        )
-      ])
+      _c(
+        "div",
+        { staticClass: "costat" },
+        _vm._l(_vm.users, function(user, key) {
+          return _c(
+            "div",
+            {
+              key: key,
+              attrs: {
+                id: user.id,
+                "data-uk-tooltip": "pos: left; animation: true; offset: 12;",
+                title: user.name,
+                draggable: "true"
+              },
+              on: { drag: _vm.comenca_drag }
+            },
+            [_vm._v(_vm._s(user.name))]
+          )
+        }),
+        0
+      )
     ])
   ])
 }

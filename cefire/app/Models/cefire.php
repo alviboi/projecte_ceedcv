@@ -11,4 +11,8 @@ class cefire extends Model
 {
     public $table = 'cefire';
     use HasFactory;
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

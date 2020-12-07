@@ -9,4 +9,8 @@ class permis extends Model
 {
     public $table = 'permis';
     use HasFactory;
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }
