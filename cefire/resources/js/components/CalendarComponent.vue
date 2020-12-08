@@ -183,9 +183,9 @@ export default {
             console.log(e);
         },
         borrar(item,e) {
-            console.log(item);
-            var doc = new DOMParser().parseFromString(item.title, "text/html");
-            console.log(doc);
+            // console.log(item);
+            // var doc = new DOMParser().parseFromString(item.title, "text/html");
+            // console.log(doc);
             for (let index = 0; index < this.items.length; index++) {
                 if(this.items[index].id == item.id)
                 this.items.splice(index,1);

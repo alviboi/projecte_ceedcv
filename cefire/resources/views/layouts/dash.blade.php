@@ -51,10 +51,10 @@
 					</div>
 					<div class="uk-navbar-right">
 						<ul class="uk-navbar-nav">
-							<li><a href="#" data-uk-icon="icon:user" title="Your profile" data-uk-tooltip></a></li>
+							<li><a href="#" data-uk-icon="icon:mail" title="Envia missatge a company" data-uk-tooltip></a></li>
 							<li><a href="#" data-uk-icon="icon: commenting" title="Ajuda" data-uk-tooltip></a></li>
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-uk-icon="icon:  sign-out" title="Sign Out" data-uk-tooltip></a></li>
-							<li><a class="uk-navbar-toggle" data-uk-toggle data-uk-navbar-toggle-icon href="#offcanvas-nav" title="Offcanvas" data-uk-tooltip></a></li>
+							<li><a class="uk-navbar-toggle" data-uk-toggle data-uk-navbar-toggle-icon href="#offcanvas-nav" title="Missatge rebuts" data-uk-tooltip></a></li>
 						</ul>
 					</div>
 				</nav>

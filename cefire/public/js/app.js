@@ -1986,7 +1986,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
   },
   data: function data() {
     return {
-      cefire: true,
+      cefire: false,
       curs: false,
       compensa: false,
       guardia: false,
@@ -2016,13 +2016,23 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
     }
   },
   methods: {
+    setdia: function setdia(d) {
+      this.dia = d;
+      this.items = [];
+      this.cefire = false;
+      this.curs = false;
+      this.compensa = false;
+      this.guardia = false;
+      this.permis = false;
+      this.visita = false; //this.tots_els_elements_get();
+    },
     get_element: function get_element(element) {
       var _this = this;
 
       var result = [];
       var any = this.dia.getFullYear();
       var mes = this.dia.getMonth();
-      var url = "/user_" + element + "/" + this.results[0].id + "/" + any + "/" + (mes + 1);
+      var url = "complet/" + element + "/" + any + "/" + (mes + 1);
       axios.get(url).then(function (res) {
         console.log(res);
 
@@ -2091,7 +2101,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         var fechas = ele.data.split('-');
         var i = {
           id: ele.id + num,
-          title: "<div id=" + (ele.id + num) + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + ele[toti] + "\">" + mati + " " + element.toUpperCase() + "</div>",
+          title: "<div id=" + (ele.id + num) + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + ele[toti] + "\">" + mati + " " + ele.name.toUpperCase() + "</div>",
           startDate: Date.UTC(fechas[0], fechas[1] - 1, fechas[2]),
           classes: clase + " uk-animation-scale-up"
         };
@@ -2101,7 +2111,83 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       this.index = result.length;
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {},
+  watch: {
+    cefire: function cefire(newValue, oldValue) {
+      if (newValue == true) {
+        this.get_element('cefire');
+      } else {
+        for (var index = this.items.length - 1; index >= 0; index--) {
+          console.log(this.items[index].id >= 10000 && this.items[index].id < 20000);
+
+          if (this.items[index].id >= 10000 && this.items[index].id < 20000) {
+            console.log(index);
+            this.items.splice(index, 1);
+          }
+        }
+      }
+    },
+    compensa: function compensa(newValue, oldValue) {
+      if (newValue == true) {
+        this.get_element('compensa');
+      } else {
+        for (var index = this.items.length - 1; index >= 0; index--) {
+          if (this.items[index].id >= 20000 && this.items[index].id < 30000) {
+            console.log(index);
+            this.items.splice(index, 1);
+          }
+        }
+      }
+    },
+    curs: function curs(newValue, oldValue) {
+      if (newValue == true) {
+        this.get_element('curs');
+      } else {
+        for (var index = this.items.length - 1; index >= 0; index--) {
+          if (this.items[index].id >= 30000 && this.items[index].id < 40000) {
+            console.log(index);
+            this.items.splice(index, 1);
+          }
+        }
+      }
+    },
+    guardia: function guardia(newValue, oldValue) {
+      if (newValue == true) {
+        this.get_element('guardia');
+      } else {
+        for (var index = this.items.length - 1; index >= 0; index--) {
+          if (this.items[index].id >= 40000 && this.items[index].id < 50000) {
+            console.log(index);
+            this.items.splice(index, 1);
+          }
+        }
+      }
+    },
+    permis: function permis(newValue, oldValue) {
+      if (newValue == true) {
+        this.get_element('permis');
+      } else {
+        for (var index = this.items.length - 1; index >= 0; index--) {
+          if (this.items[index].id >= 50000 && this.items[index].id < 60000) {
+            console.log(index);
+            this.items.splice(index, 1);
+          }
+        }
+      }
+    },
+    visita: function visita(newValue, oldValue) {
+      if (newValue == true) {
+        this.get_element('visita');
+      } else {
+        for (var index = this.items.length - 1; index >= 0; index--) {
+          if (this.items[index].id >= 60000 && this.items[index].id < 70000) {
+            console.log(index);
+            this.items.splice(index, 1);
+          }
+        }
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -2305,10 +2391,9 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       console.log(e);
     },
     borrar: function borrar(item, e) {
-      console.log(item);
-      var doc = new DOMParser().parseFromString(item.title, "text/html");
-      console.log(doc);
-
+      // console.log(item);
+      // var doc = new DOMParser().parseFromString(item.title, "text/html");
+      // console.log(doc);
       for (var index = 0; index < this.items.length; index++) {
         if (this.items[index].id == item.id) this.items.splice(index, 1);
       }
@@ -3225,7 +3310,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".altura {\n  padding-bottom: 30px !important;\n}\n.calendari {\n  font-family: Avenir, Arial, Helvetica, sans-serif;\n  display: flex;\n  height: 90vh;\n  width: 100%;\n}\n.cv-item.custom-date-class-red {\n  background-color: red;\n  border: 1px solid #dddddd;\n  border-radius: 8px;\n  font-size: 1.2em;\n}\n.cv-item {\n  margin-top: 15px;\n}\n.calendari {\n  height: 87vh;\n}", ""]);
+exports.push([module.i, ".altura {\n  padding-bottom: 30px !important;\n}\n.calendari {\n  font-family: Avenir, Arial, Helvetica, sans-serif;\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  flex-grow: 1;\n}\nitem-general, .cv-item.custom-date-class-pink, .cv-item.custom-date-class-green, .cv-item.custom-date-class-blue, .cv-item.custom-date-class-yellow, .cv-item.custom-date-class-gray, .cv-item.custom-date-class-red {\n  border: 1px solid #dddddd;\n  border-radius: 8px;\n  font-size: 1.1em;\n}\n.cv-item.custom-date-class-red {\n  background-color: red;\n}\n.cv-item.custom-date-class-gray {\n  background-color: gray;\n}\n.cv-item.custom-date-class-yellow {\n  background-color: yellow;\n}\n.cv-item.custom-date-class-blue {\n  background-color: blue;\n}\n.cv-item.custom-date-class-green {\n  background-color: green;\n}\n.cv-item.custom-date-class-pink {\n  background-color: #cc00cc;\n}\n.calendari {\n  height: 87vh;\n}", ""]);
 
 // exports
 
@@ -45724,60 +45809,265 @@ var render = function() {
   return _c("div", [
     _c(
       "div",
-      { staticClass: "uk-margin uk-grid-small uk-child-width-auto uk-grid" },
+      {
+        staticClass: "uk-grid-small uk-child-width-expand uk-margin",
+        attrs: { "uk-grid": "" }
+      },
       [
-        _c("label", [
-          _c("input", {
-            staticClass: "uk-checkbox",
-            attrs: { type: "checkbox" },
-            domProps: { value: _vm.cefire }
-          }),
-          _vm._v(" Cefire")
-        ]),
+        _vm._m(0),
         _vm._v(" "),
-        _c("label", [
-          _c("input", {
-            staticClass: "uk-checkbox",
-            attrs: { type: "checkbox" },
-            domProps: { value: _vm.compensa }
-          }),
-          _vm._v(" Compensa")
-        ]),
-        _vm._v(" "),
-        _c("label", [
-          _c("input", {
-            staticClass: "uk-checkbox",
-            attrs: { type: "checkbox" },
-            domProps: { value: _vm.curs }
-          }),
-          _vm._v(" Curs")
-        ]),
-        _vm._v(" "),
-        _c("label", [
-          _c("input", {
-            staticClass: "uk-checkbox",
-            attrs: { type: "checkbox" },
-            domProps: { value: _vm.guardia }
-          }),
-          _vm._v(" Guardia")
-        ]),
-        _vm._v(" "),
-        _c("label", [
-          _c("input", {
-            staticClass: "uk-checkbox",
-            attrs: { type: "checkbox" },
-            domProps: { value: _vm.permis }
-          }),
-          _vm._v(" Permis")
-        ]),
-        _vm._v(" "),
-        _c("label", [
-          _c("input", {
-            staticClass: "uk-checkbox",
-            attrs: { type: "checkbox" },
-            domProps: { value: _vm.visita }
-          }),
-          _vm._v(" Visita")
+        _c("div", { staticClass: "uk-width-1-3" }, [
+          _c("label", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.cefire,
+                  expression: "cefire"
+                }
+              ],
+              staticClass: "uk-checkbox",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.cefire)
+                  ? _vm._i(_vm.cefire, null) > -1
+                  : _vm.cefire
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.cefire,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.cefire = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.cefire = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.cefire = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(" Cefire")
+          ]),
+          _vm._v(" "),
+          _c("label", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.compensa,
+                  expression: "compensa"
+                }
+              ],
+              staticClass: "uk-checkbox",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.compensa)
+                  ? _vm._i(_vm.compensa, null) > -1
+                  : _vm.compensa
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.compensa,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.compensa = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.compensa = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.compensa = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(" Compensa")
+          ]),
+          _vm._v(" "),
+          _c("label", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.curs,
+                  expression: "curs"
+                }
+              ],
+              staticClass: "uk-checkbox",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.curs)
+                  ? _vm._i(_vm.curs, null) > -1
+                  : _vm.curs
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.curs,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.curs = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.curs = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.curs = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(" Curs")
+          ]),
+          _vm._v(" "),
+          _c("label", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.guardia,
+                  expression: "guardia"
+                }
+              ],
+              staticClass: "uk-checkbox",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.guardia)
+                  ? _vm._i(_vm.guardia, null) > -1
+                  : _vm.guardia
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.guardia,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.guardia = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.guardia = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.guardia = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(" Guardia")
+          ]),
+          _vm._v(" "),
+          _c("label", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.permis,
+                  expression: "permis"
+                }
+              ],
+              staticClass: "uk-checkbox",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.permis)
+                  ? _vm._i(_vm.permis, null) > -1
+                  : _vm.permis
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.permis,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.permis = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.permis = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.permis = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(" Permis")
+          ]),
+          _vm._v(" "),
+          _c("label", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.visita,
+                  expression: "visita"
+                }
+              ],
+              staticClass: "uk-checkbox",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.visita)
+                  ? _vm._i(_vm.visita, null) > -1
+                  : _vm.visita
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.visita,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.visita = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.visita = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.visita = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(" Visita")
+          ])
         ])
       ]
     ),
@@ -45794,23 +46084,13 @@ var render = function() {
             "show-date": _vm.dia,
             items: _vm.items,
             "enable-date-selection": false,
-            enableDragDrop: true,
-            "selection-start": _vm.selectionStart,
-            "selection-end": _vm.selectionEnd,
+            enableDragDrop: false,
             "display-week-numbers": false,
             "item-top": _vm.themeOptions.top,
             "item-content-height": _vm.themeOptions.height,
             "item-border-height": _vm.themeOptions.border,
             "current-period-label": _vm.themeOptions.currentPeriodLabel,
             startingDayOfWeek: 1
-          },
-          on: {
-            "date-selection-start": _vm.setSelection,
-            "date-selection": _vm.setSelection,
-            "date-selection-finish": _vm.finishSelection,
-            "click-item": _vm.borrar,
-            "drag-start": _vm.drag_prova,
-            "drop-on-date": _vm.drag_on_prova
           },
           scopedSlots: _vm._u([
             {
@@ -45835,7 +46115,16 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "uk-width-1-3" }, [
+      _c("h3", [_vm._v("Elements a buscar")])
+    ])
+  }
+]
 render._withStripped = true
 
 

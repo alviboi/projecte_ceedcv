@@ -1,24 +1,30 @@
 <template>
 	<div>
-        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-            <label><input :value="cefire" class="uk-checkbox" type="checkbox"> Cefire</label>
-            <label><input :value="compensa" class="uk-checkbox" type="checkbox"> Compensa</label>
-            <label><input :value="curs" class="uk-checkbox" type="checkbox"> Curs</label>
-            <label><input :value="guardia" class="uk-checkbox" type="checkbox"> Guardia</label>
-            <label><input :value="permis" class="uk-checkbox" type="checkbox"> Permis</label>
-            <label><input :value="visita" class="uk-checkbox" type="checkbox"> Visita</label>
 
-
+        <div class="uk-grid-small uk-child-width-expand uk-margin" uk-grid>
+            <div class="uk-width-1-3">
+        <h3>Elements a buscar</h3>
+            </div>
+            <div class="uk-width-1-3">
+                <label><input v-model="cefire" class="uk-checkbox" type="checkbox"> Cefire</label>
+                <label><input v-model="compensa" class="uk-checkbox" type="checkbox"> Compensa</label>
+                <label><input v-model="curs" class="uk-checkbox" type="checkbox"> Curs</label>
+                <label><input v-model="guardia" class="uk-checkbox" type="checkbox"> Guardia</label>
+                <label><input v-model="permis" class="uk-checkbox" type="checkbox"> Permis</label>
+                <label><input v-model="visita" class="uk-checkbox" type="checkbox"> Visita</label>
+            </div>
         </div>
+
+
+
+
         <div  class="calendari">
             <calendar-view
                 :doEmitItemMouseEvents='false'
                 :show-date="dia"
                 :items="items"
                 :enable-date-selection="false"
-                :enableDragDrop="true"
-                :selection-start="selectionStart"
-                :selection-end="selectionEnd"
+                :enableDragDrop="false"
                 :display-week-numbers="false"
                 :item-top="themeOptions.top"
                 :item-content-height="themeOptions.height"
@@ -27,12 +33,6 @@
                 :current-period-label="themeOptions.currentPeriodLabel"
                 :startingDayOfWeek=1
                 class="holiday-us-traditional holiday-us-official"
-                @date-selection-start="setSelection"
-                @date-selection="setSelection"
-                @date-selection-finish="finishSelection"
-                @click-item="borrar"
-                @drag-start="drag_prova"
-                @drop-on-date="drag_on_prova"
             >
                 <calendar-view-header
                     slot="header"
@@ -59,7 +59,7 @@ export default {
 	},
 	data: function () {
 		return {
-            cefire: true,
+            cefire: false,
             curs: false,
             compensa: false,
             guardia: false,
@@ -90,11 +90,23 @@ export default {
 		},
 	},
 	methods: {
+        setdia(d) {
+            this.dia = d;
+            this.items= [];
+            this.cefire= false;
+            this.curs= false;
+            this.compensa= false;
+            this.guardia= false;
+            this.permis= false;
+            this.visita= false;
+
+            //this.tots_els_elements_get();
+		},
         get_element(element){
             var result = []
             let any=this.dia.getFullYear();
             let mes=this.dia.getMonth();
-            let url="/user_"+element+"/"+this.results[0].id+"/"+any+"/"+(mes+1)
+            let url="complet/"+element+"/"+any+"/"+(mes+1)
             axios.get(url)
             .then(res => {
                 console.log(res);
@@ -157,7 +169,7 @@ export default {
                 let fechas = ele.data.split('-');
                 let i = {
                     id: (ele.id+num),
-                    title: "<div id="+(ele.id+num)+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+ele[toti]+"\">"+mati+" "+element.toUpperCase()+"</div>",
+                    title: "<div id="+(ele.id+num)+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+ele[toti]+"\">"+mati+" "+ele.name.toUpperCase()+"</div>",
                     startDate: Date.UTC(fechas[0], fechas[1]-1, fechas[2]),
                     classes: clase+" uk-animation-scale-up",
                 };
@@ -167,6 +179,91 @@ export default {
         }
     },
     mounted() {
+
+
+    },
+    watch: {
+        cefire(newValue, oldValue) {
+            if (newValue == true){
+                this.get_element('cefire');
+            } else {
+                for (let index = this.items.length-1; index >= 0; index--) {
+                    console.log((this.items[index].id>=10000) && (this.items[index].id<20000));
+                    if((this.items[index].id>=10000) && (this.items[index].id<20000)) {
+                        console.log(index);
+                        this.items.splice(index,1);
+                    }
+                }
+            }
+        },
+        compensa(newValue, oldValue) {
+            if (newValue == true){
+                this.get_element('compensa');
+            } else {
+                for (let index = this.items.length-1; index >= 0; index--) {
+                    if((this.items[index].id>=20000) && (this.items[index].id<30000)) {
+                        console.log(index);
+                        this.items.splice(index,1);
+                    }
+                }
+            }
+        },
+        curs(newValue, oldValue) {
+            if (newValue == true){
+                this.get_element('curs');
+            } else {
+                for (let index = this.items.length-1; index >= 0; index--) {
+                    if((this.items[index].id>=30000) && (this.items[index].id<40000)) {
+                        console.log(index);
+                        this.items.splice(index,1);
+                    }
+                }
+            }
+        },
+        guardia(newValue, oldValue) {
+            if (newValue == true){
+                this.get_element('guardia');
+            } else {
+                for (let index = this.items.length-1; index >= 0; index--) {
+                    if((this.items[index].id>=40000) && (this.items[index].id<50000)) {
+                        console.log(index);
+                        this.items.splice(index,1);
+                    }
+                }
+            }
+        },
+        permis(newValue, oldValue) {
+            if (newValue == true){
+                this.get_element('permis');
+            } else {
+                for (let index = this.items.length-1; index >= 0; index--) {
+                    if((this.items[index].id>=50000) && (this.items[index].id<60000)) {
+                        console.log(index);
+                        this.items.splice(index,1);
+                    }
+                }
+            }
+        },
+        visita(newValue, oldValue) {
+            if (newValue == true){
+                this.get_element('visita');
+            } else {
+                for (let index = this.items.length-1; index >= 0; index--) {
+                    if((this.items[index].id>=60000) && (this.items[index].id<70000)) {
+                        console.log(index);
+                        this.items.splice(index,1);
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
 
     },
 }
@@ -180,21 +277,43 @@ $linea: #dddddd
     padding-bottom: 30px !important
 .calendari
     font-family: Avenir, Arial, Helvetica, sans-serif
-    display: flex
-    height: 90vh
+    // display: flex
+    // height: 100vh
     width: 100%
+    display: flex
+    flex-direction: column
+    flex-grow: 1
 
 
-.cv-item.custom-date-class-red
-    background-color: $color_guardia
+
+item-general
     border: 1px solid $linea
     border-radius: 8px
-    font-size: 1.2em
+    font-size: 1.1em
 
+.cv-item.custom-date-class-red
+    @extend item-general
+    background-color: red
 
-.cv-item
-    margin-top: 15px
+.cv-item.custom-date-class-gray
+    @extend item-general
+    background-color: gray
 
+.cv-item.custom-date-class-yellow
+    @extend item-general
+    background-color: yellow
+
+.cv-item.custom-date-class-blue
+    @extend item-general
+    background-color: blue
+
+.cv-item.custom-date-class-green
+    @extend item-general
+    background-color: green
+
+.cv-item.custom-date-class-pink
+    @extend item-general
+    background-color: #cc00cc
 
 
 .calendari
