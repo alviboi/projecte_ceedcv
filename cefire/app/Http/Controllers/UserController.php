@@ -66,12 +66,88 @@ class UserController extends Controller
         $cefire = User::find(auth()->id())->permis()->where('data','=',$dia)->where('fi',$control,'15:00:00')->get();
         return $cefire;
     }
+    /**
+     * Torna totes les etiquetes cefire d'un mes determinat
+     * @num id de l'assessspr
+     * @any any que volem conèixer
+     * @mes mes que volem conèixer
+     *
+     */
 
-
-    public function este(Request $request, $num)
+    public function get_cefire(Request $request, $num,$any,$mes)
     {
         //
-        return User::find(auth()->id())->cefire()->get();
+        return User::find($num)->cefire()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+    }
+
+    /**
+     * Torna totes les etiquetes cefire d'un mes determinat
+     * @num id de l'assessspr
+     * @any any que volem conèixer
+     * @mes mes que volem conèixer
+     *
+     */
+
+    public function get_guardia(Request $request, $num,$any,$mes)
+    {
+        //
+        return User::find($num)->cefire()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+    }
+
+        /**
+     * Torna totes les etiquetes cefire d'un mes determinat
+     * @num id de l'assessspr
+     * @any any que volem conèixer
+     * @mes mes que volem conèixer
+     *
+     */
+
+    public function get_curs(Request $request, $num,$any,$mes)
+    {
+        //
+        return User::find($num)->curs()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+    }
+
+        /**
+     * Torna totes les etiquetes cefire d'un mes determinat
+     * @num id de l'assessspr
+     * @any any que volem conèixer
+     * @mes mes que volem conèixer
+     *
+     */
+
+    public function get_compensa(Request $request, $num,$any,$mes)
+    {
+        //
+        return User::find($num)->compensa()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+    }
+
+        /**
+     * Torna totes les etiquetes cefire d'un mes determinat
+     * @num id de l'assessspr
+     * @any any que volem conèixer
+     * @mes mes que volem conèixer
+     *
+     */
+
+    public function get_visita(Request $request, $num,$any,$mes)
+    {
+        //
+        return User::find($num)->visita()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+    }
+
+        /**
+     * Torna totes les etiquetes cefire d'un mes determinat
+     * @num id de l'assessspr
+     * @any any que volem conèixer
+     * @mes mes que volem conèixer
+     *
+     */
+
+    public function get_permis(Request $request, $num,$any,$mes)
+    {
+        //
+        return User::find($num)->permis()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
     }
     /**
      * Handle the incoming request.

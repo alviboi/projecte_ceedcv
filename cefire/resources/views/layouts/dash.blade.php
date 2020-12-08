@@ -93,6 +93,7 @@
                     <li class="uk-nav-header">ACTIONS</li>
                     <li><a href="#" onclick="canvi('horari')"><span data-uk-icon="icon: user" class="uk-margin-small-right"></span>Horari</a></li>
                     <li><a href="#" onclick="canvi('horaritots')"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Horaris Assessors</a></li>
+					<li><a href="#" onclick="canvi('buscaenhoraris')"><span data-uk-icon="icon: search" class="uk-margin-small-right"></span>Busca en horaris</a></li>
 					<li><a href="#" onclick="canvi('calendar')"><span data-uk-icon="icon: calendar" class="uk-margin-small-right"></span>Afegix guàrdies</a></li>
                     {{-- <li class="uk-parent"><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Templates</a>
 						<ul class="uk-nav-sub">
@@ -106,7 +107,6 @@
 							<li><a title="Login-Dark" href="https://zzseba78.github.io/Kick-Off/login-dark.html">Login - Dark</a></li>
 						</ul>
 					</li> --}}
-					<li><a href="#"><span data-uk-icon="icon: album" class="uk-margin-small-right"></span>Albums</a></li>
 					<li><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Featured Content</a></li>
 					<li><a href="#"><span data-uk-icon="icon: lifesaver" class="uk-margin-small-right"></span>Tips</a></li>
 					<li class="uk-parent">

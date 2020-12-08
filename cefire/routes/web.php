@@ -38,7 +38,14 @@ Route::get('/home', function () {
 
 // Route::get('home', 'HomeController@index')->name('home');
 
-Route::get('/user_cefire/{num}/', 'UserController@este')->name('user_cefire')->middleware('auth');
+Route::get('/user_cefire/{num}/{any}/{mes}', 'UserController@get_cefire')->name('user_cefire')->middleware('auth');
+Route::get('/user_compensa/{num}/{any}/{mes}', 'UserController@get_compensa')->name('user_cefire')->middleware('auth');
+Route::get('/user_curs/{num}/{any}/{mes}', 'UserController@get_curs')->name('user_cefire')->middleware('auth');
+Route::get('/user_guardia/{num}/{any}/{mes}', 'UserController@get_guardia')->name('user_cefire')->middleware('auth');
+Route::get('/user_permis/{num}/{any}/{mes}', 'UserController@get_permis')->name('user_cefire')->middleware('auth');
+Route::get('/user_visita/{num}/{any}/{mes}', 'UserController@get_visita')->name('user_cefire')->middleware('auth');
+
+
 
 Route::get('/dia_cefire/{dia}/{mati}', 'UserController@dia_cefire')->name('dia_cefire')->middleware('auth');
 Route::get('/dia_compensa/{dia}/{mati}', 'UserController@dia_compensa')->name('dia_compensa')->middleware('auth');

@@ -1,26 +1,24 @@
 <template>
 	<div>
-        <div class="uk-grid-small uk-child-width-expand uk-margin" uk-grid>
-            <div class="uk-width-1-3">
-                <h3>Busca l'horari de l'assessor</h3>
-            </div>
-            <div class="uk-width-1-3">
-                <form class="uk-width-expand uk-search uk-search-default" autocomplete="on">
-                    <a uk-search-icon></a>
-                    <input list="llista" v-model="busca_ass" class="uk-search-input" type="search" @keypress="pressEnter" placeholder="">
-                      <datalist class="llista" id="llista">
-                            <option v-for="(user,key) in users" :key="key" :value="user.name">{{user.name}}</option>
-                      </datalist>
-                </form>
-            </div>
+        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+            <label><input :value="cefire" class="uk-checkbox" type="checkbox"> Cefire</label>
+            <label><input :value="compensa" class="uk-checkbox" type="checkbox"> Compensa</label>
+            <label><input :value="curs" class="uk-checkbox" type="checkbox"> Curs</label>
+            <label><input :value="guardia" class="uk-checkbox" type="checkbox"> Guardia</label>
+            <label><input :value="permis" class="uk-checkbox" type="checkbox"> Permis</label>
+            <label><input :value="visita" class="uk-checkbox" type="checkbox"> Visita</label>
+
+
         </div>
-    <div  class="calendari-general">
+        <div  class="calendari">
             <calendar-view
                 :doEmitItemMouseEvents='false'
                 :show-date="dia"
                 :items="items"
                 :enable-date-selection="false"
-                :enableDragDrop="false"
+                :enableDragDrop="true"
+                :selection-start="selectionStart"
+                :selection-end="selectionEnd"
                 :display-week-numbers="false"
                 :item-top="themeOptions.top"
                 :item-content-height="themeOptions.height"
@@ -29,6 +27,12 @@
                 :current-period-label="themeOptions.currentPeriodLabel"
                 :startingDayOfWeek=1
                 class="holiday-us-traditional holiday-us-official"
+                @date-selection-start="setSelection"
+                @date-selection="setSelection"
+                @date-selection-finish="finishSelection"
+                @click-item="borrar"
+                @drag-start="drag_prova"
+                @drop-on-date="drag_on_prova"
             >
                 <calendar-view-header
                     slot="header"
@@ -39,7 +43,7 @@
                     @input="setdia"
                 />
             </calendar-view>
-    </div>
+        </div>
 	</div>
 </template>
 
@@ -55,10 +59,12 @@ export default {
 	},
 	data: function () {
 		return {
-            isOpen: false,
-            results: null,
-            busca_ass: "",
-            users: [],
+            cefire: true,
+            curs: false,
+            compensa: false,
+            guardia: false,
+            permis: false,
+            visita: false,
 			dia: new Date(),
 			theme: "gcal",
 			items: Array()
@@ -67,55 +73,23 @@ export default {
 	computed: {
 		themeOptions() {
             let ret = {
-                        index: 0,
-                        users: [],
-						top: "1.6em",
-						height: "2em",
-						border: "2px",
-						previousYearLabel: "<<",
-						previousPeriodLabel: "<",
-						nextPeriodLabel: ">",
-						nextYearLabel: ">>",
-                        currentPeriodLabel: "",
+                result: null,
+                index: 0,
+                users: [],
+                top: "1.6em",
+                height: "2em",
+                border: "2px",
+                previousYearLabel: "<<",
+                previousPeriodLabel: "<",
+                nextPeriodLabel: ">",
+                nextYearLabel: ">>",
+                currentPeriodLabel: "",
 
 				};
             return ret;
 		},
 	},
 	methods: {
-        setdia(d) {
-            this.dia = d;
-            this.items= [];
-            this.tots_els_elements_get();
-		},
-        pressEnter(event){
-            if (event.keyCode === 13) {
-                this.filterResults();
-            }
-        },
-        filterResults() {
-            this.results = this.users.filter((item => item.name.toLowerCase() == this.busca_ass.toLowerCase()));
-            this.tots_els_elements_get();
-        },
-        tots_els_elements_get() {
-            this.items= [];
-            this.get_element('cefire');
-            this.get_element('compensa');
-            this.get_element('curs');
-            this.get_element('guardia');
-            this.get_element('permis');
-            this.get_element('visita');
-        },
-        agafa_users(){
-            axios.get("user")
-            .then(res => {
-                console.log(res);
-                this.users=res.data;
-            })
-            .catch(err => {
-                console.error(err);
-            })
-        },
         get_element(element){
             var result = []
             let any=this.dia.getFullYear();
@@ -193,58 +167,37 @@ export default {
         }
     },
     mounted() {
-        this.agafa_users();
+
     },
 }
 </script>
 
 <style lang="sass" scope>
+$color_guardia: red
 $linea: #dddddd
 
 .altura
-    padding-bottom: 15px !important
-.general
+    padding-bottom: 30px !important
+.calendari
     font-family: Avenir, Arial, Helvetica, sans-serif
     display: flex
-    height: 97vh
+    height: 90vh
     width: 100%
 
-item-general
-    border: 1px solid $linea
-    border-radius: 8px
-    font-size: 1.4em
 
 .cv-item.custom-date-class-red
-    @extend item-general
-    background-color: red
+    background-color: $color_guardia
+    border: 1px solid $linea
+    border-radius: 8px
+    font-size: 1.2em
 
-.cv-item.custom-date-class-gray
-    @extend item-general
-    background-color: gray
-
-.cv-item.custom-date-class-yellow
-    @extend item-general
-    background-color: yellow
-
-.cv-item.custom-date-class-blue
-    @extend item-general
-    background-color: blue
-
-.cv-item.custom-date-class-green
-    @extend item-general
-    background-color: green
-
-.cv-item.custom-date-class-pink
-    @extend item-general
-    background-color: pink
 
 .cv-item
-    margin-top: 1px
+    margin-top: 15px
 
-.calendari-general
-    height: 90vh
-.llista
-    color: $linea
-    background-color: #ececec
+
+
+.calendari
+    height: 87vh
 
 </style>
