@@ -45,6 +45,16 @@ Route::get('/user_guardia/{num}/{any}/{mes}', 'UserController@get_guardia')->nam
 Route::get('/user_permis/{num}/{any}/{mes}', 'UserController@get_permis')->name('user_cefire')->middleware('auth');
 Route::get('/user_visita/{num}/{any}/{mes}', 'UserController@get_visita')->name('user_cefire')->middleware('auth');
 
+Route::prefix('complet')->group(function () {
+    Route::get('/cefire/{any}/{mes}', 'cefireController@get_data_index')->middleware('auth');
+    Route::get('/compensa/{any}/{mes}', 'compensaController@get_data_index')->middleware('auth');
+    Route::get('/curs/{any}/{mes}', 'cursController@get_data_index')->middleware('auth');
+    Route::get('/guardia/{any}/{mes}', 'guardiaController@get_data_index')->middleware('auth');
+    Route::get('/permis/{any}/{mes}', 'permisController@get_data_index')->middleware('auth');
+    Route::get('/visita/{any}/{mes}', 'visitaController@get_data_index')->middleware('auth');
+});
+
+
 
 
 Route::get('/dia_cefire/{dia}/{mati}', 'UserController@dia_cefire')->name('dia_cefire')->middleware('auth');
@@ -53,7 +63,7 @@ Route::get('/dia_curs/{dia}/{mati}', 'UserController@dia_curs')->name('dia_curs'
 Route::get('/dia_visita/{dia}/{mati}', 'UserController@dia_visita')->name('dia_vista')->middleware('auth');
 Route::get('/dia_guardia/{dia}/{mati}', 'UserController@dia_guardia')->name('dia_guardia')->middleware('auth');
 Route::get('/dia_permis/{dia}/{mati}', 'UserController@dia_permis')->name('dia_permis')->middleware('auth');
-Route::get('/guardia/totes/{mes}/{any}', 'guardiaController@get_data_index')->name('guardia_totes')->middleware('auth');
+Route::get('/guardia/totes/{mes}/{any}', 'guardiaController@get_data_index2')->name('guardia_totes')->middleware('auth');
 
 Route::post('guardia/insert','guardiaController@put_guardia_id')->name('put_guardia_id')->middleware('auth');
 

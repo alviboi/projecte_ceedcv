@@ -18,11 +18,26 @@ class guardiaController extends Controller
         return guardia::get();
     }
     /**
+     * Extrau totes les dades de fitxar del guardia amb el nom
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_data_index($any, $mes)
+    {
+        $ret = array();
+        $els = guardia::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+        foreach ($els as $el) {
+            $item=array("id"=>$el->id, "name"=>$el->user['name'], "data"=>$el->data, "inici"=>$el->inici, "fi"=>$el->fi);
+            array_push($ret, $item);
+        }
+        return $ret;
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function get_data_index($mes, $any)
+    public function get_data_index2($mes, $any)
     {
         //
         // return guardia::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->user()->get();

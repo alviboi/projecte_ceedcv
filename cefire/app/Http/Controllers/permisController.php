@@ -17,7 +17,21 @@ class permisController extends Controller
         //
         return permis::get();
     }
-
+    /**
+     * Extrau totes les dades de fitxar del cefire amb el nom
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_data_index($any, $mes)
+    {
+        $ret = array();
+        $els = permis::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+        foreach ($els as $el) {
+            $item=array("id"=>$el->id, "name"=>$el->user['name'], "data"=>$el->data, "inici"=>$el->inici, "fi"=>$el->fi, "motiu"=>$el->motiu);
+            array_push($ret, $item);
+        }
+        return $ret;
+    }
     /**
      * Show the form for creating a new resource.
      *

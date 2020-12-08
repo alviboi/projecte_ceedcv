@@ -19,6 +19,7 @@ class UserController extends Controller
         //
         return User::orderBy('name', 'ASC')->get();
     }
+
     /**
      * Display a listing of the resource.
      *
