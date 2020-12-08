@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        return User::get();
+        return User::orderBy('name', 'ASC')->get();
     }
     /**
      * Display a listing of the resource.

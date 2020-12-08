@@ -29,11 +29,32 @@ class guardiaController extends Controller
         $ret = array();
         $guardies = guardia::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
         foreach ($guardies as $guardia) {
-            array_push($ret, [$guardia->user['name'],$guardia->data,$guardia->inici]);
+            array_push($ret, [$guardia->user['name'],$guardia->data,$guardia->inici,$guardia->id]);
         }
         return $ret;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function put_guardia_id(Request $request)
+    {
+        $guardia = new guardia();
+        $guardia->user_id=$request->id;
+        $guardia->data=$request->data;
+        if ($request->mati="m"){
+            $guardia->inici="09:00:00";
+            $guardia->fi="14:00:00";
+        } else {
+            $guardia->inici="16:00:00";
+            $guardia->fi="20:00:00";
+        }
+        $guardia->save();
+        return $guardia;
+
+    }
 
     /**
      * Show the form for creating a new resource.

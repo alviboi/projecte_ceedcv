@@ -1,8 +1,30 @@
 <template>
 	<div>
-        <div class="uk-align-center">
-            <h2 class="uk-align-center">Afegix guàrdies</h2>
+        <div class="uk-grid-small uk-child-width-expand uk-margin" uk-grid>
+            <div class="uk-width-1-3">
+                <h3>Horari d'assessors</h3>
+            </div>
+            <div class="uk-width-1-3">
+                <form class="uk-width-expand uk-search uk-search-default">
+                    <a uk-search-icon></a>
+                    <input v-model="busca_ass" @input="busca_as_escri" class="uk-search-input" type="search" placeholder="">
+                </form>
+            </div>
         </div>
+        {{results}}
+          <!-- <ul
+                v-show="isOpen"
+                class="autocomplete-results"
+            >
+                <li
+                v-for="(result, i) in results"
+                :key="i"
+                class="autocomplete-result"
+                >
+                {{ result.name }}
+                </li>
+            </ul> -->
+
     <div  class="grid-calendar">
         <div  class="calendari">
             <calendar-view
@@ -67,6 +89,9 @@ export default {
 	},
 	data: function () {
 		return {
+            isOpen: false,
+            results: null,
+            busca_ass: "",
             users: [],
             mati_radio: 'm',
             id_drag: null,
@@ -82,7 +107,6 @@ export default {
 	computed: {
 		themeOptions() {
             let ret = {
-                        result: null,
                         index: 0,
                         users: [],
 						top: "1.6em",
@@ -99,6 +123,14 @@ export default {
 		},
 	},
 	methods: {
+        busca_as_escri() {
+            this.isOpen = true;
+            this.filterResults();
+        },
+        filterResults() {
+            var self=this;
+            this.results = this.users.filter((item => item.name.toLowerCase().indexOf(this.busca_ass.toLowerCase()) > -1));
+        },
         agafa_users(){
             axios.get("user")
             .then(res => {
@@ -253,8 +285,11 @@ $linea: #dddddd
     background-color: $color_guardia
     border: 1px solid $linea
     border-radius: 8px
-    font-size: 1.2em
 
+
+
+.cv-item.custom-date-class-blue
+    background-color:  $color_guardia
 
 .cv-item
     margin-top: 15px

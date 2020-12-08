@@ -21,19 +21,19 @@
 							{{-- <a class="uk-logo" href="#"><img class="custom-logo" src="img/dashboard-logo-white.svg" alt=""></a> --}}
 						</div>
 						<ul class="uk-navbar-nav uk-visible@m">
-							<li><a href="#">Accounts</a></li>
+							{{-- <li><a href="#">Accounts</a></li> --}}
 							<li>
-								<a href="#">Settings <span data-uk-icon="icon: triangle-down"></span></a>
+								<a href="#">Ferramentes <span data-uk-icon="icon: triangle-down"></span></a>
 								<div class="uk-navbar-dropdown">
 									<ul class="uk-nav uk-navbar-dropdown-nav">
-										<li class="uk-nav-header">YOUR ACCOUNT</li>
-										<li><a href="#"><span data-uk-icon="icon: info"></span> Summary</a></li>
-										<li><a href="#"><span data-uk-icon="icon: refresh"></span> Edit</a></li>
-										<li><a href="#"><span data-uk-icon="icon: settings"></span> Configuration</a></li>
+										<li class="uk-nav-header">EL TEU COMPTE</li>
+										<li><a href="#"><span data-uk-icon="icon: info"></span> Els meus centres</a></li>
+										<li><a href="#"><span data-uk-icon="icon: refresh"></span> Edita centre</a></li>
+										<li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
 										<li class="uk-nav-divider"></li>
-										<li><a href="#"><span data-uk-icon="icon: image"></span> Your Data</a></li>
+										<li><a href="#"><span data-uk-icon="icon: image"></span> Dades Personals</a></li>
 										<li class="uk-nav-divider"></li>
-                                        <li><a href="#"><span data-uk-icon="icon: sign-out"></span> Logout</a></li>
+                                        <li><a href="#"><span data-uk-icon="icon: sign-out"></span> Ix</a></li>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             style="display: none;">
                                             @csrf
@@ -42,17 +42,17 @@
 								</div>
 							</li>
 						</ul>
-						<div class="uk-navbar-item uk-visible@s">
+						{{-- <div class="uk-navbar-item uk-visible@s">
 							<form action="dashboard.html" class="uk-search uk-search-default">
 								<span data-uk-search-icon></span>
 								<input class="uk-search-input search-field" type="search" placeholder="Search">
 							</form>
-						</div>
+						</div> --}}
 					</div>
 					<div class="uk-navbar-right">
 						<ul class="uk-navbar-nav">
 							<li><a href="#" data-uk-icon="icon:user" title="Your profile" data-uk-tooltip></a></li>
-							<li><a href="#" data-uk-icon="icon: settings" title="Settings" data-uk-tooltip></a></li>
+							<li><a href="#" data-uk-icon="icon: commenting" title="Ajuda" data-uk-tooltip></a></li>
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-uk-icon="icon:  sign-out" title="Sign Out" data-uk-tooltip></a></li>
 							<li><a class="uk-navbar-toggle" data-uk-toggle data-uk-navbar-toggle-icon href="#offcanvas-nav" title="Offcanvas" data-uk-tooltip></a></li>
 						</ul>
@@ -91,9 +91,10 @@
 			<div class="left-nav-wrap">
 				<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
                     <li class="uk-nav-header">ACTIONS</li>
-                    <li><a href="#" onclick="canvi('horari')"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Horari</a></li>
-					<li><a href="#" onclick="canvi('calendar')"><span data-uk-icon="icon: calendar" class="uk-margin-small-right"></span>Calendar</a></li>
-					<li class="uk-parent"><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Templates</a>
+                    <li><a href="#" onclick="canvi('horari')"><span data-uk-icon="icon: user" class="uk-margin-small-right"></span>Horari</a></li>
+                    <li><a href="#" onclick="canvi('horaritots')"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Horaris Assessors</a></li>
+					<li><a href="#" onclick="canvi('calendar')"><span data-uk-icon="icon: calendar" class="uk-margin-small-right"></span>Afegix guàrdies</a></li>
+                    {{-- <li class="uk-parent"><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Templates</a>
 						<ul class="uk-nav-sub">
 							<li><a title="Article" href="https://zzseba78.github.io/Kick-Off/article.html">Article</a></li>
 							<li><a title="Album" href="https://zzseba78.github.io/Kick-Off/album.html">Album</a></li>
@@ -104,7 +105,7 @@
 							<li><a title="Login" href="https://zzseba78.github.io/Kick-Off/login.html">Login</a></li>
 							<li><a title="Login-Dark" href="https://zzseba78.github.io/Kick-Off/login-dark.html">Login - Dark</a></li>
 						</ul>
-					</li>
+					</li> --}}
 					<li><a href="#"><span data-uk-icon="icon: album" class="uk-margin-small-right"></span>Albums</a></li>
 					<li><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Featured Content</a></li>
 					<li><a href="#"><span data-uk-icon="icon: lifesaver" class="uk-margin-small-right"></span>Tips</a></li>
@@ -116,7 +117,7 @@
 						</ul>
 					</li>
 				</ul>
-				<div class="left-content-box uk-margin-top">
+				{{-- <div class="left-content-box uk-margin-top">
 
 						<h5>Daily Reports</h5>
 						<div>
@@ -132,10 +133,10 @@
 							<progress class="uk-progress warning" value="12" max="100"></progress>
 						</div>
 
-				</div>
+				</div> --}}
 
 			</div>
-			<div class="bar-bottom">
+			{{-- <div class="bar-bottom">
 				<ul class="uk-subnav uk-flex uk-flex-center uk-child-width-1-5" data-uk-grid>
 					<li>
 						<a href="#" class="uk-icon-link" data-uk-icon="icon: home" title="Home" data-uk-tooltip></a>
@@ -151,7 +152,7 @@
 						<a href="#" class="uk-icon-link" data-uk-tooltip="Sign out" data-uk-icon="icon: sign-out"></a>
 					</li>
 				</ul>
-			</div>
+			</div> --}}
 		</aside>
         <!-- /LEFT BAR -->
 

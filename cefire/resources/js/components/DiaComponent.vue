@@ -1,7 +1,7 @@
 <template>
   <div>
 
-        <div class="titulet" data-uk-tooltip="animation: true; offset: 2;" :title="data">{{ nom_dia }} {{ dia_mes }} {{ mati }}</div>
+        <div class="titulet" data-uk-tooltip="animation: true; offset: 2;" :title="data">{{ nom_dia }} {{ dia_mes }}  <span v-html="mati_icon"></span></div>
 
     <div class="dia">
       <!-- COLUMNA LATERAL DESPLEGABLE -->
@@ -462,6 +462,12 @@ export default {
           this.componentKey++;
       }
 
+  },
+  computed: {
+      mati_icon() {
+          let m = ((this.mati=='m') ? "<i class='fas fa-sun'></i>" : "<i class='fas fa-moon'></i>");
+          return m;
+      }
   },
 };
 </script>

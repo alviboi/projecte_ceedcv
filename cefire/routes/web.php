@@ -48,7 +48,7 @@ Route::get('/dia_guardia/{dia}/{mati}', 'UserController@dia_guardia')->name('dia
 Route::get('/dia_permis/{dia}/{mati}', 'UserController@dia_permis')->name('dia_permis')->middleware('auth');
 Route::get('/guardia/totes/{mes}/{any}', 'guardiaController@get_data_index')->name('guardia_totes')->middleware('auth');
 
-
+Route::post('guardia/insert','guardiaController@put_guardia_id')->name('put_guardia_id')->middleware('auth');
 
 Route::group(['middleware' => 'auth'], function() {
     Route::resources([

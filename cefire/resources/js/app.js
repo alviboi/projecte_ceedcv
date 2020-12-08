@@ -26,6 +26,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('calendar-component', require('./components/CalendarComponent.vue').default);
 Vue.component('dia-component', require('./components/DiaComponent.vue').default);
 Vue.component('fitxar-component', require('./components/FitxarComponent.vue').default);
+Vue.component('horaris-component', require('./components/HorarisComponent.vue').default);
+
 
 
 

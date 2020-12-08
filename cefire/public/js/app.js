@@ -1970,6 +1970,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
  // The next two lines are processed by webpack. If you're using the component without webpack compilation,
 // you should just create <link> elements for these. Both are optional, you can create your own theme if you prefer.
 
@@ -1988,6 +1994,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
   data: function data() {
     return {
       users: [],
+      mati_radio: 'm',
       id_drag: null,
       dia: new Date(),
       selectionStart: null,
@@ -2001,10 +2008,11 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
   computed: {
     themeOptions: function themeOptions() {
       var ret = {
-        index: 1,
+        result: null,
+        index: 0,
         users: [],
-        top: "1.4em",
-        height: "1.4em",
+        top: "1.6em",
+        height: "2em",
         border: "2px",
         previousYearLabel: "<<",
         previousPeriodLabel: "<",
@@ -2032,71 +2040,97 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       var result = [];
       var any = this.dia.getFullYear();
       var mes = this.dia.getMonth();
-      axios.get("guardia/totes/" + mes + "/" + any).then(function (res) {
+      axios.get("guardia/totes/" + (mes + 1) + "/" + any).then(function (res) {
         console.log(res);
-        result = res.data;
+
+        _this2.emplena_calendari_guardies(res.data);
       })["catch"](function (err) {
         console.error(err);
       });
-      result.forEach(function (element) {
-        var mati = element['inici'] == "09:00:00" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        var fechas = element['data'].split('-');
+    },
+    emplena_calendari_guardies: function emplena_calendari_guardies(result) {
+      for (var index = 0; index < result.length; index++) {
+        var element = result[index];
+        var mati = element[2] == "09:00:00" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        var fechas = element[1].split('-');
         var i = {
-          id: index,
-          title: mati + " " + element['name'],
-          startDate: Date.UTC(fechas[0], fechas[1], fechas[2]),
+          id: element[3],
+          title: "<div id=" + element[3] + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + element[0] + "\">" + mati + " " + element[0] + "</div>",
+          startDate: Date.UTC(fechas[0], fechas[1] - 1, fechas[2]),
           // endDate: Date.UTC(2020, 11, 10),
-          classes: "custom-date-class-blue"
+          classes: "custom-date-class-red uk-animation-scale-up"
         };
-        _this2.index++;
+        this.items.push(i);
+      }
 
-        _this2.items.push(i);
-      });
+      this.index = result.length;
     },
     comenca_drag: function comenca_drag(e) {
-      console.log(e.target.id);
-      this.id_drag = e.target.id;
+      console.log(e.target);
+      this.id_drag = e.target;
     },
     drag_on_prova: function drag_on_prova(calendarItem, date, windowEvent) {
+      var _this3 = this;
+
+      //textContent
       //@drop-on-date([calendarItem, date, windowEvent])
       console.log(calendarItem);
       console.log(date);
+      var id_res = null;
       var fetxa = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1);
-      var este = data_db(date);
-      var drag_item = {
-        id: 100006,
-        title: este,
-        startDate: fetxa,
-        // endDate: fetxa,
-        classes: "custom-date-class-blue"
+      var url = "guardia/insert";
+      var fetxa2 = data_db(date);
+      var params = {
+        id: this.id_drag.id,
+        data: fetxa2,
+        mati: this.mati_radio
       };
-      this.items.push(drag_item);
+      axios.post(url, params).then(function (res) {
+        console.log(res);
+        id_res = res.data.id;
+        var mati = _this3.mati_radio == "m" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; // let ind = this.index;
+
+        var drag_item = {
+          id: id_res,
+          title: "<div id=" + id_res + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + _this3.id_drag.textContent + "\">" + mati + " " + _this3.id_drag.textContent + "</div>",
+          startDate: fetxa,
+          classes: "custom-date-class-red uk-animation-scale-up"
+        };
+
+        _this3.items.push(drag_item);
+      })["catch"](function (err) {
+        console.error(err);
+      });
     },
     drag_prova: function drag_prova(item, e) {
       //[calendarItem, windowEvent]
       console.log(item);
       console.log(e);
     },
-    este: function este() {
-      var i = {
-        id: 100005,
-        title: "<span uk-icon='heart'></span> Event prova",
-        startDate: Date.UTC(2020, 11, 5),
-        // endDate: Date.UTC(2020, 11, 10),
-        classes: "custom-date-class-blue"
-      };
-      this.items.push(i);
-    },
     este2: function este2(item, e) {
       //[calendarItem, windowEvent]
       console.log(e);
     },
-    borrar: function borrar() {
-      //[calendarItem, windowEvent]
-      this.items.splice(1, 1);
+    borrar: function borrar(item, e) {
+      console.log(item);
+      var doc = new DOMParser().parseFromString(item.title, "text/html");
+      console.log(doc);
+
+      for (var index = 0; index < this.items.length; index++) {
+        if (this.items[index].id == item.id) this.items.splice(index, 1);
+      }
+
+      var url = "guardia/" + item.id;
+      axios["delete"](url).then(function (res) {
+        console.log(res);
+      })["catch"](function (err) {
+        console.error(err);
+      });
     },
     setdia: function setdia(d) {
       this.dia = d;
+      this.items = [];
+      this.get_totes_guardies();
     },
     setSelection: function setSelection(dateRange) {
       this.selectionEnd = dateRange[1];
@@ -2118,6 +2152,10 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
     // 	return i
     // },
 
+  },
+  mounted: function mounted() {
+    this.agafa_users();
+    this.get_totes_guardies();
   }
 });
 
@@ -2577,6 +2615,12 @@ UIkit.upload('.js-upload', {
     data: function data() {
       this.componentKey++;
     }
+  },
+  computed: {
+    mati_icon: function mati_icon() {
+      var m = this.mati == 'm' ? "<i class='fas fa-sun'></i>" : "<i class='fas fa-moon'></i>";
+      return m;
+    }
   }
 });
 
@@ -2749,6 +2793,292 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HorarisComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HorarisComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_simple_calendar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-simple-calendar */ "./node_modules/vue-simple-calendar/dist/CalendarView.umd.js");
+/* harmony import */ var vue_simple_calendar__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_simple_calendar__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ // The next two lines are processed by webpack. If you're using the component without webpack compilation,
+// you should just create <link> elements for these. Both are optional, you can create your own theme if you prefer.
+
+__webpack_require__(/*! vue-simple-calendar/static/css/default.css */ "./node_modules/vue-simple-calendar/static/css/default.css");
+
+__webpack_require__(/*! vue-simple-calendar/static/css/holidays-us.css */ "./node_modules/vue-simple-calendar/static/css/holidays-us.css");
+
+__webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modules/vue-simple-calendar/static/css/gcal.css");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "CalendarDemoApp",
+  components: {
+    CalendarView: vue_simple_calendar__WEBPACK_IMPORTED_MODULE_0__["CalendarView"],
+    CalendarViewHeader: vue_simple_calendar__WEBPACK_IMPORTED_MODULE_0__["CalendarViewHeader"]
+  },
+  data: function data() {
+    return {
+      isOpen: false,
+      results: null,
+      busca_ass: "",
+      users: [],
+      mati_radio: 'm',
+      id_drag: null,
+      dia: new Date(),
+      selectionStart: null,
+      selectionEnd: null,
+      theme: "gcal",
+      items: Array() // .fill()
+      // .map((_, i) => this.getRandomEvent(i)),
+
+    };
+  },
+  computed: {
+    themeOptions: function themeOptions() {
+      var ret = {
+        index: 0,
+        users: [],
+        top: "1.6em",
+        height: "2em",
+        border: "2px",
+        previousYearLabel: "<<",
+        previousPeriodLabel: "<",
+        nextPeriodLabel: ">",
+        nextYearLabel: ">>",
+        currentPeriodLabel: ""
+      };
+      return ret;
+    }
+  },
+  methods: {
+    busca_as_escri: function busca_as_escri() {
+      this.isOpen = true;
+      this.filterResults();
+    },
+    filterResults: function filterResults() {
+      var _this = this;
+
+      var self = this;
+      this.results = this.users.filter(function (item) {
+        return item.name.toLowerCase().indexOf(_this.busca_ass.toLowerCase()) > -1;
+      });
+    },
+    agafa_users: function agafa_users() {
+      var _this2 = this;
+
+      axios.get("user").then(function (res) {
+        console.log(res);
+        _this2.users = res.data;
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    get_totes_guardies: function get_totes_guardies() {
+      var _this3 = this;
+
+      var result = [];
+      var any = this.dia.getFullYear();
+      var mes = this.dia.getMonth();
+      axios.get("guardia/totes/" + (mes + 1) + "/" + any).then(function (res) {
+        console.log(res);
+
+        _this3.emplena_calendari_guardies(res.data);
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    emplena_calendari_guardies: function emplena_calendari_guardies(result) {
+      for (var index = 0; index < result.length; index++) {
+        var element = result[index];
+        var mati = element[2] == "09:00:00" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        var fechas = element[1].split('-');
+        var i = {
+          id: element[3],
+          title: "<div id=" + element[3] + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + element[0] + "\">" + mati + " " + element[0] + "</div>",
+          startDate: Date.UTC(fechas[0], fechas[1] - 1, fechas[2]),
+          // endDate: Date.UTC(2020, 11, 10),
+          classes: "custom-date-class-red uk-animation-scale-up"
+        };
+        this.items.push(i);
+      }
+
+      this.index = result.length;
+    },
+    comenca_drag: function comenca_drag(e) {
+      console.log(e.target);
+      this.id_drag = e.target;
+    },
+    drag_on_prova: function drag_on_prova(calendarItem, date, windowEvent) {
+      var _this4 = this;
+
+      //textContent
+      //@drop-on-date([calendarItem, date, windowEvent])
+      console.log(calendarItem);
+      console.log(date);
+      var id_res = null;
+      var fetxa = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1);
+      var url = "guardia/insert";
+      var fetxa2 = data_db(date);
+      var params = {
+        id: this.id_drag.id,
+        data: fetxa2,
+        mati: this.mati_radio
+      };
+      axios.post(url, params).then(function (res) {
+        console.log(res);
+        id_res = res.data.id;
+        var mati = _this4.mati_radio == "m" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; // let ind = this.index;
+
+        var drag_item = {
+          id: id_res,
+          title: "<div id=" + id_res + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + _this4.id_drag.textContent + "\">" + mati + " " + _this4.id_drag.textContent + "</div>",
+          startDate: fetxa,
+          classes: "custom-date-class-red uk-animation-scale-up"
+        };
+
+        _this4.items.push(drag_item);
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    drag_prova: function drag_prova(item, e) {
+      //[calendarItem, windowEvent]
+      console.log(item);
+      console.log(e);
+    },
+    este2: function este2(item, e) {
+      //[calendarItem, windowEvent]
+      console.log(e);
+    },
+    borrar: function borrar(item, e) {
+      console.log(item);
+      var doc = new DOMParser().parseFromString(item.title, "text/html");
+      console.log(doc);
+
+      for (var index = 0; index < this.items.length; index++) {
+        if (this.items[index].id == item.id) this.items.splice(index, 1);
+      }
+
+      var url = "guardia/" + item.id;
+      axios["delete"](url).then(function (res) {
+        console.log(res);
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    setdia: function setdia(d) {
+      this.dia = d;
+      this.items = [];
+      this.get_totes_guardies();
+    },
+    setSelection: function setSelection(dateRange) {
+      this.selectionEnd = dateRange[1];
+      this.selectionStart = dateRange[0];
+    },
+    finishSelection: function finishSelection(dateRange) {
+      this.setSelection(dateRange);
+    } // getRandomEvent(index) {
+    // 	const startDay = Math.floor(Math.random() * 28 + 1)
+    // 	const endDay = Math.floor(Math.random() * 4) + startDay
+    // 	var d = new Date()
+    // 	var i = {
+    // 		id: index,
+    // 		title: "Event " + (index + 1),
+    // 		startDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), startDay),
+    // 		endDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), endDay),
+    // 		classes: "custom-date-class-red",
+    // 	}
+    // 	return i
+    // },
+
+  },
+  mounted: function mounted() {
+    this.agafa_users();
+    this.get_totes_guardies();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CalendarComponent.vue?vue&type=style&index=0&lang=sass&scope=true&":
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--8-2!./node_modules/sass-loader/dist/cjs.js??ref--8-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CalendarComponent.vue?vue&type=style&index=0&lang=sass&scope=true& ***!
@@ -2761,7 +3091,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".altura {\n  padding-bottom: 30px !important;\n}\n.general {\n  font-family: Avenir, Arial, Helvetica, sans-serif;\n  display: flex;\n  height: 87vh;\n  width: 100%;\n}\n.cv-item.custom-date-class-red {\n  background-color: #ff6666;\n}\n.cv-item.custom-date-class-blue {\n  background-color: #7d66ff;\n}\n.cabecal {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 20px;\n  grid-template-areas: \"arrere mig mig avant\";\n}\n.cabecal .arrere {\n  grid-area: arrere;\n}\n.cabecal .mig {\n  grid-area: mig;\n  text-align: center;\n  margin-bottom: 0px;\n  margin-top: 5px;\n}\n.cabecal .avant {\n  grid-area: avant;\n}\n.grid-calendar {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 0px;\n  height: 87vh;\n  grid-template-areas: \"calendari calendari calendari calendari calendari calendari calendari calendari calendari costat\";\n}\n.calendari {\n  grid-area: calendari;\n}\n.costat {\n  padding: 3%;\n  grid-area: costat;\n}\n.costat div {\n  max-width: 10em;\n  vertical-align: top;\n  height: 1.3em;\n  line-height: 1.3em;\n  font-size: 0.9em;\n  white-space: nowrap;\n  overflow: hidden;\n  display: block;\n  cursor: pointer;\n  border: 1px solid black;\n  border-radius: 5px;\n  background-color: white;\n  margin: 1px;\n}", ""]);
+exports.push([module.i, ".altura {\n  padding-bottom: 30px !important;\n}\n.general {\n  font-family: Avenir, Arial, Helvetica, sans-serif;\n  display: flex;\n  height: 87vh;\n  width: 100%;\n}\n.cv-item.custom-date-class-red {\n  background-color: red;\n  border: 1px solid #dddddd;\n  border-radius: 8px;\n  font-size: 1.2em;\n}\n.cv-item {\n  margin-top: 15px;\n}\n.cabecal {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 20px;\n  grid-template-areas: \"arrere mig mig avant\";\n}\n.cabecal .arrere {\n  grid-area: arrere;\n}\n.cabecal .mig {\n  grid-area: mig;\n  text-align: center;\n  margin-bottom: 0px;\n  margin-top: 5px;\n}\n.cabecal .avant {\n  grid-area: avant;\n}\n.grid-calendar {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 0px;\n  height: 87vh;\n  grid-template-areas: \"calendari calendari calendari calendari calendari calendari calendari calendari calendari costat\";\n}\n.calendari {\n  grid-area: calendari;\n}\n.costat {\n  padding: 3%;\n  grid-area: costat;\n}\n.costat .mati {\n  border: 1px solid black;\n  border-radius: 5px;\n  margin-bottom: 3px;\n}\n.costat .assessor_nom {\n  max-width: 10em;\n  vertical-align: top;\n  height: 1.3em;\n  line-height: 1.3em;\n  font-size: 0.9em;\n  white-space: nowrap;\n  overflow: hidden;\n  display: block;\n  cursor: pointer;\n  border: 1px solid #dddddd;\n  border-radius: 8px;\n  background-color: white;\n  margin-top: 2px;\n  background-color: red;\n  color: #fffafd;\n  padding: 1px;\n  padding-left: 3px;\n}", ""]);
 
 // exports
 
@@ -2800,6 +3130,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, ".general2 {\n  padding: 1%;\n  width: 100%;\n}\n.grid-container {\n  display: grid;\n  margin-left: 2%;\n  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n  gap: 10px;\n  grid-template-areas: \"d1 d2 d3 d4 d5 d6 d7\";\n}\n.grid-container .d0 {\n  grid-area: d0;\n}\n.grid-container .d1 {\n  grid-area: d1;\n}\n.grid-container .d2 {\n  grid-area: d2;\n}\n.grid-container .d3 {\n  grid-area: d3;\n}\n.grid-container .d4 {\n  grid-area: d4;\n}\n.grid-container .d5 {\n  grid-area: d5;\n}\n.grid-container .d6 {\n  grid-area: d6;\n}\n.cabecal {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 20px;\n  grid-template-areas: \"arrere mig mig avant\";\n}\n.cabecal .arrere {\n  grid-area: arrere;\n}\n.cabecal .mig {\n  grid-area: mig;\n  text-align: center;\n  margin-bottom: 0px;\n  margin-top: 5px;\n}\n.cabecal .avant {\n  grid-area: avant;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--8-2!./node_modules/sass-loader/dist/cjs.js??ref--8-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".altura {\n  padding-bottom: 30px !important;\n}\n.general {\n  font-family: Avenir, Arial, Helvetica, sans-serif;\n  display: flex;\n  height: 87vh;\n  width: 100%;\n}\n.cv-item.custom-date-class-red {\n  background-color: red;\n  border: 1px solid #dddddd;\n  border-radius: 8px;\n}\n.cv-item.custom-date-class-blue {\n  background-color: red;\n}\n.cv-item {\n  margin-top: 15px;\n}\n.cabecal {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 20px;\n  grid-template-areas: \"arrere mig mig avant\";\n}\n.cabecal .arrere {\n  grid-area: arrere;\n}\n.cabecal .mig {\n  grid-area: mig;\n  text-align: center;\n  margin-bottom: 0px;\n  margin-top: 5px;\n}\n.cabecal .avant {\n  grid-area: avant;\n}\n.grid-calendar {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 0px;\n  height: 87vh;\n  grid-template-areas: \"calendari calendari calendari calendari calendari calendari calendari calendari calendari costat\";\n}\n.calendari {\n  grid-area: calendari;\n}\n.costat {\n  padding: 3%;\n  grid-area: costat;\n}\n.costat .mati {\n  border: 1px solid black;\n  border-radius: 5px;\n  margin-bottom: 3px;\n}\n.costat .assessor_nom {\n  max-width: 10em;\n  vertical-align: top;\n  height: 1.3em;\n  line-height: 1.3em;\n  font-size: 0.9em;\n  white-space: nowrap;\n  overflow: hidden;\n  display: block;\n  cursor: pointer;\n  border: 1px solid #dddddd;\n  border-radius: 8px;\n  background-color: white;\n  margin-top: 2px;\n  background-color: red;\n  color: #fffafd;\n  padding: 1px;\n  padding-left: 3px;\n}", ""]);
 
 // exports
 
@@ -32241,6 +32590,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--8-2!./node_modules/sass-loader/dist/cjs.js??ref--8-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--8-2!../../../node_modules/sass-loader/dist/cjs.js??ref--8-3!../../../node_modules/vue-loader/lib??vue-loader-options!./HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -45160,24 +45539,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "uk-grid" }, [
-      _c("div", { staticClass: "uk-width-1-4" }, [
-        _c("button", { on: { click: _vm.agafa_users } }, [_vm._v("Este")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "uk-width-1-4" }, [
-        _c("button", { on: { click: _vm.get_totes_guardies } }, [
-          _vm._v("Guardies")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "uk-width-1-4" }, [
-        _c("button", { on: { click: _vm.drag_prova } }, [_vm._v("drag prova")])
-      ]),
-      _vm._v(" "),
-      _vm._m(0),
-      _c("label", { on: { drag: _vm.comenca_drag } }, [_vm._v("Example Label")])
-    ]),
+    _vm._m(0),
     _vm._v(" "),
     _c("div", { staticClass: "grid-calendar" }, [
       _c(
@@ -45188,9 +45550,10 @@ var render = function() {
             staticClass: "holiday-us-traditional holiday-us-official",
             class: "theme-" + _vm.theme,
             attrs: {
+              doEmitItemMouseEvents: false,
               "show-date": _vm.dia,
               items: _vm.items,
-              "enable-date-selection": true,
+              "enable-date-selection": false,
               enableDragDrop: true,
               "selection-start": _vm.selectionStart,
               "selection-end": _vm.selectionEnd,
@@ -45198,13 +45561,14 @@ var render = function() {
               "item-top": _vm.themeOptions.top,
               "item-content-height": _vm.themeOptions.height,
               "item-border-height": _vm.themeOptions.border,
-              "current-period-label": _vm.themeOptions.currentPeriodLabel
+              "current-period-label": _vm.themeOptions.currentPeriodLabel,
+              startingDayOfWeek: 1
             },
             on: {
               "date-selection-start": _vm.setSelection,
               "date-selection": _vm.setSelection,
               "date-selection-finish": _vm.finishSelection,
-              "click-item": _vm.este2,
+              "click-item": _vm.borrar,
               "drag-start": _vm.drag_prova,
               "drop-on-date": _vm.drag_on_prova
             },
@@ -45233,23 +45597,70 @@ var render = function() {
       _c(
         "div",
         { staticClass: "costat" },
-        _vm._l(_vm.users, function(user, key) {
-          return _c(
-            "div",
-            {
-              key: key,
-              attrs: {
-                id: user.id,
-                "data-uk-tooltip": "pos: left; animation: true; offset: 12;",
-                title: user.name,
-                draggable: "true"
+        [
+          _c("div", { staticClass: "mati" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.mati_radio,
+                  expression: "mati_radio"
+                }
+              ],
+              attrs: { type: "radio", id: "mati", value: "m" },
+              domProps: { checked: _vm._q(_vm.mati_radio, "m") },
+              on: {
+                change: function($event) {
+                  _vm.mati_radio = "m"
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "mati" } }, [_vm._v("Matí")]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.mati_radio,
+                  expression: "mati_radio"
+                }
+              ],
+              attrs: { type: "radio", id: "vesprada", value: "v" },
+              domProps: { checked: _vm._q(_vm.mati_radio, "v") },
+              on: {
+                change: function($event) {
+                  _vm.mati_radio = "v"
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "vesprada" } }, [_vm._v("Vesprada")])
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.users, function(user, key) {
+            return _c(
+              "div",
+              {
+                key: key,
+                staticClass: "assessor_nom",
+                attrs: {
+                  id: user.id,
+                  "data-uk-tooltip": "pos: left; animation: true; offset: 12;",
+                  title: user.name,
+                  draggable: "true"
+                },
+                on: { drag: _vm.comenca_drag }
               },
-              on: { drag: _vm.comenca_drag }
-            },
-            [_vm._v(_vm._s(user.name))]
-          )
-        }),
-        0
+              [_vm._v(_vm._s(user.name))]
+            )
+          })
+        ],
+        2
       )
     ])
   ])
@@ -45259,8 +45670,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "uk-width-1-4" }, [
-      _c("button", [_vm._v("a")])
+    return _c("div", { staticClass: "uk-align-center" }, [
+      _c("h2", { staticClass: "uk-align-center" }, [_vm._v("Afegix guàrdies")])
     ])
   }
 ]
@@ -45296,13 +45707,8 @@ var render = function() {
         }
       },
       [
-        _vm._v(
-          _vm._s(_vm.nom_dia) +
-            " " +
-            _vm._s(_vm.dia_mes) +
-            " " +
-            _vm._s(_vm.mati)
-        )
+        _vm._v(_vm._s(_vm.nom_dia) + " " + _vm._s(_vm.dia_mes) + "  "),
+        _c("span", { domProps: { innerHTML: _vm._s(_vm.mati_icon) } })
       ]
     ),
     _vm._v(" "),
@@ -45969,6 +46375,209 @@ var render = function() {
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HorarisComponent.vue?vue&type=template&id=0a1b52bc&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/HorarisComponent.vue?vue&type=template&id=0a1b52bc& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      {
+        staticClass: "uk-grid-small uk-child-width-expand uk-margin",
+        attrs: { "uk-grid": "" }
+      },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "uk-width-1-3" }, [
+          _c(
+            "form",
+            { staticClass: "uk-width-expand uk-search uk-search-default" },
+            [
+              _c("a", { attrs: { "uk-search-icon": "" } }),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.busca_ass,
+                    expression: "busca_ass"
+                  }
+                ],
+                staticClass: "uk-search-input",
+                attrs: { type: "search", placeholder: "" },
+                domProps: { value: _vm.busca_ass },
+                on: {
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.busca_ass = $event.target.value
+                    },
+                    _vm.busca_as_escri
+                  ]
+                }
+              })
+            ]
+          )
+        ])
+      ]
+    ),
+    _vm._v("\n        " + _vm._s(_vm.results) + "\n          "),
+    _vm._v(" "),
+    _c("div", { staticClass: "grid-calendar" }, [
+      _c(
+        "div",
+        { staticClass: "calendari" },
+        [
+          _c("calendar-view", {
+            staticClass: "holiday-us-traditional holiday-us-official",
+            class: "theme-" + _vm.theme,
+            attrs: {
+              doEmitItemMouseEvents: false,
+              "show-date": _vm.dia,
+              items: _vm.items,
+              "enable-date-selection": false,
+              enableDragDrop: true,
+              "selection-start": _vm.selectionStart,
+              "selection-end": _vm.selectionEnd,
+              "display-week-numbers": false,
+              "item-top": _vm.themeOptions.top,
+              "item-content-height": _vm.themeOptions.height,
+              "item-border-height": _vm.themeOptions.border,
+              "current-period-label": _vm.themeOptions.currentPeriodLabel,
+              startingDayOfWeek: 1
+            },
+            on: {
+              "date-selection-start": _vm.setSelection,
+              "date-selection": _vm.setSelection,
+              "date-selection-finish": _vm.finishSelection,
+              "click-item": _vm.borrar,
+              "drag-start": _vm.drag_prova,
+              "drop-on-date": _vm.drag_on_prova
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "header",
+                fn: function(ref) {
+                  var headerProps = ref.headerProps
+                  return _c("calendar-view-header", {
+                    attrs: {
+                      "header-props": headerProps,
+                      "previous-period-label":
+                        _vm.themeOptions.previousPeriodLabel,
+                      "next-period-label": _vm.themeOptions.nextPeriodLabel
+                    },
+                    on: { input: _vm.setdia }
+                  })
+                }
+              }
+            ])
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "costat" },
+        [
+          _c("div", { staticClass: "mati" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.mati_radio,
+                  expression: "mati_radio"
+                }
+              ],
+              attrs: { type: "radio", id: "mati", value: "m" },
+              domProps: { checked: _vm._q(_vm.mati_radio, "m") },
+              on: {
+                change: function($event) {
+                  _vm.mati_radio = "m"
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "mati" } }, [_vm._v("Matí")]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.mati_radio,
+                  expression: "mati_radio"
+                }
+              ],
+              attrs: { type: "radio", id: "vesprada", value: "v" },
+              domProps: { checked: _vm._q(_vm.mati_radio, "v") },
+              on: {
+                change: function($event) {
+                  _vm.mati_radio = "v"
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "vesprada" } }, [_vm._v("Vesprada")])
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.users, function(user, key) {
+            return _c(
+              "div",
+              {
+                key: key,
+                staticClass: "assessor_nom",
+                attrs: {
+                  id: user.id,
+                  "data-uk-tooltip": "pos: left; animation: true; offset: 12;",
+                  title: user.name,
+                  draggable: "true"
+                },
+                on: { drag: _vm.comenca_drag }
+              },
+              [_vm._v(_vm._s(user.name))]
+            )
+          })
+        ],
+        2
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "uk-width-1-3" }, [
+      _c("h3", [_vm._v("Horari d'assessors")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -66497,6 +67106,7 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 Vue.component('calendar-component', __webpack_require__(/*! ./components/CalendarComponent.vue */ "./resources/js/components/CalendarComponent.vue")["default"]);
 Vue.component('dia-component', __webpack_require__(/*! ./components/DiaComponent.vue */ "./resources/js/components/DiaComponent.vue")["default"]);
 Vue.component('fitxar-component', __webpack_require__(/*! ./components/FitxarComponent.vue */ "./resources/js/components/FitxarComponent.vue")["default"]);
+Vue.component('horaris-component', __webpack_require__(/*! ./components/HorarisComponent.vue */ "./resources/js/components/HorarisComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -66891,6 +67501,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FitxarComponent_vue_vue_type_template_id_7e7c2e6c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FitxarComponent_vue_vue_type_template_id_7e7c2e6c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/HorarisComponent.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/HorarisComponent.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _HorarisComponent_vue_vue_type_template_id_0a1b52bc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./HorarisComponent.vue?vue&type=template&id=0a1b52bc& */ "./resources/js/components/HorarisComponent.vue?vue&type=template&id=0a1b52bc&");
+/* harmony import */ var _HorarisComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HorarisComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/HorarisComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _HorarisComponent_vue_vue_type_style_index_0_lang_sass_scope_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true& */ "./resources/js/components/HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _HorarisComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _HorarisComponent_vue_vue_type_template_id_0a1b52bc___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _HorarisComponent_vue_vue_type_template_id_0a1b52bc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/HorarisComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/HorarisComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/HorarisComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./HorarisComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HorarisComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true& ***!
+  \***************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_style_index_0_lang_sass_scope_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--8-2!../../../node_modules/sass-loader/dist/cjs.js??ref--8-3!../../../node_modules/vue-loader/lib??vue-loader-options!./HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HorarisComponent.vue?vue&type=style&index=0&lang=sass&scope=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_style_index_0_lang_sass_scope_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_style_index_0_lang_sass_scope_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_style_index_0_lang_sass_scope_true___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_style_index_0_lang_sass_scope_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./resources/js/components/HorarisComponent.vue?vue&type=template&id=0a1b52bc&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/HorarisComponent.vue?vue&type=template&id=0a1b52bc& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_template_id_0a1b52bc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./HorarisComponent.vue?vue&type=template&id=0a1b52bc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/HorarisComponent.vue?vue&type=template&id=0a1b52bc&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_template_id_0a1b52bc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HorarisComponent_vue_vue_type_template_id_0a1b52bc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
