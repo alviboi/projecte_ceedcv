@@ -31,6 +31,9 @@ Vue.component('horaris-component', require('./components/HorarisComponent.vue').
 Vue.component('buscahorari-component', require('./components/BuscahorariComponent.vue').default);
 Vue.component('escriuavis-component', require('./components/avisos/EscriuavisComponent.vue').default);
 
+Vue.component('escriumsg-component', require('./components/missatges/EscriumsgComponent.vue').default);
+
+
 
 
 

@@ -3,5 +3,5 @@
 </div>
 
 <div id="modal_missatge" uk-modal>
-    <escriuavis-component />
+    <escriumsg-component />
 </div>
