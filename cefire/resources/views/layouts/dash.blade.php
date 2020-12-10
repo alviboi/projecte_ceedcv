@@ -29,7 +29,8 @@
 										<li class="uk-nav-header">EL TEU COMPTE</li>
 										<li><a href="#"><span data-uk-icon="icon: info"></span> Els meus centres</a></li>
 										<li><a href="#"><span data-uk-icon="icon: refresh"></span> Edita centre</a></li>
-										<li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
+                                        <li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
+                                        <li><a href="#" uk-toggle="target: #modal_avis"><span data-uk-icon="icon: warning"></span> Escriu Avís</a></li>
 										<li class="uk-nav-divider"></li>
 										<li><a href="#"><span data-uk-icon="icon: image"></span> Dades Personals</a></li>
 										<li class="uk-nav-divider"></li>
@@ -117,42 +118,7 @@
 						</ul>
 					</li>
 				</ul>
-				{{-- <div class="left-content-box uk-margin-top">
-
-						<h5>Daily Reports</h5>
-						<div>
-							<span class="uk-text-small">Traffic <small>(+50)</small></span>
-							<progress class="uk-progress" value="50" max="100"></progress>
-						</div>
-						<div>
-							<span class="uk-text-small">Income <small>(+78)</small></span>
-							<progress class="uk-progress success" value="78" max="100"></progress>
-						</div>
-						<div>
-							<span class="uk-text-small">Feedback <small>(-12)</small></span>
-							<progress class="uk-progress warning" value="12" max="100"></progress>
-						</div>
-
-				</div> --}}
-
 			</div>
-			{{-- <div class="bar-bottom">
-				<ul class="uk-subnav uk-flex uk-flex-center uk-child-width-1-5" data-uk-grid>
-					<li>
-						<a href="#" class="uk-icon-link" data-uk-icon="icon: home" title="Home" data-uk-tooltip></a>
-					</li>
-					<li>
-						<a href="#" class="uk-icon-link" data-uk-icon="icon: settings" title="Settings" data-uk-tooltip></a>
-					</li>
-					<li>
-						<a href="#" class="uk-icon-link" data-uk-icon="icon: social"  title="Social" data-uk-tooltip></a>
-					</li>
-
-					<li>
-						<a href="#" class="uk-icon-link" data-uk-tooltip="Sign out" data-uk-icon="icon: sign-out"></a>
-					</li>
-				</ul>
-			</div> --}}
 		</aside>
         <!-- /LEFT BAR -->
 
@@ -164,10 +130,17 @@
 				<hr> --}}
 				<div class="uk-grid uk-grid-medium" data-uk-grid>
 
-					<!-- panel -->
-					<div id="app" class="uk-width-1-1@l">
-						@yield('content')
-					</div>
+                    <!-- panel -->
+                    <div id="app" class="uk-width-1-1">
+					<div>
+                        @yield('content')
+                    </div>
+                    <div>
+                        @include('modals')
+
+                    </div>
+                    </div>
+
 				</div>
 			</div>
         </div>
@@ -199,8 +172,9 @@
 				<h3>Title</h3>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 			</div>
-		</div>
-		<!-- /OFFCANVAS -->
+        </div>
+        <!-- /OFFCANVAS -->
+
 
         <!-- JS FILES -->
         {{-- <script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit.min.js"></script>
@@ -210,5 +184,6 @@
         <script src="js/chartScripts.js"></script> --}}
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('js/home.js') }}"></script>
+
 	</body>
 </html>

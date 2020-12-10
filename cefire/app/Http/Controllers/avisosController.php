@@ -15,6 +15,7 @@ class avisosController extends Controller
     public function index()
     {
         //
+        return avisos::orderby('id','DESC')->get();
     }
 
     /**
@@ -35,7 +36,20 @@ class avisosController extends Controller
      */
     public function store(Request $request)
     {
+        //Validem en el component, no seria necessari esta part
+        $this->validate($request, [
+            'cap' => 'required',
+            'avis' => 'required',
+         ]);
+        $avis = new avisos();
+        $avis->cap = $request->cap;
+        $avis->avis = $request->avis;
+        $avis->data = date("Y-m-d");
+        //  Store data in database
+        $avis->save();
         //
+        return 'Avís gravat correctament ';
+
     }
 
     /**

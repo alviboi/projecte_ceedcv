@@ -1,5 +1,6 @@
 const { delay } = require("lodash");
 
+
 window.canvi = function(url) {
     $("#app").fadeOut(500, function () {
         $("#app").load("seccio/"+url, function(){
@@ -22,3 +23,7 @@ window.getDiumenge= function (d) {
         diff = d.getDate() - day; // ajustar
     return new Date(d.setDate(diff));
   }
+
+window.avis = function() {
+    UIkit.modal('modal_avis').show();
+}

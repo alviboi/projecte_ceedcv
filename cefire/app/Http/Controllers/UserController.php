@@ -92,7 +92,7 @@ class UserController extends Controller
     public function get_guardia(Request $request, $num,$any,$mes)
     {
         //
-        return User::find($num)->cefire()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+        return User::find($num)->guardia()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
     }
 
         /**

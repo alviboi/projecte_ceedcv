@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 
 
@@ -38,12 +37,12 @@ Route::get('/home', function () {
 
 // Route::get('home', 'HomeController@index')->name('home');
 
-Route::get('/user_cefire/{num}/{any}/{mes}', 'UserController@get_cefire')->name('user_cefire')->middleware('auth');
-Route::get('/user_compensa/{num}/{any}/{mes}', 'UserController@get_compensa')->name('user_cefire')->middleware('auth');
-Route::get('/user_curs/{num}/{any}/{mes}', 'UserController@get_curs')->name('user_cefire')->middleware('auth');
-Route::get('/user_guardia/{num}/{any}/{mes}', 'UserController@get_guardia')->name('user_cefire')->middleware('auth');
-Route::get('/user_permis/{num}/{any}/{mes}', 'UserController@get_permis')->name('user_cefire')->middleware('auth');
-Route::get('/user_visita/{num}/{any}/{mes}', 'UserController@get_visita')->name('user_cefire')->middleware('auth');
+Route::get('/user_cefire/{num}/{any}/{mes}', 'UserController@get_cefire')->middleware('auth');
+Route::get('/user_compensa/{num}/{any}/{mes}', 'UserController@get_compensa')->middleware('auth');
+Route::get('/user_curs/{num}/{any}/{mes}', 'UserController@get_curs')->middleware('auth');
+Route::get('/user_guardia/{num}/{any}/{mes}', 'UserController@get_guardia')->middleware('auth');
+Route::get('/user_permis/{num}/{any}/{mes}', 'UserController@get_permis')->middleware('auth');
+Route::get('/user_visita/{num}/{any}/{mes}', 'UserController@get_visita')->middleware('auth');
 
 Route::prefix('complet')->group(function () {
     Route::get('/cefire/{any}/{mes}', 'cefireController@get_data_index')->middleware('auth');
@@ -79,6 +78,7 @@ Route::group(['middleware' => 'auth'], function() {
         'permis' => permisController::class,
         'user' => UserController::class,
         'visita' => visitaController::class,
+        'avisos' => avisosController::class
     ]);
 });
 

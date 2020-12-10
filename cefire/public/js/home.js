@@ -17349,6 +17349,10 @@ window.getDiumenge = function (d) {
   return new Date(d.setDate(diff));
 };
 
+window.avis = function () {
+  UIkit.modal('modal_avis').show();
+};
+
 /***/ }),
 
 /***/ 1:

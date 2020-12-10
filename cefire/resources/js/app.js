@@ -21,6 +21,7 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+Vue.component('avisos-component', require('./components/avisos/AvisosComponent.vue').default);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('calendar-component', require('./components/CalendarComponent.vue').default);
@@ -28,9 +29,12 @@ Vue.component('dia-component', require('./components/DiaComponent.vue').default)
 Vue.component('fitxar-component', require('./components/FitxarComponent.vue').default);
 Vue.component('horaris-component', require('./components/HorarisComponent.vue').default);
 Vue.component('buscahorari-component', require('./components/BuscahorariComponent.vue').default);
+Vue.component('escriuavis-component', require('./components/avisos/EscriuavisComponent.vue').default);
 
 
 
+
+Vue.prototype.$eventBus = new Vue();
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
