@@ -3,6 +3,14 @@
 @section('content')
     <div class="uk-section uk-section-small uk-section-muted">
         <div class="uk-container">
+            <div class="uk-child-width-1-2@m uk-text-center" uk-grid>
+                <div class="uk-animation-toggle" tabindex="0">
+                    <img class="uk-animation-stroke" width="400" height="400" src="img/a.svg" alt="" uk-svg="stroke-animation: true">
+                </div>
+                <div class="uk-animation-toggle" tabindex="0">
+                    <img class="uk-animation-stroke uk-animation-reverse" width="400" height="400" src="img/a.svg" alt="" uk-svg="stroke-animation: true">
+                </div>
+            </div>
             <h1 class="uk-heading-divider">UIkit frontend UI preset for Laravel</h1>
             <p>
                 Congratulations, you've successfuly installed the UIkit preset for

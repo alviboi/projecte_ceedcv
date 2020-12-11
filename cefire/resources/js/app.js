@@ -5,7 +5,7 @@
  */
 
 require('./bootstrap');
-require('./home');
+require('./home.js');
 
 
 
@@ -37,6 +37,7 @@ Vue.component('escriumsg-component', require('./components/missatges/EscriumsgCo
 
 
 
+
 Vue.prototype.$eventBus = new Vue();
 
 /**
@@ -48,9 +49,61 @@ Vue.prototype.$eventBus = new Vue();
 
 const app = new Vue({
     el: '#app',
+    data: {
+        showMissatge: false,
+        showModal: false,
+        calendar: false,
+        horari: false,
+        view: 'principal'
+    },
+    components: {
+        'calendar': {
+          template: '<div><calendar-component/></div>'
+        },
+        'horari': {
+          template: '<div><fitxar-component /></div>'
+        },
+        'horaritots': {
+            template: '<div><horaris-component/></div>'
+        },
+        'buscaenhoraris': {
+            template: '<div><buscahorari-component/></div>'
+        },
+        'principal': {
+            template: '<div><avisos-component /></div>'
+        }
+
+      },
+    methods: {
+        canvi() {
+            this.horari=false;
+            this.calendar=true;
+        },
+        tanca_avis() {
+            // alert('hola');
+            this.showModal=false;
+        },
+        tanca_missatge() {
+            // alert('hola');
+            this.showMissatge=false;
+        }
+    },
+    created() {
+        this.$eventBus.$on('tanca-avis', this.tanca_avis);
+        this.$eventBus.$on('tanca-missatge', this.tanca_missatge);
+
+    },
+    beforeDestroy() {
+        this.$eventBus.$off('tanca-avis');
+        this.$eventBus.$off('tanca-missatge');
+
+    }
+
+
+
     // components: {
-    //     'calendar-component': () => import(
-    //       './components/CalendarComponent.vue'
+    //     'escriuavis-component': () => import(
+    //     './components/avisos/EscriuavisComponent.vue'
     //     ),
     // }
 });

@@ -1,4 +1,6 @@
 <template>
+      <div id="modal_avis" uk-modal>
+
     <div style="background-color: #f7f7f7" class="uk-modal-dialog uk-modal-body">
                 <fieldset class="uk-fieldset">
                     <legend class="uk-legend">Escriu avís de primera pàgina</legend>
@@ -26,6 +28,7 @@
                     </transition-group>
                 </p>
     </div>
+     </div>
 </template>
 
 <script>
@@ -37,15 +40,26 @@ export default {
             avis: "",
             resposta: ""
         }
+        // props: ['show-modal']
     },
+    props: ['show-modal'],
+    watch: {
+        showModal(){
+            this.este();
+        }
+    },
+
     methods: {
         ix() {
+            this.$eventBus.$emit('tanca-avis');
             this.resposta="";
             this.cap="";
             this.avis="";
-            UIkit.modal('#modal_avis').hide();
+            //this.showModal=false;
+            // UIkit.modal('#modal_avis').hide();
 
         },
+
         envia() {
             console.log(this.cap.length);
             if (this.cap.length===0 || this.avis.length===0) {
@@ -68,12 +82,21 @@ export default {
                     console.error(err);
                 })
             }
+        },
+        este() {
+            if (this.showModal == true) {
+                UIkit.modal('#modal_avis').show();
+            } else {
+                UIkit.modal('#modal_avis').hide();
+
+            }
         }
     },
     mounted() {
-        this.id = this._uid
-
+        this.id = this._uid;
     },
+
+
 }
 </script>
 

@@ -2,6 +2,7 @@
 
 @section('content')
 {{-- <calendar-component/> --}}
-@include($seccio)
+{{-- @include($seccio) --}}
+<avisos-component />
 
 @endsection

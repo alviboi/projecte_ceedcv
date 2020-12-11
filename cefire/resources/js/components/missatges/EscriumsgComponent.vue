@@ -1,4 +1,6 @@
 <template>
+<div id="modal_missatge" uk-modal>
+
     <div style="background-color: #f7f7f7" class="uk-modal-dialog uk-modal-body">
                 <fieldset class="uk-fieldset">
                     <legend class="uk-legend">Escriu missatge</legend>
@@ -31,6 +33,7 @@
                     </transition-group>
                 </p>
     </div>
+</div>
 </template>
 
 <script>
@@ -47,6 +50,12 @@ export default {
             resposta: ""
         }
     },
+    props: ['show-missatge'],
+    watch: {
+        showMissatge(){
+            this.este();
+        }
+    },
     methods: {
         agafa_users(){
             axios.get("user")
@@ -59,12 +68,11 @@ export default {
             })
         },
         ix() {
+            this.$eventBus.$emit('tanca-missatge');
             this.resposta="";
             this.cap="";
             this.avis="";
             this.destinatari="";
-            UIkit.modal('#modal_missatge').hide();
-
         },
         filterResults() {
             this.results = this.users.filter((item => item.name.toLowerCase() == this.destinatari.toLowerCase()));
@@ -93,6 +101,14 @@ export default {
                 .catch(err => {
                     console.error(err);
                 })
+            }
+        },
+        este() {
+            if (this.showMissatge == true) {
+                UIkit.modal('#modal_missatge').show();
+            } else {
+                UIkit.modal('#modal_missatge').hide();
+
             }
         }
     },

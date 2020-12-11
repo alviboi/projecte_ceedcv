@@ -1,5 +1,6 @@
 <template>
   <div>
+
       <div v-for="(avis, key) in avisos" :key="key">
           <div class="uk-card uk-card-default uk-width-1-1 margens" uk-margin>
             <div class="uk-card-header">
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -45,10 +47,10 @@ export default {
         this.get_avisos();
     },
     created() {
-    this.$eventBus.$on('avis-enviat', this.get_avisos);
+        this.$eventBus.$on('avis-enviat', this.get_avisos);
     },
     beforeDestroy() {
-    this.$eventBus.$off('avis-enviat');
+        this.$eventBus.$off('avis-enviat');
     }
 }
 </script>

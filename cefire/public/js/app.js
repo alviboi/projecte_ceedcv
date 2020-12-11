@@ -3330,6 +3330,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3401,6 +3402,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3408,14 +3412,21 @@ __webpack_require__.r(__webpack_exports__);
       cap: "",
       avis: "",
       resposta: ""
-    };
+    }; // props: ['show-modal']
+  },
+  props: ['show-modal'],
+  watch: {
+    showModal: function showModal() {
+      this.este();
+    }
   },
   methods: {
     ix: function ix() {
+      this.$eventBus.$emit('tanca-avis');
       this.resposta = "";
       this.cap = "";
-      this.avis = "";
-      UIkit.modal('#modal_avis').hide();
+      this.avis = ""; //this.showModal=false;
+      // UIkit.modal('#modal_avis').hide();
     },
     envia: function envia() {
       var _this = this;
@@ -3441,6 +3452,13 @@ __webpack_require__.r(__webpack_exports__);
         })["catch"](function (err) {
           console.error(err);
         });
+      }
+    },
+    este: function este() {
+      if (this.showModal == true) {
+        UIkit.modal('#modal_avis').show();
+      } else {
+        UIkit.modal('#modal_avis').hide();
       }
     }
   },
@@ -3495,6 +3513,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3508,6 +3529,12 @@ __webpack_require__.r(__webpack_exports__);
       resposta: ""
     };
   },
+  props: ['show-missatge'],
+  watch: {
+    showMissatge: function showMissatge() {
+      this.este();
+    }
+  },
   methods: {
     agafa_users: function agafa_users() {
       var _this = this;
@@ -3520,11 +3547,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     ix: function ix() {
+      this.$eventBus.$emit('tanca-missatge');
       this.resposta = "";
       this.cap = "";
       this.avis = "";
       this.destinatari = "";
-      UIkit.modal('#modal_missatge').hide();
     },
     filterResults: function filterResults() {
       var _this2 = this;
@@ -3560,6 +3587,13 @@ __webpack_require__.r(__webpack_exports__);
         })["catch"](function (err) {
           console.error(err);
         });
+      }
+    },
+    este: function este() {
+      if (this.showMissatge == true) {
+        UIkit.modal('#modal_missatge').show();
+      } else {
+        UIkit.modal('#modal_missatge').hide();
       }
     }
   },
@@ -47546,122 +47580,124 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "uk-modal-dialog uk-modal-body",
-      staticStyle: { "background-color": "#f7f7f7" }
-    },
-    [
-      _c("fieldset", { staticClass: "uk-fieldset" }, [
-        _c("legend", { staticClass: "uk-legend" }, [
-          _vm._v("Escriu avís de primera pàgina")
+  return _c("div", { attrs: { id: "modal_avis", "uk-modal": "" } }, [
+    _c(
+      "div",
+      {
+        staticClass: "uk-modal-dialog uk-modal-body",
+        staticStyle: { "background-color": "#f7f7f7" }
+      },
+      [
+        _c("fieldset", { staticClass: "uk-fieldset" }, [
+          _c("legend", { staticClass: "uk-legend" }, [
+            _vm._v("Escriu avís de primera pàgina")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-margin" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.cap,
+                  expression: "cap"
+                }
+              ],
+              staticClass: "uk-input",
+              attrs: { type: "text", placeholder: "Capçalera de l'avís" },
+              domProps: { value: _vm.cap },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.cap = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-margin" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.avis,
+                  expression: "avis"
+                }
+              ],
+              staticClass: "uk-textarea",
+              attrs: { rows: "5", placeholder: "Missatge que vols escriure" },
+              domProps: { value: _vm.avis },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.avis = $event.target.value
+                }
+              }
+            })
+          ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "uk-margin" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.cap,
-                expression: "cap"
-              }
-            ],
-            staticClass: "uk-input",
-            attrs: { type: "text", placeholder: "Capçalera de l'avís" },
-            domProps: { value: _vm.cap },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.cap = $event.target.value
-              }
-            }
-          })
+        _c("transition", { attrs: { name: "fade" } }, [
+          _vm.resposta
+            ? _c("div", [
+                _vm._v(
+                  "\n                " + _vm._s(_vm.resposta) + "\n            "
+                )
+              ])
+            : _vm._e()
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "uk-margin" }, [
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.avis,
-                expression: "avis"
-              }
-            ],
-            staticClass: "uk-textarea",
-            attrs: { rows: "5", placeholder: "Missatge que vols escriure" },
-            domProps: { value: _vm.avis },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.avis = $event.target.value
-              }
-            }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("transition", { attrs: { name: "fade" } }, [
-        _vm.resposta
-          ? _c("div", [
-              _vm._v(
-                "\n                " + _vm._s(_vm.resposta) + "\n            "
+        _c("div"),
+        _vm._v(" "),
+        _c(
+          "p",
+          { staticClass: "uk-text-right" },
+          [
+            _c("transition-group", { attrs: { name: "list-complete2" } }, [
+              _c(
+                "button",
+                {
+                  key: 1 + _vm.id,
+                  staticClass: "uk-button uk-button-default",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.ix($event)
+                    }
+                  }
+                },
+                [_vm._v("Cancel·la")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  key: 2 + _vm.id,
+                  staticClass: "uk-button uk-button-primary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.envia($event)
+                    }
+                  }
+                },
+                [_vm._v("Envia")]
               )
             ])
-          : _vm._e()
-      ]),
-      _vm._v(" "),
-      _c("div"),
-      _vm._v(" "),
-      _c(
-        "p",
-        { staticClass: "uk-text-right" },
-        [
-          _c("transition-group", { attrs: { name: "list-complete2" } }, [
-            _c(
-              "button",
-              {
-                key: 1 + _vm.id,
-                staticClass: "uk-button uk-button-default",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.ix($event)
-                  }
-                }
-              },
-              [_vm._v("Cancel·la")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                key: 2 + _vm.id,
-                staticClass: "uk-button uk-button-primary",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.envia($event)
-                  }
-                }
-              },
-              [_vm._v("Envia")]
-            )
-          ])
-        ],
-        1
-      )
-    ],
-    1
-  )
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47685,170 +47721,176 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "uk-modal-dialog uk-modal-body",
-      staticStyle: { "background-color": "#f7f7f7" }
-    },
-    [
-      _c("fieldset", { staticClass: "uk-fieldset" }, [
-        _c("legend", { staticClass: "uk-legend" }, [_vm._v("Escriu missatge")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "uk-margin" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.cap,
-                expression: "cap"
-              }
-            ],
-            staticClass: "uk-input",
-            attrs: { type: "text", placeholder: "Assumpte" },
-            domProps: { value: _vm.cap },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.cap = $event.target.value
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "uk-margin" }, [
-          _c(
-            "label",
-            {
-              staticClass: "uk-form-label",
-              attrs: { for: "form-stacked-select" }
-            },
-            [_vm._v("Destinatari/a")]
-          ),
+  return _c("div", { attrs: { id: "modal_missatge", "uk-modal": "" } }, [
+    _c(
+      "div",
+      {
+        staticClass: "uk-modal-dialog uk-modal-body",
+        staticStyle: { "background-color": "#f7f7f7" }
+      },
+      [
+        _c("fieldset", { staticClass: "uk-fieldset" }, [
+          _c("legend", { staticClass: "uk-legend" }, [
+            _vm._v("Escriu missatge")
+          ]),
           _vm._v(" "),
-          _c(
-            "select",
-            {
+          _c("div", { staticClass: "uk-margin" }, [
+            _c("input", {
               directives: [
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.destinatari,
-                  expression: "destinatari"
+                  value: _vm.cap,
+                  expression: "cap"
                 }
               ],
-              staticClass: "uk-select",
-              attrs: { placeholder: "Destinatari/a" },
+              staticClass: "uk-input",
+              attrs: { type: "text", placeholder: "Assumpte" },
+              domProps: { value: _vm.cap },
               on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.destinatari = $event.target.multiple
-                    ? $$selectedVal
-                    : $$selectedVal[0]
-                }
-              }
-            },
-            _vm._l(_vm.users, function(user, key) {
-              return _c(
-                "option",
-                { key: key, domProps: { value: user.name } },
-                [_vm._v(_vm._s(user.name))]
-              )
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "uk-margin" }, [
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.avis,
-                expression: "avis"
-              }
-            ],
-            staticClass: "uk-textarea",
-            attrs: { rows: "5", placeholder: "Missatge que vols escriure" },
-            domProps: { value: _vm.avis },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.avis = $event.target.value
-              }
-            }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("transition", { attrs: { name: "fade" } }, [
-        _vm.resposta
-          ? _c("div", [
-              _vm._v(
-                "\n                " + _vm._s(_vm.resposta) + "\n            "
-              )
-            ])
-          : _vm._e()
-      ]),
-      _vm._v(" "),
-      _c("div"),
-      _vm._v(" "),
-      _c(
-        "p",
-        { staticClass: "uk-text-right" },
-        [
-          _c("transition-group", { attrs: { name: "list-complete2" } }, [
-            _c(
-              "button",
-              {
-                key: 1 + _vm.id,
-                staticClass: "uk-button uk-button-default",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.ix($event)
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
+                  _vm.cap = $event.target.value
                 }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-margin" }, [
+            _c(
+              "label",
+              {
+                staticClass: "uk-form-label",
+                attrs: { for: "form-stacked-select" }
               },
-              [_vm._v("Cancel·la")]
+              [_vm._v("Destinatari/a")]
             ),
             _vm._v(" "),
             _c(
-              "button",
+              "select",
               {
-                key: 2 + _vm.id,
-                staticClass: "uk-button uk-button-primary",
-                attrs: { type: "button" },
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.destinatari,
+                    expression: "destinatari"
+                  }
+                ],
+                staticClass: "uk-select",
+                attrs: { placeholder: "Destinatari/a" },
                 on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.envia($event)
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.destinatari = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
                   }
                 }
               },
-              [_vm._v("Envia")]
+              _vm._l(_vm.users, function(user, key) {
+                return _c(
+                  "option",
+                  { key: key, domProps: { value: user.name } },
+                  [_vm._v(_vm._s(user.name))]
+                )
+              }),
+              0
             )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-margin" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.avis,
+                  expression: "avis"
+                }
+              ],
+              staticClass: "uk-textarea",
+              attrs: { rows: "5", placeholder: "Missatge que vols escriure" },
+              domProps: { value: _vm.avis },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.avis = $event.target.value
+                }
+              }
+            })
           ])
-        ],
-        1
-      )
-    ],
-    1
-  )
+        ]),
+        _vm._v(" "),
+        _c("transition", { attrs: { name: "fade" } }, [
+          _vm.resposta
+            ? _c("div", [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.resposta) +
+                    "\n                "
+                )
+              ])
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c("div"),
+        _vm._v(" "),
+        _c(
+          "p",
+          { staticClass: "uk-text-right" },
+          [
+            _c("transition-group", { attrs: { name: "list-complete2" } }, [
+              _c(
+                "button",
+                {
+                  key: 1 + _vm.id,
+                  staticClass: "uk-button uk-button-default",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.ix($event)
+                    }
+                  }
+                },
+                [_vm._v("Cancel·la")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  key: 2 + _vm.id,
+                  staticClass: "uk-button uk-button-primary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.envia($event)
+                    }
+                  }
+                },
+                [_vm._v("Envia")]
+              )
+            ])
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -68362,7 +68404,7 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-__webpack_require__(/*! ./home */ "./resources/js/home.js");
+__webpack_require__(/*! ./home.js */ "./resources/js/home.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /**
@@ -68392,9 +68434,55 @@ Vue.prototype.$eventBus = new Vue();
  */
 
 var app = new Vue({
-  el: '#app' // components: {
-  //     'calendar-component': () => import(
-  //       './components/CalendarComponent.vue'
+  el: '#app',
+  data: {
+    showMissatge: false,
+    showModal: false,
+    calendar: false,
+    horari: false,
+    view: 'principal'
+  },
+  components: {
+    'calendar': {
+      template: '<div><calendar-component/></div>'
+    },
+    'horari': {
+      template: '<div><fitxar-component /></div>'
+    },
+    'horaritots': {
+      template: '<div><horaris-component/></div>'
+    },
+    'buscaenhoraris': {
+      template: '<div><buscahorari-component/></div>'
+    },
+    'principal': {
+      template: '<div><avisos-component /></div>'
+    }
+  },
+  methods: {
+    canvi: function canvi() {
+      this.horari = false;
+      this.calendar = true;
+    },
+    tanca_avis: function tanca_avis() {
+      // alert('hola');
+      this.showModal = false;
+    },
+    tanca_missatge: function tanca_missatge() {
+      // alert('hola');
+      this.showMissatge = false;
+    }
+  },
+  created: function created() {
+    this.$eventBus.$on('tanca-avis', this.tanca_avis);
+    this.$eventBus.$on('tanca-missatge', this.tanca_missatge);
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.$eventBus.$off('tanca-avis');
+    this.$eventBus.$off('tanca-missatge');
+  } // components: {
+  //     'escriuavis-component': () => import(
+  //     './components/avisos/EscriuavisComponent.vue'
   //     ),
   // }
 
@@ -69192,14 +69280,6 @@ __webpack_require__.r(__webpack_exports__);
 
 var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
     delay = _require.delay;
-
-window.canvi = function (url) {
-  $("#app").fadeOut(500, function () {
-    $("#app").load("seccio/" + url, function () {
-      $("#app").fadeIn(500);
-    });
-  });
-};
 
 window.data_db = function (data) {
   var dia = data.getDate();

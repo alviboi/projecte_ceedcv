@@ -17325,14 +17325,6 @@ module.exports = function(module) {
 var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
     delay = _require.delay;
 
-window.canvi = function (url) {
-  $("#app").fadeOut(500, function () {
-    $("#app").load("seccio/" + url, function () {
-      $("#app").fadeIn(500);
-    });
-  });
-};
-
 window.data_db = function (data) {
   var dia = data.getDate();
   var mes = data.getMonth() + 1;
