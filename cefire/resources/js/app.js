@@ -32,6 +32,10 @@ Vue.component('buscahorari-component', require('./components/BuscahorariComponen
 Vue.component('escriuavis-component', require('./components/avisos/EscriuavisComponent.vue').default);
 
 Vue.component('escriumsg-component', require('./components/missatges/EscriumsgComponent.vue').default);
+Vue.component('llegirmsg-component', require('./components/missatges/LlegirmsgComponent.vue').default);
+
+Vue.component('centres-component', require('./components/CentresComponent.vue').default);
+
 
 
 
@@ -71,6 +75,9 @@ const app = new Vue({
         },
         'principal': {
             template: '<div><avisos-component /></div>'
+        },
+        'centres': {
+            template: '<div><centres-component /></div>'
         }
 
       },

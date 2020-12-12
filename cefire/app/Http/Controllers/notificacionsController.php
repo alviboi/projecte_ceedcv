@@ -15,7 +15,15 @@ class notificacionsController extends Controller
     public function index()
     {
         //
-        return notificacions::get();
+        // return notificacions::where('user_id','=',auth()->id())->get();
+        $ret = array();
+        $els = notificacions::get();
+        foreach ($els as $el) {
+            $item=array("id"=>$el->id, "name"=>$el->user['name'], "From"=>$el->From, "user_id"=>$el->user_id, "cap"=>$el->cap, "missatge"=>$el->missatge);
+            array_push($ret, $item);
+        }
+        return $ret;
+
     }
 
     /**
@@ -36,7 +44,19 @@ class notificacionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //id 	From 	user_id 	missatge
+        $notificacio = new notificacions();
+        $notificacio->From=auth()->id();
+        $notificacio->cap=$request->cap;
+        $notificacio->user_id=$request->user_id;
+        $notificacio->missatge=$request->avis;
+        $err=$notificacio->save();
+        if ($err){
+            return "Missatge enviat  correctament";
+        } else {
+            return "Alguna cosa ha anar malament";
+        }
+
     }
 
     /**
@@ -79,8 +99,10 @@ class notificacionsController extends Controller
      * @param  \App\Models\notificacions  $notificacions
      * @return \Illuminate\Http\Response
      */
-    public function destroy(notificacions $notificacions)
+    public function destroy($notificacions)
     {
         //
+        notificacions::find($notificacions)->delete();
+
     }
 }

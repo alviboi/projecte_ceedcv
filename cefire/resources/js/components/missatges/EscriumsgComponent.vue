@@ -9,7 +9,7 @@
                     </div>
                     <div class="uk-margin">
                         <label class="uk-form-label" for="form-stacked-select">Destinatari/a</label>
-                        <select v-model="destinatari" class="uk-select" placeholder="Destinatari/a">
+                        <select v-model="destinatari" class="uk-select" placeholder="Destinatari/a" :value="destinatari">
                             <option v-for="(user, key) in users" :key="key" :value="user.name">{{user.name}}</option>
                         </select>
                     </div>
@@ -69,6 +69,7 @@ export default {
         },
         ix() {
             this.$eventBus.$emit('tanca-missatge');
+            UIkit.modal('#modal_missatge').hide();
             this.resposta="";
             this.cap="";
             this.avis="";
@@ -83,7 +84,7 @@ export default {
             if (this.cap.length===0 || this.avis.length===0) {
                 this.resposta="Falta algun paràmetre per emplenar";
             } else {
-                this.user_id = this.filterResults;
+                this.user_id = this.filterResults();
                 let url="notificacions";
                 let params = {
                     cap: this.cap,
@@ -94,7 +95,7 @@ export default {
                 .then(res => {
                     console.log(res);
                     this.resposta=res.data;
-                    this.$eventBus.$emit('avis-enviat');
+                    this.destinatari="";
                     this.cap="";
                     this.avis="";
                 })
@@ -110,12 +111,25 @@ export default {
                 UIkit.modal('#modal_missatge').hide();
 
             }
-        }
+        },
+        obre_missatge(envia) {
+            // console.log(e);
+            this.cap=envia.assumpte;
+            this.destinatari=envia.destinatari;
+            UIkit.modal('#modal_missatge').show();
+        },
     },
     mounted() {
         this.agafa_users();
         this.id = this._uid;
     },
+
+    created() {
+        this.$eventBus.$on('missatge-variables', this.obre_missatge);
+    },
+    beforeDestroy() {
+        this.$eventBus.$off('missatge-variables');
+    }
 }
 </script>
 

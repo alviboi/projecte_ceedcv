@@ -90,7 +90,7 @@
                     <li><a href="#" @click="view='horaritots'"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Horaris Assessors</a></li>
 					<li><a href="#" @click="view='buscaenhoraris'"><span data-uk-icon="icon: search" class="uk-margin-small-right"></span>Busca en horaris</a></li>
 					<li><a href="#" @click="view='calendar'"><span data-uk-icon="icon: calendar" class="uk-margin-small-right"></span>Afegix guàrdies</a></li>
-					<li><a href="#"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Featured Content</a></li>
+					<li><a href="#" @click="view='centres'"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Filtra centres</a></li>
 					<li><a href="#"><span data-uk-icon="icon: lifesaver" class="uk-margin-small-right"></span>Tips</a></li>
 					<li class="uk-parent">
 						<a href="#"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Reports</a>
@@ -128,7 +128,9 @@
         </div>
 		<!-- OFFCANVAS -->
 		<div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
-			<div class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide"></div>
+			<div class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide">
+                <llegirmsg-component />
+            </div>
         </div>
     </div>
         <!-- /OFFCANVAS -->

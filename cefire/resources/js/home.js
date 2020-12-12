@@ -21,3 +21,14 @@ window.getDiumenge= function (d) {
 window.avis = function() {
     UIkit.modal('modal_avis').show();
 }
+
+window.fecha_format = function (d = new Date) {
+    let mes = String(d.getMonth() + 1);
+    let dia = String(d.getDate());
+    const any = String(d.getFullYear());
+
+    if (mes.length < 2) mes = '0' + mes;
+    if (dia.length < 2) dia = '0' + dia;
+
+    return `${dia}/${mes}/${any}`;
+  }

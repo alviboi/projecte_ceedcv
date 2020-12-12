@@ -32,6 +32,7 @@
                 :class="`theme-` + theme"
                 :current-period-label="themeOptions.currentPeriodLabel"
                 :startingDayOfWeek=1
+                @click-item="envia_missatge"
                 class="holiday-us-traditional holiday-us-official"
             >
                 <calendar-view-header
@@ -123,37 +124,37 @@ export default {
             var toti="id";
             switch (element) {
                 case 'cefire':
-                    num=10000;
+                    num=1000000;
                     clase="custom-date-class-blue";
                     toti="inici";
                     break;
                 case 'compensa':
-                    num=20000;
+                    num=2000000;
                     clase="custom-date-class-gray";
                     toti="motiu";
                     break;
                 case 'curs':
-                    num=30000;
+                    num=3000000;
                     clase="custom-date-class-yellow";
                     toti="curs";
                     break;
                 case 'guardia':
-                    num=40000;
+                    num=4000000;
                     clase="custom-date-class-red";
                     toti="inici";
                     break;
                 case 'permis':
-                    num=50000;
+                    num=5000000;
                     clase="custom-date-class-green";
                     toti="motiu";
                     break;
                 case 'visita':
-                    num=60000;
+                    num=6000000;
                     clase="custom-date-class-pink";
                     toti="centre";
                     break;
                 default:
-                    num=70000;
+                    num=7000000;
                     clase="custom-date-class-red";
                     break;
             }
@@ -169,13 +170,49 @@ export default {
                 let fechas = ele.data.split('-');
                 let i = {
                     id: (ele.id+num),
-                    title: "<div id="+(ele.id+num)+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+ele[toti]+"\">"+mati+" "+ele.name.toUpperCase()+"</div>",
+                    title: "<div id="+(ele.id+num)+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+ele[toti]+"\">"+mati+" "+ele.name+"</div>",
                     startDate: Date.UTC(fechas[0], fechas[1]-1, fechas[2]),
                     classes: clase+" uk-animation-scale-up",
                 };
                 this.items.push(i);
             }
             this.index=result.length;
+        },
+        comproba_id_element (id){
+            if (id>=1000000) {
+                if (id>=2000000) {
+                    if (id>=3000000) {
+                        if (id>=4000000) {
+                            if (id>=5000000) {
+                                if (id>=6000000) {
+                                    if (id>=7000000) {
+                                        return "Error";
+                                        }
+                                return "Visita";
+                                }
+                            return "Permís";
+                            }
+                        return "Guardia";
+                        }
+                    return "Curs";
+                    }
+                return "Compensa";
+                }
+            return "Cefire";
+            }
+        },
+        envia_missatge(calendarItem, windowEvent) {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(calendarItem.title, 'text/html');
+            let destinatari = doc.body.innerText.trim();
+            let data = fecha_format(calendarItem.startDate);
+            let id = this.comproba_id_element(Number(doc.all[3].id));
+            console.log(id);
+            let envia =  {
+                destinatari: destinatari,
+                assumpte: "En relació al element "+id+" del dia "+ data
+            }
+            this.$eventBus.$emit('missatge-variables',envia);
         }
     },
     mounted() {
@@ -188,8 +225,8 @@ export default {
                 this.get_element('cefire');
             } else {
                 for (let index = this.items.length-1; index >= 0; index--) {
-                    console.log((this.items[index].id>=10000) && (this.items[index].id<20000));
-                    if((this.items[index].id>=10000) && (this.items[index].id<20000)) {
+                    console.log((this.items[index].id>=1000000) && (this.items[index].id<2000000));
+                    if((this.items[index].id>=1000000) && (this.items[index].id<2000000)) {
                         console.log(index);
                         this.items.splice(index,1);
                     }
@@ -201,7 +238,7 @@ export default {
                 this.get_element('compensa');
             } else {
                 for (let index = this.items.length-1; index >= 0; index--) {
-                    if((this.items[index].id>=20000) && (this.items[index].id<30000)) {
+                    if((this.items[index].id>=2000000) && (this.items[index].id<3000000)) {
                         console.log(index);
                         this.items.splice(index,1);
                     }
@@ -213,7 +250,7 @@ export default {
                 this.get_element('curs');
             } else {
                 for (let index = this.items.length-1; index >= 0; index--) {
-                    if((this.items[index].id>=30000) && (this.items[index].id<40000)) {
+                    if((this.items[index].id>=3000000) && (this.items[index].id<4000000)) {
                         console.log(index);
                         this.items.splice(index,1);
                     }
@@ -225,7 +262,7 @@ export default {
                 this.get_element('guardia');
             } else {
                 for (let index = this.items.length-1; index >= 0; index--) {
-                    if((this.items[index].id>=40000) && (this.items[index].id<50000)) {
+                    if((this.items[index].id>=4000000) && (this.items[index].id<5000000)) {
                         console.log(index);
                         this.items.splice(index,1);
                     }
@@ -237,7 +274,7 @@ export default {
                 this.get_element('permis');
             } else {
                 for (let index = this.items.length-1; index >= 0; index--) {
-                    if((this.items[index].id>=50000) && (this.items[index].id<60000)) {
+                    if((this.items[index].id>=5000000) && (this.items[index].id<6000000)) {
                         console.log(index);
                         this.items.splice(index,1);
                     }
@@ -249,23 +286,16 @@ export default {
                 this.get_element('visita');
             } else {
                 for (let index = this.items.length-1; index >= 0; index--) {
-                    if((this.items[index].id>=60000) && (this.items[index].id<70000)) {
+                    if((this.items[index].id>=6000000) && (this.items[index].id<7000000)) {
                         console.log(index);
                         this.items.splice(index,1);
                     }
                 }
             }
         }
-
-
-
-
-
-
-
-
-
     },
+
+
 }
 </script>
 

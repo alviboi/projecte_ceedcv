@@ -6,8 +6,8 @@
             </div>
             <div class="uk-width-1-3">
                 <form class="uk-width-expand uk-search uk-search-default" autocomplete="on">
-                    <a uk-search-icon></a>
-                    <input list="llista" v-model="busca_ass" class="uk-search-input" type="search" @keypress="pressEnter" placeholder="">
+                    <a @click="filterResults()" uk-search-icon></a>
+                    <input list="llista" v-model="busca_ass" class="uk-search-input" @keypress="pressEnter" placeholder="">
                       <datalist class="llista" id="llista">
                             <option v-for="(user,key) in users" :key="key" :value="user.name">{{user.name}}</option>
                       </datalist>
@@ -28,6 +28,7 @@
                 :class="`theme-` + theme"
                 :current-period-label="themeOptions.currentPeriodLabel"
                 :startingDayOfWeek=1
+                @click-item="envia_missatge"
                 class="holiday-us-traditional holiday-us-official"
             >
                 <calendar-view-header
@@ -86,7 +87,9 @@ export default {
         setdia(d) {
             this.dia = d;
             this.items= [];
-            this.tots_els_elements_get();
+            if(this.busca_ass != ""){
+                this.tots_els_elements_get();
+            }
 		},
         pressEnter(event){
             if (event.keyCode === 13) {
@@ -137,37 +140,37 @@ export default {
             var toti="id";
             switch (element) {
                 case 'cefire':
-                    num=10000;
+                    num=1000000;
                     clase="custom-date-class-blue";
                     toti="inici";
                     break;
                 case 'compensa':
-                    num=20000;
+                    num=2000000;
                     clase="custom-date-class-gray";
                     toti="motiu";
                     break;
                 case 'curs':
-                    num=30000;
+                    num=3000000;
                     clase="custom-date-class-yellow";
                     toti="curs";
                     break;
                 case 'guardia':
-                    num=40000;
+                    num=4000000;
                     clase="custom-date-class-red";
                     toti="inici";
                     break;
                 case 'permis':
-                    num=50000;
+                    num=5000000;
                     clase="custom-date-class-green";
                     toti="motiu";
                     break;
                 case 'visita':
-                    num=60000;
+                    num=6000000;
                     clase="custom-date-class-pink";
                     toti="centre";
                     break;
                 default:
-                    num=70000;
+                    num=7000000;
                     clase="custom-date-class-red";
                     break;
             }
@@ -190,6 +193,43 @@ export default {
                 this.items.push(i);
             }
             this.index=result.length;
+        },
+        comproba_id_element (id){
+            if (id>=1000000) {
+                if (id>=2000000) {
+                    if (id>=3000000) {
+                        if (id>=4000000) {
+                            if (id>=5000000) {
+                                if (id>=6000000) {
+                                    if (id>=7000000) {
+                                        return "Error";
+                                        }
+                                return "Visita";
+                                }
+                            return "Permís";
+                            }
+                        return "Guardia";
+                        }
+                    return "Curs";
+                    }
+                return "Compensa";
+                }
+            return "Cefire";
+            }
+        },
+        envia_missatge(calendarItem, windowEvent) {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(calendarItem.title, 'text/html');
+            let destinatari = this.results[0].name;
+            let data = fecha_format(calendarItem.startDate);
+            let id = this.comproba_id_element(Number(doc.all[3].id));
+            console.log(id);
+            console.log(this.results[0].name);
+            let envia =  {
+                destinatari: destinatari,
+                assumpte: "En relació al element "+id+" del dia "+ data
+            }
+            this.$eventBus.$emit('missatge-variables',envia);
         }
     },
     mounted() {

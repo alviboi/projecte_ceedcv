@@ -17345,6 +17345,16 @@ window.avis = function () {
   UIkit.modal('modal_avis').show();
 };
 
+window.fecha_format = function () {
+  var d = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date();
+  var mes = String(d.getMonth() + 1);
+  var dia = String(d.getDate());
+  var any = String(d.getFullYear());
+  if (mes.length < 2) mes = '0' + mes;
+  if (dia.length < 2) dia = '0' + dia;
+  return "".concat(dia, "/").concat(mes, "/").concat(any);
+};
+
 /***/ }),
 
 /***/ 1:
