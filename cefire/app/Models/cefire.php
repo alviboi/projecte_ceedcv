@@ -11,8 +11,20 @@ class cefire extends Model
 {
     public $table = 'cefire';
     use HasFactory;
+    protected $casts = [
+        'inici' => 'datetime',
+        'fi' => 'datetime',
+    ];
     public function user()
     {
         return $this->belongsTo('App\Models\User');
     }
+    // public function setiniciAttribute($value)
+    // {
+    //     $this->attributes['inici'] = $value;
+    // }
+    // public function setfiAttribute($value)
+    // {
+    //     $this->attributes['fi'] = $value;
+    // }
 }

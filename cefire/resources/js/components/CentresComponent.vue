@@ -3,7 +3,9 @@
   <div style="width: 100%">
     <input type="checkbox" v-model="editant">Edita</input>
     <vue-table-dynamic
+      class="tabla"
       @cell-click="EditaCelda"
+      @cell-change="prova"
       :params="params"
 
       ref="table"
@@ -15,13 +17,12 @@
 <script>
 import VueTableDynamic from 'vue-table-dynamic'
 export default {
-  name: 'Demo',
   data() {
     return {
       editant: false,
       params: {
         data: [
-          ["id","assessor","nom","codi","situacio","CP","ciutat","contacte","mail_contacte","tlf_contacte"]
+          ["id","assessor","nom","codi","situacio","CP","ciutat","contacte","mail_contacte","tlf_contacte","Observacions"]
         ],
         header: 'row',
         enableSearch: true,
@@ -31,18 +32,14 @@ export default {
         stripe: true,
         pageSize: 20,
         columnWidth: [{column: 0, width: '4%'}, {column: 3, width: '6%'}, {column: 4, width: '4%'},{column: 5, width: '4%'},{column: 6, width: '6%'}],
-        edit: {
-          row: [1],
-          column: [1],
-        }
+        edit: {}
       }
     }
   },
   components: { VueTableDynamic },
   methods: {
-      prova(){
-          let prova  = [5, 'fsfs', '7c95fdsfsf7', 'fsfds'];
-          this.params.data.push(prova);
+      prova(rowIndex,columnIndex,data){
+          console.log(this.params.data[rowIndex]);
       },
       get_centres() {
           axios.get("centres")
@@ -55,18 +52,45 @@ export default {
           })
       },
       EditaCelda (rowIndex, columnIndex, data) {
-        console.log('onCellChange: ', rowIndex, columnIndex, data);
-        let edit= {
-          row: [rowIndex],
-          column: [columnIndex],
+        console.log(rowIndex, columnIndex);
+        if (this.editant==true){
+            if (columnIndex == 1){
+                alert("No pots editar este camp");
+            } else {
+                let edit= {
+                    row: [rowIndex],
+                    column: [columnIndex],
+                }
+            this.params.edit=edit;
+            }
+        } else {
+            let url="http://www.ceice.gva.es/abc/i_guiadecentros/es/centro.asp?codi="+this.params.data[rowIndex][3];
+            console.log(this.params.data[rowIndex][3]);
+            newTab(url);
         }
-        this.params.edit=edit;
 
     }
   },
-
+  watch: {
+      editant(){
+          if (this.editant == false ){
+              let edit= {}
+              this.params.edit=edit;
+          }
+      }
+  },
   mounted() {
       this.get_centres();
   },
 }
 </script>
+<style lang="sass" scope>
+.tabla
+    font-size: 14px !important
+    padding: 10px
+    border-radius: 10px
+    -webkit-box-shadow: 3px 8px 144px -53px rgba(0,0,0,0.53)
+    -moz-box-shadow: 3px 8px 144px -53px rgba(0,0,0,0.53)
+    box-shadow: 3px 8px 144px -53px rgba(0,0,0,0.53)
+
+</style>

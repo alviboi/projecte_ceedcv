@@ -17,10 +17,10 @@ class centresController extends Controller
         //
         $centres=centres::get()->values();
         $ret=array();
-        array_push($ret,array("id","assessor","nom","codi","situacio","CP","ciutat","contacte","mail_contacte","tlf_contacte"));
+        array_push($ret,array("id","assessor","nom","codi","situacio","CP","ciutat","contacte","mail_contacte","tlf_contacte","Observacions"));
         foreach ($centres as $el) {
             //["id","nom","codi","situacio","CP","ciutat","user_id","contacte","mail_contacte","tlf_contacte","Observacions"]
-            $item=array($el->id,$el->user['name'],$el->nom,$el->codi,$el->situacio,$el->CP,$el->ciutat,$el->contacte,$el->mail_contacte,$el->tlf_contacte);
+            $item=array($el->id,$el->user['name'],$el->nom,$el->codi,$el->situacio,$el->CP,$el->ciutat,$el->contacte,$el->mail_contacte,$el->tlf_contacte,$el->Observacions);
             array_push($ret, $item);
         }
         return $ret;

@@ -104,4 +104,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    // public function setiniciAttribute($value)
+    // {
+    //     $this->attributes['inici'] = $value;
+    // }
+    // public function setfiAttribute($value)
+    // {
+    //     $this->attributes['fi'] = $value;
+    // }
+
+
 }

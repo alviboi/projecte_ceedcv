@@ -28,7 +28,7 @@
 									<ul class="uk-nav uk-navbar-dropdown-nav">
 										<li class="uk-nav-header">EL TEU COMPTE</li>
 										<li><a href="#"><span data-uk-icon="icon: info"></span> Els meus centres</a></li>
-										<li><a href="#"><span data-uk-icon="icon: refresh"></span> Edita centre</a></li>
+										<li><a href="#"><span data-uk-icon="icon: refresh"></span> Control de tots els Assessors</a></li>
                                         <li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
                                         <li><a href="#" @click="showModal = true"><span data-uk-icon="icon: warning"></span> Escriu Avís</a></li>
 										<li class="uk-nav-divider"></li>
@@ -95,8 +95,8 @@
 					<li class="uk-parent">
 						<a href="#"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Reports</a>
 						<ul class="uk-nav-sub">
-							<li><a href="#">Sub item</a></li>
-							<li><a href="#">Sub item</a></li>
+							<li><a href="#" @click="view='report1'">Report 1</a></li>
+							<li><a href="#" @click="view='report2'">Report 2</a></li>
 						</ul>
 					</li>
 				</ul>

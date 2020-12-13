@@ -30,7 +30,14 @@ class UserController extends Controller
         //
         if ($mati == 'm') $control='<'; else $control='>';
         $cefire = User::find(auth()->id())->cefire()->where('data','=',$dia)->where('fi',$control,'15:00:00')->get();
-        return $cefire;
+        if(!empty($cefire[0])){
+            $ret1 = array("id" => $cefire[0]->id, "user_id" => $cefire[0]->user_id,"inici" => $cefire[0]->inici->format('H:i'),"fi" => $cefire[0]->fi->format('H:i'));
+            $ret2=[$ret1];
+            return $ret2;
+        } else {
+            return "0";
+        }
+
     }
     public function dia_guardia($dia,$mati)
     {

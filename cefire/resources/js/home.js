@@ -32,3 +32,8 @@ window.fecha_format = function (d = new Date) {
 
     return `${dia}/${mes}/${any}`;
   }
+
+window.newTab = function(url){
+    var win = window.open(url);
+    win.focus();
+}

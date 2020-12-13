@@ -17355,6 +17355,11 @@ window.fecha_format = function () {
   return "".concat(dia, "/").concat(mes, "/").concat(any);
 };
 
+window.newTab = function (url) {
+  var win = window.open(url);
+  win.focus();
+};
+
 /***/ }),
 
 /***/ 1:

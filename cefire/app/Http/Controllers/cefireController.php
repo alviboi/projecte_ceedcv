@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\cefire;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class cefireController extends Controller
 {
@@ -29,7 +31,7 @@ class cefireController extends Controller
         $ret = array();
         $els = cefire::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
         foreach ($els as $el) {
-            $item=array("id"=>$el->id, "name"=>$el->user['name'], "data"=>$el->data, "inici"=>$el->inici, "fi"=>$el->fi);
+            $item=array("id"=>$el->id, "name"=>$el->user['name'], "data"=>$el->data, "inici"=>$el->inici->format('H:i'), "fi"=>$el->fi->format('H:i'));
             array_push($ret, $item);
         }
         return $ret;
@@ -109,5 +111,36 @@ class cefireController extends Controller
     {
         //
         $cefire->delete();
+    }
+
+        /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\cefire  $cefire
+     * @return \Illuminate\Http\Response
+     */
+    public function contar_cefires($desde,$fins)
+    {
+        //
+        $cefire=cefire::where('user_id','=',auth()->id())->whereBetween('data', [$desde, $fins])->orderBy('data','ASC')->get();
+        $total=0;
+        $labels=array();
+        $data=array();
+        $data_ant=new DateTime();
+        foreach($cefire as $cef){
+            if ($data_ant == $cef->data) {
+                $duration = $cef->inici->diffInMinutes($cef->fi);
+                $valor = array_pop($data);
+                array_push($data,($valor+$duration));
+            } else {
+                $duration = $cef->inici->diffInMinutes($cef->fi);
+                array_push($labels,$cef->data);
+                array_push($data,$duration);
+                $total=$total+$duration;
+            }
+            $data_ant=$cef->data;
+        }
+        $ret=array('labels' => $labels, 'data' => $data, 'total' => $total);
+        return ($ret);
     }
 }
