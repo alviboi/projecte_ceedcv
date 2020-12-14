@@ -30,13 +30,13 @@
           class="sombra"
           :data="lloc[index + 1]"
           mati="m"
-          :key="componentKey"
+          :key="index+componentKey+1000"
         />
         <dia-component
           class="sombra"
           :data="lloc[index + 1]"
           mati="v"
-          :key="componentKey+3"
+          :key="index+componentKey"
         />
       </div>
     </div>

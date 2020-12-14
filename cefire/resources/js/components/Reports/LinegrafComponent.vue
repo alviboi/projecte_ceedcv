@@ -12,9 +12,9 @@ export default {
           {
             label: this.nom_datos,
             data: this.data,
-            backgroundColor: "transparent",
-            borderColor: "rgba(1, 116, 188, 0.50)",
-            pointBackgroundColor: "rgba(171, 71, 188, 1)"
+            backgroundColor: "#f87979",
+            // borderColor: "rgba(1, 116, 188, 0.50)",
+            // pointBackgroundColor: "rgba(171, 71, 188, 1)"
           }
         ]
       },

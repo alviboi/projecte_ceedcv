@@ -6,16 +6,16 @@
 						<span class="uk-text-small"><span data-uk-icon="icon:users" class="uk-margin-small-right uk-text-primary"></span>Temps total</span>
 						<h1 class="uk-heading-primary uk-margin-remove  uk-text-primary">{{total/60}} hores</h1>
 						<div class="uk-text-small">
-							<span class="uk-text-success" data-uk-icon="icon: triangle-up">15%</span> more than last week.
+							Sense contar eixides.
 						</div>
 					</div>
 					<div>
 
 						<span class="uk-text-small"><span data-uk-icon="icon:clock" class="uk-margin-small-right uk-text-primary"></span>Total mes passat</span>
-						<h1 class="uk-heading-primary uk-margin-remove uk-text-primary">{{total_pass/60}}</h1>
-						<div class="uk-text-small">
+						<h1 class="uk-heading-primary uk-margin-remove uk-text-primary">{{total_pass/60}} hores</h1>
+						<!-- <div class="uk-text-small">
 							<span class="uk-text-warning" data-uk-icon="icon: triangle-down">-15%</span> less than last week.
-						</div>
+						</div> -->
 
 					</div>
 					<!-- <div>
@@ -68,7 +68,7 @@ export default {
             total: 0,
             datos: [],
             labels: [],
-            nom: "Gràfica de les hores fetes al cefire",
+            nom: "Gràfica dels minuts fets al cefire",
             nom_datos: "Cefire",
             refresca: 0
         }

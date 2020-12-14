@@ -28,7 +28,7 @@
 									<ul class="uk-nav uk-navbar-dropdown-nav">
 										<li class="uk-nav-header">EL TEU COMPTE</li>
 										<li><a href="#"><span data-uk-icon="icon: info"></span> Els meus centres</a></li>
-										<li><a href="#"><span data-uk-icon="icon: refresh"></span> Control de tots els Assessors</a></li>
+										<li><a href="#" @click="view = 'controlass'"><span data-uk-icon="icon: refresh"></span> Control d'Assessors</a></li>
                                         <li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
                                         <li><a href="#" @click="showModal = true"><span data-uk-icon="icon: warning"></span> Escriu Avís</a></li>
 										<li class="uk-nav-divider"></li>
@@ -47,7 +47,7 @@
 					<div class="uk-navbar-right">
 						<ul class="uk-navbar-nav">
 							<li><a href="#" @click="showMissatge = true" data-uk-icon="icon:mail" title="Envia missatge a company" data-uk-tooltip></a></li>
-							<li><a href="#" data-uk-icon="icon: commenting" title="Ajuda" data-uk-tooltip></a></li>
+							{{-- <li><a href="#" data-uk-icon="icon: commenting" title="Ajuda" data-uk-tooltip></a></li> --}}
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-uk-icon="icon:  sign-out" title="Sign Out" data-uk-tooltip></a></li>
 							<li><a class="uk-navbar-toggle" data-uk-toggle data-uk-navbar-toggle-icon href="#offcanvas-nav" title="Missatge rebuts" data-uk-tooltip></a></li>
 						</ul>
@@ -70,13 +70,12 @@
 				    <!-- user dropdown -->
 				    <div class="uk-dropdown user-drop" data-uk-dropdown="mode: click; pos: bottom-center; animation: uk-animation-slide-bottom-small; duration: 150">
 				    	<ul class="uk-nav uk-dropdown-nav uk-text-left">
-								<li><a href="#"><span data-uk-icon="icon: info"></span> Summary</a></li>
-								<li><a href="#"><span data-uk-icon="icon: refresh"></span> Edit</a></li>
-								<li><a href="#"><span data-uk-icon="icon: settings"></span> Configuration</a></li>
+								<li><a href="#"><span data-uk-icon="icon: refresh"></span> Edita perfil</a></li>
+								<li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
 								<li class="uk-nav-divider"></li>
-								<li><a href="#"><span data-uk-icon="icon: image"></span> Your Data</a></li>
+								<li><a href="#"><span data-uk-icon="icon: image"></span> Les teues dades</a></li>
 								<li class="uk-nav-divider"></li>
-								<li><a href="#"><span data-uk-icon="icon: sign-out"></span> Sign Out</a></li>
+								<li><a href="#"><span data-uk-icon="icon: sign-out"></span> Surt</a></li>
 					    </ul>
 				    </div>
 				    <!-- /user dropdown -->
@@ -91,12 +90,12 @@
 					<li><a href="#" @click="view='buscaenhoraris'"><span data-uk-icon="icon: search" class="uk-margin-small-right"></span>Busca en horaris</a></li>
 					<li><a href="#" @click="view='calendar'"><span data-uk-icon="icon: calendar" class="uk-margin-small-right"></span>Afegix guàrdies</a></li>
 					<li><a href="#" @click="view='centres'"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Filtra centres</a></li>
-					<li><a href="#"><span data-uk-icon="icon: lifesaver" class="uk-margin-small-right"></span>Tips</a></li>
+					<li><a href="#"><span data-uk-icon="icon: lifesaver" class="uk-margin-small-right"></span>Ajuda</a></li>
 					<li class="uk-parent">
 						<a href="#"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Reports</a>
 						<ul class="uk-nav-sub">
-							<li><a href="#" @click="view='report1'">Report 1</a></li>
-							<li><a href="#" @click="view='report2'">Report 2</a></li>
+							<li><a href="#" @click="view='report1'">Personal</a></li>
+							<li><a href="#" @click="view='report2'">General</a></li>
 						</ul>
 					</li>
 				</ul>

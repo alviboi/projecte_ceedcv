@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Validator;
 use App\Models\permis;
 use Illuminate\Http\Request;
 
@@ -57,6 +57,7 @@ class permisController extends Controller
         $dat->fi = $request->fi;
         $dat->user_id = auth()->id();
         $dat->motiu = $request->motiu;
+        $dat->arxiu= $request->arxiu;
         $dat->save();
         return $dat->toArray();
     }
@@ -107,4 +108,41 @@ class permisController extends Controller
         //
         permis::find($permis)->delete();
     }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\permis  $permis
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request)
+    {
+        //
+        $validator = Validator::make($request->all(), [
+            'arxiu' => 'required|mimes:pdf|max:10024'
+        ]);
+
+        if ($validator->fails()) {
+            abort(404);
+        } else {
+            $arxiu=$request->file('arxiu')->store('arxius');
+            return $arxiu;
+        }
+        //
+
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\permis  $permis
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request)
+    {
+        //
+        return response()->download(storage_path("app/".$request->arxiu));
+   }
+
+
+
+   //
 }

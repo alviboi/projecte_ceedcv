@@ -56,7 +56,7 @@
           data-placement="bottom"
           title="PERMIS"
           class="btn btn-primary btn-sm"
-          :uk-toggle="'target: #permis-modal'+this._uid"
+          @click="obre_permis()"
         >
           <i class="fas fa-virus"></i>
         </button>
@@ -118,6 +118,8 @@
             :title="perm.motiu"
           >
             <span @click="borra_par('permis', perm.id)" class="cerrar" />
+            <span @click="mira_arxiu('/'+perm.arxiu)" class="arxiu" />
+
           </div>
         </transition-group>
 
@@ -233,14 +235,19 @@
               type="text"
               placeholder="Motiu del permís"
             />
-            <div class="js-upload uk-placeholder uk-text-center">
-                <span uk-icon="icon: cloud-upload"></span>
-                <span class="uk-text-middle">Puja o arrastra l'arxiu justificant</span>
-                <div uk-form-custom>
-                    <input type="file" multiple>
-                    <span class="uk-link">selecting one</span>
+            <div :id="'upload'+this._uid" class="js-upload uk-placeholder uk-text-center">
+                <div>
+                        {{avis_pujada}}
                 </div>
+                <span uk-icon="icon: cloud-upload"></span>
+                <span class="uk-text-middle">Puja o arrastra l'arxiu justificant en <b>PDF</b></span>
+                <div uk-form-custom>
+                    <input type="file">
+                    <span class="uk-link">Selecciona un arxiu</span>
+                </div>
+
             </div>
+            <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
           </div>
         </fieldset>
         <p class="uk-text-right">
@@ -265,60 +272,7 @@
 </template>
 
 <script>
-UIkit.upload('.js-upload', {
 
-    url: '',
-    multiple: true,
-
-    beforeSend: function () {
-        console.log('beforeSend', arguments);
-    },
-    beforeAll: function () {
-        console.log('beforeAll', arguments);
-    },
-    load: function () {
-        console.log('load', arguments);
-    },
-    error: function () {
-        console.log('error', arguments);
-    },
-    complete: function () {
-        console.log('complete', arguments);
-    },
-
-    loadStart: function (e) {
-        console.log('loadStart', arguments);
-
-        bar.removeAttribute('hidden');
-        bar.max = e.total;
-        bar.value = e.loaded;
-    },
-
-    progress: function (e) {
-        console.log('progress', arguments);
-
-        bar.max = e.total;
-        bar.value = e.loaded;
-    },
-
-    loadEnd: function (e) {
-        console.log('loadEnd', arguments);
-
-        bar.max = e.total;
-        bar.value = e.loaded;
-    },
-
-    completeAll: function () {
-        console.log('completeAll', arguments);
-
-        setTimeout(function () {
-            bar.setAttribute('hidden', 'hidden');
-        }, 1000);
-
-        alert('Upload Completed');
-    }
-
-});
 export default {
   data() {
     return {
@@ -346,11 +300,78 @@ export default {
             'Diumenge',
     ],
     nom_dia: "",
-    dia_mes: 0
+    dia_mes: 0,
+    arxiu_pujat: '',
+    avis_pujada: "",
     };
   },
   props: ['mati','data'],
   methods: {
+    mira_arxiu(d){
+        let url="download_permis";
+        let params={
+            "arxiu": d
+        }
+        axios.post(url,params)
+        .then(response => {
+            console.log(response);
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'file.pdf');
+            document.body.appendChild(link);
+            link.click();
+        })
+        .catch(err => {
+            alert("Error: Has pujat un arxiu pdf?");
+            console.error(err);
+        })
+    },
+    obre_permis(){
+            self=this;
+            var arxiu_p;
+            this.id = this._uid;
+            var bar = document.getElementById('js-progressbar');
+            UIkit.upload('#upload'+this.id, {
+                    url: 'upload_permis',
+                    multiple: false,
+                    name: 'arxiu',
+                    beforeSend: function (e) {
+                        console.log('beforeSend', arguments);
+                        e.headers = { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') }
+                    },
+                    loadStart: function (e) {
+                        bar.removeAttribute('hidden');
+                        bar.max = e.total;
+                        bar.value = e.loaded;
+                    },
+
+                    progress: function (e) {
+                        bar.max = e.total;
+                        bar.value = e.loaded;
+                    },
+
+                    loadEnd: function (e) {
+                        bar.max = e.total;
+                        bar.value = e.loaded;
+                    },
+                    completeAll: function () {
+                        arxiu_p=arguments[0].response;
+                        console.log('completeAll', arguments[0].response);
+                        console.log(self.id);
+                        self.guarda_arxiu_pujat(arxiu_p);
+                        setTimeout(function () {
+                            bar.setAttribute('hidden', 'hidden');
+                        }, 1000);
+                        self.avis_pujada="Pujada realitzada correctament";
+                    }
+
+                });
+        UIkit.modal('#permis-modal'+this._uid).show();
+    },
+    guarda_arxiu_pujat(a){
+        this.arxiu_pujat=a;
+    },
     get_nom_dia() {
         this.nom_dia = this.dies[this.data.getDay()]
     },
@@ -423,12 +444,22 @@ export default {
         inici="16:00:00";
         fi="20:00:00";
       }
-      var params = {
-        data: data_db(this.data),
-        inici: inici,
-        fi: fi,
-        motiu: this[varNom],
-      };
+      if (desti=="permis"){
+        var params = {
+            data: data_db(this.data),
+            inici: inici,
+            fi: fi,
+            motiu: this[varNom],
+            arxiu: this.arxiu_pujat
+        };
+      } else {
+        var params = {
+            data: data_db(this.data),
+            inici: inici,
+            fi: fi,
+            motiu: this[varNom]
+        };
+      }
       axios
         .post(desti, params)
         .then((res) => {
@@ -443,10 +474,13 @@ export default {
           console.error(err);
         });
       this[varNom] = "";
+      this.arxiu_pujat="";
+      this.avis_pujada="";
       UIkit.modal("#"+desti+"-modal"+this._uid).hide();
     },
   },
   mounted() {
+
     this.get_de_bd("cefire");
     this.get_de_bd("compensa");
     this.get_de_bd("curs");
@@ -455,12 +489,8 @@ export default {
     this.get_de_bd("permis");
     this.get_nom_dia();
     this.get_dia_mes();
-    this.id = this._uid
-  },
-  watch: {
-      data(){
-          this.componentKey++;
-      }
+
+
 
   },
   computed: {
@@ -578,6 +608,17 @@ $fondo:  #f1faee
         pointers: all
         &:before
             content: "\f2ed"
+    .arxiu
+        font-family: "Font Awesome 5 Free"
+        text-align: right
+        float: right
+        margin-right: 3px
+        color: #373444
+        font-weight: bold
+        cursor: pointer
+        pointers: all
+        &:before
+            content: "\f15b"
 
     .flex-container
         display: flex

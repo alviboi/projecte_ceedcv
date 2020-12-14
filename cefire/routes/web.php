@@ -70,6 +70,11 @@ Route::get('/contar/{desde}/{fins}', 'cefireController@contar_cefires')->name('g
 
 Route::post('guardia/insert','guardiaController@put_guardia_id')->name('put_guardia_id')->middleware('auth');
 
+Route::post('upload_permis','permisController@upload')->middleware('auth');
+Route::post('download_permis','permisController@download')->middleware('auth');
+
+
+
 Route::group(['middleware' => 'auth'], function() {
     Route::resources([
         'cefire' => cefireController::class,
