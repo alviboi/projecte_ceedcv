@@ -19,6 +19,30 @@ class UserController extends Controller
         //
         return User::orderBy('name', 'ASC')->get();
     }
+    public function destroy($user)
+    {
+        //
+        User::find($user)->delete();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        //
+        $user=User::find($request->id);
+        $user->name=$request->nom;
+        $user->email=$request->mail;
+        $user->Perfil=$request->perfil;
+        $user->rfid=$request->rfid;
+        $user->save();
+
+
+
+    }
 
     /**
      * Display a listing of the resource.

@@ -1,9 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Mail\EnviarGuardia;
 
 use App\Models\guardia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendGuardiaMail;
+use Carbon\Carbon;
+
 
 class guardiaController extends Controller
 {
@@ -62,12 +67,34 @@ class guardiaController extends Controller
         if ($request->mati="m"){
             $guardia->inici="09:00:00";
             $guardia->fi="14:00:00";
+            $txt_rato="MATÍ";
         } else {
             $guardia->inici="16:00:00";
             $guardia->fi="20:00:00";
+            $txt_rato="VESPRADA";
         }
+
         $guardia->save();
+
+
+
+
+        $link="https://calendar.google.com/calendar/render?action=TEMPLATE&text=GUARDIA+CEFIRE&dates=".$guardia->data."T".$guardia->inici."/".$guardia->data."T".$guardia->fi."&details=Guardia+del+Cefire+de+Valencia&location=Valencia&trp=false#eventpage_6";
+
+        $datos = [
+            'nombre' => $guardia->user['name'],
+            'fecha' => date("d/m/Y", strtotime($guardia->data)),
+            'rato' => $txt_rato,
+            'link' => $link
+        ];
+        // SendGuardiaMail::dispatch($guardia->user['email'],$datos);
+        // Mail::to($guardia->user['email'])->send(new EnviarGuardia($datos));
+
+        $emailJob = (new SendGuardiaMail($guardia->user['email'],$datos))->delay(Carbon::now()->addSeconds(120));
+   		dispatch($emailJob);
         return $guardia;
+
+
 
     }
 

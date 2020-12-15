@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\notificacions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+
+use App\Mail\EnviarMissatge;
+
 
 class notificacionsController extends Controller
 {
@@ -51,6 +56,15 @@ class notificacionsController extends Controller
         $notificacio->user_id=$request->user_id;
         $notificacio->missatge=$request->avis;
         $err=$notificacio->save();
+
+        $datos = [
+            'De' => Auth::user()->name,
+            'Cap' => $notificacio->cap,
+            'missatge' => $notificacio->missatge
+        ];
+
+        Mail::to($notificacio->user['email'])->send(new EnviarMissatge($datos));
+
         if ($err){
             return "Missatge enviat  correctament";
         } else {

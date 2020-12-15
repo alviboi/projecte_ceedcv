@@ -122,7 +122,7 @@ class permisController extends Controller
         ]);
 
         if ($validator->fails()) {
-            abort(404);
+            abort(404,"L'arxiu no és pdf");
         } else {
             $arxiu=$request->file('arxiu')->store('arxius');
             return $arxiu;

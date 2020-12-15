@@ -2655,22 +2655,102 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      users: []
+      users: [],
+      update: "",
+      edita_u: {
+        id: "",
+        nom: "",
+        mail: "",
+        perfil: 0,
+        rfid: ""
+      }
     };
   },
   methods: {
+    envia_edit: function envia_edit() {
+      var _this = this;
+
+      axios.put("user/" + this.edita_u.id, this.edita_u).then(function (res) {
+        console.log(res);
+
+        _this.agafa_users();
+
+        _this.update = "Dades guardades correctament.";
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    borra: function borra(id) {
+      var _this2 = this;
+
+      var url = "user/" + id;
+      axios["delete"](url).then(function (res) {
+        console.log(res);
+
+        _this2.agafa_users();
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
     edita: function edita(id) {
+      var results = this.users.filter(function (item) {
+        return item.id == id;
+      });
+      this.edita_u.id = results[0].id;
+      this.edita_u.nom = results[0].name;
+      this.edita_u.mail = results[0].email;
+      this.edita_u.perfil = results[0].Perfil;
+      this.edita_u.rfid = results[0].rfid;
       UIkit.modal("#edita").show();
     },
     agafa_users: function agafa_users() {
-      var _this = this;
+      var _this3 = this;
 
       axios.get("user").then(function (res) {
         console.log(res);
-        _this.users = res.data;
+        _this3.users = res.data;
       })["catch"](function (err) {
         console.error(err);
       });
@@ -20499,7 +20579,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".llistat {\n  display: grid;\n  grid-template-columns: 0.3fr 1.7fr 1fr 1fr 1fr 0.3fr;\n  grid-template-rows: 1fr;\n  gap: 0px 0px;\n  grid-template-areas: \"id nom mail perfil rfid botons\";\n  border: 2px solid black;\n  border-radius: 10px;\n  margin: 10px;\n  padding: 5px;\n}\n.llistat comu, .llistat .botons, .llistat .rfid, .llistat .mail, .llistat .nom, .llistat .id {\n  overflow: hidden;\n}\n.llistat .id {\n  grid-area: id;\n}\n.llistat .nom {\n  grid-area: nom;\n}\n.llistat .mail {\n  grid-area: mail;\n}\n.llistat .perfil {\n  grid-area: perfil;\n}\n.llistat .rfid {\n  grid-area: rfid;\n}\n.llistat .botons {\n  grid-area: botons;\n  display: flex;\n  align-items: right;\n  text-align: right;\n}", ""]);
+exports.push([module.i, ".bac {\n  background-color: #f1faee;\n}\n.uk-inline {\n  width: 100%;\n}\n.llistat {\n  display: grid;\n  grid-template-columns: 0.3fr 1.7fr 1fr 1fr 1fr 0.3fr;\n  grid-template-rows: 1fr;\n  gap: 0px 0px;\n  grid-template-areas: \"id nom mail perfil rfid botons\";\n  border: 2px solid black;\n  border-radius: 10px;\n  margin: 10px;\n  padding: 10px;\n  box-shadow: 3px 6px 121px -42px rgba(0, 0, 0, 0.75);\n  align-content: center;\n  align-items: center;\n  background-color: #f1faee;\n}\n.llistat comu, .llistat .botons, .llistat .rfid, .llistat .mail, .llistat .nom, .llistat .id {\n  overflow: hidden;\n}\n.llistat .id {\n  grid-area: id;\n}\n.llistat .nom {\n  grid-area: nom;\n}\n.llistat .mail {\n  grid-area: mail;\n}\n.llistat .perfil {\n  grid-area: perfil;\n}\n.llistat .rfid {\n  grid-area: rfid;\n}\n.llistat .botons {\n  grid-area: botons;\n  display: flex;\n  align-items: right;\n  text-align: right;\n}", ""]);
 
 // exports
 
@@ -85565,64 +85645,267 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._l(_vm.users, function(item) {
-        return _c("div", { key: item.id }, [
-          _c("div", { staticClass: "llistat" }, [
-            _c("div", { staticClass: "id" }, [
-              _c("span", { attrs: { "uk-icon": "icon: home" } }),
-              _vm._v("\n                " + _vm._s(item.id) + "\n            ")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "nom" }, [
-              _c("span", { attrs: { "data-uk-icon": "icon: user" } }),
+      _c(
+        "transition-group",
+        { attrs: { name: "list3", tag: "div" } },
+        _vm._l(_vm.users, function(item) {
+          return _c("div", { key: item.id }, [
+            _c("div", { staticClass: "llistat" }, [
+              _c("div", { staticClass: "id" }, [
+                _c("span", { attrs: { "uk-icon": "icon: home" } }),
+                _vm._v(
+                  "\n                " + _vm._s(item.id) + "\n            "
+                )
+              ]),
               _vm._v(" "),
-              _c("b", [_vm._v(_vm._s(item.name))])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "mail" }, [
-              _c("span", { attrs: { "data-uk-icon": "icon: mail" } }),
-              _vm._v(
-                "\n                " + _vm._s(item.email) + "\n            "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "perfil" }, [
-              _c("span", { attrs: { "data-uk-icon": "icon: world" } }),
-              _vm._v(
-                "\n                " + _vm._s(item.Perfil) + "\n            "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "rfid" }, [
-              _c("span", { attrs: { "data-uk-icon": "icon: credit-card" } }),
-              _vm._v(
-                "\n                " + _vm._s(item.rfid) + "\n            "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "botons" }, [
-              _c("div", {
-                staticClass: "uk-icon-button",
-                attrs: { href: "", "uk-icon": "file-edit" },
-                on: {
-                  click: function($event) {
-                    return _vm.edita(item.id)
+              _c("div", { staticClass: "nom" }, [
+                _c("span", { attrs: { "data-uk-icon": "icon: user" } }),
+                _vm._v(" "),
+                _c("b", [_vm._v(_vm._s(item.name))])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "mail" }, [
+                _c("span", { attrs: { "data-uk-icon": "icon: mail" } }),
+                _vm._v(
+                  "\n                " + _vm._s(item.email) + "\n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "perfil" }, [
+                _c("span", { attrs: { "data-uk-icon": "icon: world" } }),
+                _vm._v(
+                  "\n                " + _vm._s(item.Perfil) + "\n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "rfid" }, [
+                _c("span", { attrs: { "data-uk-icon": "icon: credit-card" } }),
+                _vm._v(
+                  "\n                " + _vm._s(item.rfid) + "\n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "botons" }, [
+                _c("div", {
+                  staticClass: "uk-icon-button",
+                  attrs: { "uk-icon": "file-edit" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.edita(item.id)
+                    }
                   }
-                }
-              }),
-              _vm._v(" "),
-              _c("div", {
-                staticClass: "uk-icon-button uk-text-danger",
-                attrs: { href: "", "uk-icon": "trash" }
-              })
+                }),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "uk-icon-button uk-text-danger",
+                  attrs: { "uk-icon": "trash" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.borra(item.id)
+                    }
+                  }
+                })
+              ])
             ])
           ])
-        ])
-      }),
+        }),
+        0
+      ),
       _vm._v(" "),
-      _vm._m(0)
+      _c("div", { attrs: { id: "edita", "uk-modal": "" } }, [
+        _c("div", { staticClass: "uk-modal-dialog" }, [
+          _c("button", {
+            staticClass: "uk-modal-close-default",
+            attrs: { type: "button", "uk-close": "" }
+          }),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-modal-body bac" }, [
+            _c("div", { staticClass: "uk-margin" }, [
+              _c("div", { staticClass: "uk-inline" }, [
+                _c("span", {
+                  staticClass: "uk-form-icon",
+                  attrs: { "uk-icon": "icon: sign-in" }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "uk-input",
+                  attrs: { type: "text", placeholder: "id", disabled: "" },
+                  domProps: { value: _vm.edita_u.id }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-margin" }, [
+              _c("div", { staticClass: "uk-inline" }, [
+                _c("span", {
+                  staticClass: "uk-form-icon",
+                  attrs: { "uk-icon": "icon: user" }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.edita_u.nom,
+                      expression: "edita_u.nom"
+                    }
+                  ],
+                  staticClass: "uk-input",
+                  attrs: { type: "text", placeholder: "Nom" },
+                  domProps: { value: _vm.edita_u.nom },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.edita_u, "nom", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-margin" }, [
+              _c("div", { staticClass: "uk-inline" }, [
+                _c("span", {
+                  staticClass: "uk-form-icon",
+                  attrs: { "uk-icon": "icon: mail" }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.edita_u.mail,
+                      expression: "edita_u.mail"
+                    }
+                  ],
+                  staticClass: "uk-input",
+                  attrs: { type: "text", placeholder: "Mail" },
+                  domProps: { value: _vm.edita_u.mail },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.edita_u, "mail", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-margin" }, [
+              _c("div", { staticClass: "uk-inline" }, [
+                _c("span", {
+                  staticClass: "uk-form-icon",
+                  attrs: { "uk-icon": "icon: world" }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.edita_u.perfil,
+                      expression: "edita_u.perfil"
+                    }
+                  ],
+                  staticClass: "uk-input",
+                  attrs: {
+                    type: "number",
+                    min: "0",
+                    max: "3",
+                    step: "1",
+                    placeholder: "Perfil"
+                  },
+                  domProps: { value: _vm.edita_u.perfil },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.edita_u, "perfil", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-margin" }, [
+              _c("div", { staticClass: "uk-inline" }, [
+                _c("span", {
+                  staticClass: "uk-form-icon",
+                  attrs: { "uk-icon": "icon: credit-card" }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.edita_u.rfid,
+                      expression: "edita_u.rfid"
+                    }
+                  ],
+                  staticClass: "uk-input",
+                  attrs: { type: "text", placeholder: "rfid" },
+                  domProps: { value: _vm.edita_u.rfid },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.edita_u, "rfid", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-margin" }, [
+              _vm._v(
+                "\n                      " +
+                  _vm._s(_vm.update) +
+                  "\n                  "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-modal-footer uk-text-right" }, [
+            _c(
+              "button",
+              {
+                staticClass: "uk-button uk-button-default uk-modal-close",
+                attrs: { type: "button" }
+              },
+              [_vm._v("Cancel")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "uk-button uk-button-primary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.envia_edit()
+                  }
+                }
+              },
+              [_vm._v("Save")]
+            )
+          ])
+        ])
+      ])
     ],
-    2
+    1
   )
 }
 var staticRenderFns = [
@@ -85630,45 +85913,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "edita", "uk-modal": "" } }, [
-      _c("div", { staticClass: "uk-modal-dialog" }, [
-        _c("button", {
-          staticClass: "uk-modal-close-default",
-          attrs: { type: "button", "uk-close": "" }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "uk-modal-header" }, [
-          _c("h2", { staticClass: "uk-modal-title" }, [_vm._v("Modal Title")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "uk-modal-body" }, [
-          _c("p", [
-            _vm._v(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "uk-modal-footer uk-text-right" }, [
-          _c(
-            "button",
-            {
-              staticClass: "uk-button uk-button-default uk-modal-close",
-              attrs: { type: "button" }
-            },
-            [_vm._v("Cancel")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "uk-button uk-button-primary",
-              attrs: { type: "button" }
-            },
-            [_vm._v("Save")]
-          )
-        ])
-      ])
+    return _c("div", { staticClass: "uk-modal-header" }, [
+      _c("h2", { staticClass: "uk-modal-title" }, [_vm._v("Edita Assessor")])
     ])
   }
 ]

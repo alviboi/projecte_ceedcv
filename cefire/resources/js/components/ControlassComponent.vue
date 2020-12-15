@@ -1,5 +1,7 @@
 <template>
   <div>
+    <transition-group name="list3" tag="div">
+
       <div v-for="item in users" :key="item.id">
           <div class="llistat">
               <div class="id">
@@ -23,24 +25,61 @@
                   {{ item.rfid }}
               </div>
               <div class="botons">
-                <div href="" @click="edita(item.id)" class="uk-icon-button" uk-icon="file-edit"></div>
-                <div href="" class="uk-icon-button uk-text-danger" uk-icon="trash"></div>
+                <div @click.prevent="edita(item.id)" class="uk-icon-button" uk-icon="file-edit"></div>
+                <div @click.prevent="borra(item.id)" class="uk-icon-button uk-text-danger" uk-icon="trash"></div>
               </div>
           </div>
       </div>
+    </transition-group>
 
     <div id="edita" uk-modal>
         <div class="uk-modal-dialog">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <div class="uk-modal-header">
-                <h2 class="uk-modal-title">Modal Title</h2>
+                <h2 class="uk-modal-title">Edita Assessor</h2>
             </div>
-            <div class="uk-modal-body">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <div class="uk-modal-body bac">
+
+                    <div class="uk-margin">
+                        <div class="uk-inline">
+                            <span class="uk-form-icon" uk-icon="icon: sign-in"></span>
+                            <input :value="edita_u.id" class="uk-input" type="text" placeholder="id" disabled>
+                        </div>
+                    </div>
+
+                    <div class="uk-margin">
+                        <div class="uk-inline">
+                            <span class="uk-form-icon" uk-icon="icon: user"></span>
+                            <input v-model="edita_u.nom" class="uk-input" type="text" placeholder="Nom">
+                        </div>
+                    </div>
+
+                    <div class="uk-margin">
+                        <div class="uk-inline">
+                            <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                            <input v-model="edita_u.mail" class="uk-input" type="text" placeholder="Mail">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-inline">
+                            <span class="uk-form-icon" uk-icon="icon: world"></span>
+                            <input v-model="edita_u.perfil" class="uk-input" type="number" min="0" max="3" step="1" placeholder="Perfil">
+                        </div>
+                    </div>
+
+                    <div class="uk-margin">
+                        <div class="uk-inline">
+                            <span class="uk-form-icon" uk-icon="icon: credit-card"></span>
+                            <input v-model="edita_u.rfid" class="uk-input" type="text" placeholder="rfid">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        {{update}}
+                    </div>
             </div>
             <div class="uk-modal-footer uk-text-right">
                 <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                <button class="uk-button uk-button-primary" type="button">Save</button>
+                <button class="uk-button uk-button-primary" type="button" @click="envia_edit()">Save</button>
             </div>
         </div>
     </div>
@@ -54,10 +93,46 @@ export default {
     data() {
         return {
             users: [],
+            update: "",
+            edita_u:  {
+                id: "",
+                nom: "",
+                mail: "",
+                perfil: 0,
+                rfid: ""
+            }
         }
     },
     methods: {
+        envia_edit(){
+            axios.put("user/"+this.edita_u.id,this.edita_u)
+            .then(res => {
+                console.log(res);
+                this.agafa_users();
+                this.update="Dades guardades correctament."
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        },
+        borra(id){
+            let url = "user/" + id;
+            axios.delete(url)
+            .then(res => {
+                console.log(res);
+                this.agafa_users();
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        },
         edita(id){
+            let results = this.users.filter((item => item.id == id));
+            this.edita_u.id=results[0].id;
+            this.edita_u.nom=results[0].name;
+            this.edita_u.mail=results[0].email;
+            this.edita_u.perfil=results[0].Perfil;
+            this.edita_u.rfid=results[0].rfid;
             UIkit.modal("#edita").show();
         },
         agafa_users(){
@@ -79,6 +154,11 @@ export default {
 </script>
 
 <style lang="sass" scope>
+$fondo: #f1faee
+.bac
+    background-color: $fondo
+.uk-inline
+    width: 100%
 .llistat
     display: grid
     grid-template-columns: 0.3fr 1.7fr 1fr 1fr 1fr 0.3fr
@@ -88,7 +168,11 @@ export default {
     border: 2px solid black
     border-radius: 10px
     margin: 10px
-    padding: 5px
+    padding: 10px
+    box-shadow: 3px 6px 121px -42px rgba(0,0,0,0.75)
+    align-content: center
+    align-items: center
+    background-color: $fondo
     comu
         overflow: hidden
     .id
