@@ -70,7 +70,7 @@
 				    <!-- user dropdown -->
 				    <div class="uk-dropdown user-drop" data-uk-dropdown="mode: click; pos: bottom-center; animation: uk-animation-slide-bottom-small; duration: 150">
 				    	<ul class="uk-nav uk-dropdown-nav uk-text-left">
-								<li><a href="#"><span data-uk-icon="icon: refresh"></span> Edita perfil</a></li>
+								<li><a href="#" @click="showEdita = true"><span data-uk-icon="icon: refresh"></span> Edita perfil</a></li>
 								<li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
 								<li class="uk-nav-divider"></li>
 								<li><a href="#" @click.prevent="view = 'personals'"><span data-uk-icon="icon: image"></span> Les teues dades</a></li>

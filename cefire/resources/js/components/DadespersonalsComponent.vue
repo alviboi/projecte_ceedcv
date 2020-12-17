@@ -117,9 +117,19 @@ export default {
         },
         borra_desde(){
             this.desde="";
+            this.cefire={};
+            this.compensa= {};
+            this.curs= {};
+            this.guardia= {};
+            this.permis= {};
         },
         borra_fins(){
             this.fins="";
+            this.cefire={};
+            this.compensa= {};
+            this.curs= {};
+            this.guardia= {};
+            this.permis= {};
         }
     },
     components: {

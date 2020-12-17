@@ -21,6 +21,8 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+Vue.component('editaperfil-component', require('./components/EditaperfilComponent.vue').default);
+
 Vue.component('avisos-component', require('./components/avisos/AvisosComponent.vue').default);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
@@ -49,6 +51,7 @@ Vue.component('dadespersonals-component', require('./components/DadespersonalsCo
 
 
 
+
 Vue.prototype.$eventBus = new Vue();
 
 /**
@@ -65,6 +68,7 @@ const app = new Vue({
         showModal: false,
         calendar: false,
         horari: false,
+        showEdita: false,
         view: 'principal'
     },
     components: {
@@ -110,16 +114,22 @@ const app = new Vue({
         tanca_missatge() {
             // alert('hola');
             this.showMissatge=false;
+        },
+        tanca_edita() {
+            // alert('hola');
+            this.showEdita=false;
         }
     },
     created() {
         this.$eventBus.$on('tanca-avis', this.tanca_avis);
         this.$eventBus.$on('tanca-missatge', this.tanca_missatge);
+        this.$eventBus.$on('tanca-edita', this.tanca_edita);
 
     },
     beforeDestroy() {
         this.$eventBus.$off('tanca-avis');
         this.$eventBus.$off('tanca-missatge');
+        this.$eventBus.$off('tanca-edita');
 
     }
 

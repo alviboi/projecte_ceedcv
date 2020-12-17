@@ -44,6 +44,8 @@ Route::get('/user_guardia/{num}/{any}/{mes}', 'UserController@get_guardia')->mid
 Route::get('/user_permis/{num}/{any}/{mes}', 'UserController@get_permis')->middleware('auth');
 Route::get('/user_visita/{num}/{any}/{mes}', 'UserController@get_visita')->middleware('auth');
 Route::get('/user_all/{de}/{fins}', 'UserController@get_all')->middleware('auth');
+Route::get('/user_get', 'UserController@get_user')->middleware('auth');
+
 
 
 Route::prefix('complet')->group(function () {

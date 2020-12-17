@@ -6,5 +6,9 @@
     <escriumsg-component />
 </div>
  --}}
+
  <escriuavis-component :show-modal="this.showModal"></escriuavis-component>
- <escriumsg-component :show-missatge="this.showMissatge"/>
+
+ <editaperfil-component :show-edita="this.showEdita"></editaperfil-component>
+
+ <escriumsg-component :show-missatge="this.showMissatge"/></escriumsg-conponent>
