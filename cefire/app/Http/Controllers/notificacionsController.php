@@ -6,6 +6,8 @@ use App\Models\notificacions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\SendMissatgeMail;
+use Carbon\Carbon;
 
 use App\Mail\EnviarMissatge;
 
@@ -63,9 +65,13 @@ class notificacionsController extends Controller
             'missatge' => $notificacio->missatge
         ];
 
-        Mail::to($notificacio->user['email'])->send(new EnviarMissatge($datos));
 
-        if ($err){
+        $emailJob = (new SendMissatgeMail($notificacio->user['email'],$datos))->delay(Carbon::now()->addSeconds(120));
+   		dispatch($emailJob);
+
+
+
+        if ($err && $emailJob){
             return "Missatge enviat  correctament";
         } else {
             return "Alguna cosa ha anar malament";

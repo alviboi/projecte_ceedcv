@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -190,5 +191,27 @@ class UserController extends Controller
     public function __invoke(Request $request)
     {
         //
+    }
+    public function get_all($de,$fins)
+    {
+        //
+        $cefire = User::find(auth()->id())->cefire()->where('data','>',$de)->where('fi','<',$fins)->get();
+        $compensa = User::find(auth()->id())->compensa()->where('data','>',$de)->where('fi','<',$fins)->get();
+        $curs = User::find(auth()->id())->curs()->where('data','>',$de)->where('fi','<',$fins)->get();
+        $guardia = User::find(auth()->id())->guardia()->where('data','>',$de)->where('fi','<',$fins)->get();
+        $permis = User::find(auth()->id())->permis()->where('data','>',$de)->where('fi','<',$fins)->get();
+        $visita = User::find(auth()->id())->visita()->where('data','>',$de)->where('fi','<',$fins)->get();
+        $ret=[
+            'cefire' => $cefire,
+            'compensa' => $compensa,
+            'curs' => $curs,
+            'guardia' => $guardia,
+            'permis' => $permis,
+            'visita' => $visita
+        ];
+        return $ret;
+
+
+
     }
 }

@@ -39,6 +39,9 @@ Vue.component('report-component', require('./components/Reports/ReportComponent.
 Vue.component('line-component', require('./components/Reports/LinegrafComponent.vue').default);
 Vue.component('controlass-component', require('./components/ControlassComponent.vue').default);
 
+Vue.component('dadespersonals-component', require('./components/DadespersonalsComponent.vue').default);
+
+
 
 
 
@@ -88,7 +91,10 @@ const app = new Vue({
         },
         'controlass': {
             template: '<div><controlass-component /></div>'
-        }
+        },
+        'personals': {
+            template: '<div><dadespersonals-component /></div>'
+        },
 
 
       },

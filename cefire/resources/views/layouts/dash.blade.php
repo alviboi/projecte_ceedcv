@@ -32,7 +32,7 @@
                                         <li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
                                         <li><a href="#" @click="showModal = true"><span data-uk-icon="icon: warning"></span> Escriu Avís</a></li>
 										<li class="uk-nav-divider"></li>
-										<li><a href="#"><span data-uk-icon="icon: image"></span> Dades Personals</a></li>
+										<li><a href="#" @click="view = 'personals'"><span data-uk-icon="icon: image"></span> Dades Personals</a></li>
 										<li class="uk-nav-divider"></li>
                                         <li><a href="#"><span data-uk-icon="icon: sign-out"></span> Ix</a></li>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -73,7 +73,7 @@
 								<li><a href="#"><span data-uk-icon="icon: refresh"></span> Edita perfil</a></li>
 								<li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
 								<li class="uk-nav-divider"></li>
-								<li><a href="#"><span data-uk-icon="icon: image"></span> Les teues dades</a></li>
+								<li><a href="#" @click.prevent="view = 'personals'"><span data-uk-icon="icon: image"></span> Les teues dades</a></li>
 								<li class="uk-nav-divider"></li>
 								<li><a href="#"><span data-uk-icon="icon: sign-out"></span> Surt</a></li>
 					    </ul>

@@ -43,6 +43,8 @@ Route::get('/user_curs/{num}/{any}/{mes}', 'UserController@get_curs')->middlewar
 Route::get('/user_guardia/{num}/{any}/{mes}', 'UserController@get_guardia')->middleware('auth');
 Route::get('/user_permis/{num}/{any}/{mes}', 'UserController@get_permis')->middleware('auth');
 Route::get('/user_visita/{num}/{any}/{mes}', 'UserController@get_visita')->middleware('auth');
+Route::get('/user_all/{de}/{fins}', 'UserController@get_all')->middleware('auth');
+
 
 Route::prefix('complet')->group(function () {
     Route::get('/cefire/{any}/{mes}', 'cefireController@get_data_index')->middleware('auth');
