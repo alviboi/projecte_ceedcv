@@ -106,7 +106,7 @@ export default {
         },
         este() {
             if (this.showMissatge == true) {
-                UIkit.modal('#modal_missatge').show();
+                UIkit.modal('#modal_missatge',{ bgClose: false, escClose: false, modal: false, keyboard:false}).show();
             } else {
                 UIkit.modal('#modal_missatge').hide();
 

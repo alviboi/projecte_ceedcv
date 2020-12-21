@@ -8,6 +8,10 @@
 		<!-- CSS FILES -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+            <script>
+                var missatges = {{ $conta }};
+            </script>
+
 	</head>
 	<body>
 
@@ -49,7 +53,11 @@
 							<li><a href="#" @click="showMissatge = true" data-uk-icon="icon:mail" title="Envia missatge a company" data-uk-tooltip></a></li>
 							{{-- <li><a href="#" data-uk-icon="icon: commenting" title="Ajuda" data-uk-tooltip></a></li> --}}
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-uk-icon="icon:  sign-out" title="Sign Out" data-uk-tooltip></a></li>
-							<li><a class="uk-navbar-toggle" data-uk-toggle data-uk-navbar-toggle-icon href="#offcanvas-nav" title="Missatge rebuts" data-uk-tooltip></a></li>
+                        <li><a class="uk-navbar-toggle uk-inline" data-uk-toggle data-uk-navbar-toggle-icon href="#offcanvas-nav" title="Missatge rebuts" data-uk-tooltip>
+                            @if ($conta > 0)
+                                <span class="uk-badge uk-position-top-right" style="background-color: red; margin-top: 5px;"><b>?</b></span>
+                            @endif
+                        </a></li>
 						</ul>
 					</div>
 				</nav>
@@ -71,7 +79,7 @@
 				    <div class="uk-dropdown user-drop" data-uk-dropdown="mode: click; pos: bottom-center; animation: uk-animation-slide-bottom-small; duration: 150">
 				    	<ul class="uk-nav uk-dropdown-nav uk-text-left">
 								<li><a href="#" @click="showEdita = true"><span data-uk-icon="icon: refresh"></span> Edita perfil</a></li>
-								<li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
+								<li><a href="#" @click="view = 'configuracio'"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
 								<li class="uk-nav-divider"></li>
 								<li><a href="#" @click.prevent="view = 'personals'"><span data-uk-icon="icon: image"></span> Les teues dades</a></li>
 								<li class="uk-nav-divider"></li>

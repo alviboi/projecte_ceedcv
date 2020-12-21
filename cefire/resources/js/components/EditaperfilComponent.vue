@@ -6,7 +6,7 @@
                 <h2 class="uk-modal-title">Edita les teues dades</h2>
             </div>
             <div class="uk-modal-body bac">
-                    Nota: Les dades es apareixeran reflectides la pròxima vegada que et logues.<br>
+                    Nota: Les dades t'apareixeran reflectides la pròxima vegada que et logues.<br>
                     <div class="uk-margin">
                         <div class="uk-inline">
                             <span class="uk-form-icon" uk-icon="icon: sign-in"></span>
@@ -41,6 +41,18 @@
                         </div>
                     </div>
                     <div class="uk-margin">
+                        <div class="uk-inline">
+                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            <input v-model="contrasenya" class="uk-input" type="text" placeholder="contrasenya">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-inline">
+                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            <input v-model="contrasenya2" class="uk-input" type="text" placeholder="confirma contrasenya">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
                         {{update}}
                     </div>
             </div>
@@ -59,7 +71,9 @@ export default {
         return {
             datos: {},
             resposta: "",
-            update: ""
+            update: "",
+            contrasenya: "",
+            contrasenya2: ""
         }
     },
     props: ['show-edita'],
@@ -85,25 +99,33 @@ export default {
             UIkit.modal('#modal_edita').hide();
         },
         envia() {
-            let params ={
-                'id': this.datos.id,
-                'nom': this.datos.name,
-                'mail': this.datos.email,
-                'perfil': this.datos.Perfil,
-                'rfid': this.datos.rfid
+            if (this.contrasenya == this.contrasenya2) {
+
+                let params ={
+                    'id': this.datos.id,
+                    'nom': this.datos.name,
+                    'mail': this.datos.email,
+                    'perfil': this.datos.Perfil,
+                    'rfid': this.datos.rfid,
+                    'contrasenya': this.contrasenya
+                }
+                axios.put("user/"+this.datos.id,params)
+                .then(res => {
+                    console.log(res);
+                    this.update="Dades guardades correctament."
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+
+            } else {
+                alert("Les contrasenyes no coincideixen");
             }
-            axios.put("user/"+this.datos.id,params)
-            .then(res => {
-                console.log(res);
-                this.update="Dades guardades correctament."
-            })
-            .catch(err => {
-                console.error(err);
-            })
+
         },
         este() {
             if (this.showEdita == true) {
-                UIkit.modal('#edita_perfil').show();
+                UIkit.modal('#edita_perfil',{ bgClose: false, escClose: false, modal: false, keyboard:false}).show();
                 this.get_datos();
 
             } else {

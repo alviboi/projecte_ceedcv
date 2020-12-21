@@ -85,7 +85,7 @@ export default {
         },
         este() {
             if (this.showModal == true) {
-                UIkit.modal('#modal_avis').show();
+                UIkit.modal('#modal_avis',{ bgClose: false, escClose: false, modal: false, keyboard:false}).show();
             } else {
                 UIkit.modal('#modal_avis').hide();
 

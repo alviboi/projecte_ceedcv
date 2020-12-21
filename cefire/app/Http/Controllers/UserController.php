@@ -9,6 +9,48 @@ use Carbon\Carbon;
 
 class UserController extends Controller
 {
+    public function home (){
+        $conta = User::find(auth()->id())->notificacions()->count();
+        return view('home', ['conta' => $conta]);
+    }
+
+    public function get_usuaris_ldap(Request $request)
+    {
+
+            //Cal identificar-se amb l'usuari netadmin
+            //uid=alfredo@alfredo.es,ou=Teachers,ou=People,dc=ma5,dc=lliurex,dc=net
+            $pwd=$request->contrasenya;
+            $conn = ldap_connect($request->ip, '389');
+            $bindDn = "uid=netadmin,ou=Admins,ou=People,dc=ma5,dc=lliurex,dc=net";
+            ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+
+            $ldaptree="ou=Teachers,ou=People,dc=ma5,dc=lliurex,dc=net";
+
+
+            if($conn) {
+
+                $ldapbind = ldap_bind($conn, $bindDn, $pwd) or die ("Ha hagut un error: ".ldap_error($conn));
+
+                if ($ldapbind) {
+
+                    $result = ldap_search($conn,$ldaptree, "(cn=*)") or die ("Ha hagut un error: ".ldap_error($conn));
+                    $data = ldap_get_entries($conn, $result);
+
+                    $usuaris=array();
+                    for ($i=0; $i<$data["count"]; $i++) {
+                        $el=['email' => $data[$i]["uid"][0], 'name' =>  $data[$i]["description"][0]];
+                        array_push($usuaris,$el);
+                        }
+                    return $usuaris;
+                    ldap_close($conn);
+                } else {
+                    ldap_close($conn);
+                    return "El servidor no està ben configurat. Revisa la configuració";
+                }
+
+
+            }
+    }
 
     /**
      * Display a listing of the resource.
@@ -49,6 +91,9 @@ class UserController extends Controller
         $user->email=$request->mail;
         $user->Perfil=$request->perfil;
         $user->rfid=$request->rfid;
+        if($user->contrasenya != ""){
+            $user->password=$request->contrasenya;
+        }
         $user->save();
 
 

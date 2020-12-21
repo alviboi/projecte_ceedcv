@@ -18,7 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Auth::routes();
+
+
 
 Route::view('/demo', 'demo')->name('demo');
 
@@ -28,9 +32,11 @@ Route::get('/seccio/{pag?}', function ($pag="principal") {
     return view('contents.'.$pag)->render();
 });
 
-Route::get('/home', function () {
-    return view('home')->with(['seccio' => 'contents.principal']);
-});
+// Route::get('/home', function () {
+//     return view('home')->with(['seccio' => 'contents.principal']);
+// });
+
+Route::get('/home', 'UserController@home');
 
 
 
@@ -45,6 +51,7 @@ Route::get('/user_permis/{num}/{any}/{mes}', 'UserController@get_permis')->middl
 Route::get('/user_visita/{num}/{any}/{mes}', 'UserController@get_visita')->middleware('auth');
 Route::get('/user_all/{de}/{fins}', 'UserController@get_all')->middleware('auth');
 Route::get('/user_get', 'UserController@get_user')->middleware('auth');
+Route::post('/get_usuaris_ldap', 'UserController@get_usuaris_ldap')->middleware('auth');
 
 
 

@@ -24,7 +24,7 @@ class notificacionsController extends Controller
         //
         // return notificacions::where('user_id','=',auth()->id())->get();
         $ret = array();
-        $els = notificacions::get();
+        $els = notificacions::where('user_id','=',auth()->id())->get();
         foreach ($els as $el) {
             $item=array("id"=>$el->id, "name"=>$el->user['name'], "From"=>$el->From, "user_id"=>$el->user_id, "cap"=>$el->cap, "missatge"=>$el->missatge);
             array_push($ret, $item);

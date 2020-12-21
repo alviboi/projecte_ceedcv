@@ -21,6 +21,8 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
+Vue.component('configuracio-component', require('./components/ConfiguracioComponent.vue').default);
 Vue.component('editaperfil-component', require('./components/EditaperfilComponent.vue').default);
 
 Vue.component('avisos-component', require('./components/avisos/AvisosComponent.vue').default);
@@ -42,6 +44,9 @@ Vue.component('line-component', require('./components/Reports/LinegrafComponent.
 Vue.component('controlass-component', require('./components/ControlassComponent.vue').default);
 
 Vue.component('dadespersonals-component', require('./components/DadespersonalsComponent.vue').default);
+
+//L'error més comú que tens quan modifiques una cosa d'ací, no està funcionant npm run watch, o compila a npm run dev
+
 
 
 
@@ -66,8 +71,8 @@ const app = new Vue({
     data: {
         showMissatge: false,
         showModal: false,
-        calendar: false,
-        horari: false,
+        // calendar: false,
+        // horari: false,
         showEdita: false,
         view: 'principal'
     },
@@ -98,6 +103,9 @@ const app = new Vue({
         },
         'personals': {
             template: '<div><dadespersonals-component /></div>'
+        },
+        'configuracio': {
+            template: '<div><configuracio-component /></div>'
         },
 
 
@@ -133,11 +141,4 @@ const app = new Vue({
 
     }
 
-
-
-    // components: {
-    //     'escriuavis-component': () => import(
-    //     './components/avisos/EscriuavisComponent.vue'
-    //     ),
-    // }
 });
