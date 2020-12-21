@@ -2658,6 +2658,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2669,6 +2673,21 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    importa_f: function importa_f() {
+      var dades_enviar = [];
+
+      for (var index = 0; index < this.importa.length; index++) {
+        if (this.importa[index] !== undefined && this.importa[index] == true) {
+          dades_enviar.push(this.usuaris[index]);
+        }
+      }
+
+      axios.post("user", dades_enviar).then(function (res) {
+        console.log(res);
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
     get_usuaris_ldap: function get_usuaris_ldap() {
       var _this = this;
 
@@ -20990,7 +21009,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".item {\n  border: 1px solid grey;\n  margin: 5px;\n  padding: 5px;\n}", ""]);
+exports.push([module.i, ".item {\n  border: 1px solid grey;\n  margin: 5px;\n  padding: 5px;\n  border-radius: 5px;\n  display: grid;\n  grid-template-columns: 1.4fr 1.4fr 0.2fr;\n  grid-template-rows: 1fr;\n  gap: 5px 5px;\n  grid-template-areas: \"nom mail che\";\n}\n.item.nom {\n  grid-area: a;\n}\n.item.mail {\n  grid-area: b;\n}\n.item.che {\n  grid-area: c;\n  float: right;\n  align-content: center;\n  text-align: center;\n  padding: 2px;\n}", ""]);
 
 // exports
 
@@ -86263,7 +86282,7 @@ var render = function() {
                 _vm._v("Comportament fitxatge")
               ]),
               _vm._v(
-                "\n                Habilitar des de l'aparell significa que al fitxar tant des de l'ordinador com de l'aparell quedarà enregistrat amb l'hora que s'ha fet. S'ha d'informar a tots els assessors que s'ha habilitat aquesta opció.\n                "
+                "\n                Habilitar des de l'aparell significa que al fitxar tant des de l'ordinador com de l'aparell quedarà enregistrat amb l'hora que s'ha fet. S'ha d'informar a tots els assessors que s'ha habilitat aquesta opció. Ja que és possible que fitxen amb un dia tota la setmana i no quede enregistrada l'hora correcta d'entrada.\n                "
               ),
               _c("div", { staticClass: "uk-margin" }, [
                 _c(
@@ -86314,17 +86333,6 @@ var render = function() {
                     ])
                   ]
                 )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "uk-margin" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "uk-button uk-button-primary",
-                    on: { click: _vm.get_usuaris_ldap }
-                  },
-                  [_vm._v("Guarda")]
-                )
               ])
             ]
           )
@@ -86338,61 +86346,104 @@ var render = function() {
           _vm._v("Usuaris importables")
         ]),
         _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "uk-margin" },
-          _vm._l(_vm.usuaris, function(item, index) {
-            return _c("div", { key: item.id, staticClass: "item" }, [
-              _c("span", [_vm._v(_vm._s(item.name))]),
-              _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(item.email))]),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.importa[index],
-                    expression: "importa[index]"
-                  }
-                ],
-                staticClass: "uk-checkbox",
-                attrs: { value: "false", type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(_vm.importa[index])
-                    ? _vm._i(_vm.importa[index], "false") > -1
-                    : _vm.importa[index]
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = _vm.importa[index],
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = "false",
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 &&
-                          _vm.$set(_vm.importa, index, $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          _vm.$set(
-                            _vm.importa,
-                            index,
-                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                          )
-                      }
-                    } else {
-                      _vm.$set(_vm.importa, index, $$c)
-                    }
-                  }
-                }
-              })
-            ])
-          }),
-          0
+          [
+            _vm._l(_vm.usuaris, function(item, index) {
+              return [
+                item.email.includes("@")
+                  ? _c("div", { key: item.id }, [
+                      _c("div", { staticClass: "item" }, [
+                        _c("div", { staticClass: "nom" }, [
+                          _c("span", { attrs: { "uk-icon": "user" } }),
+                          _vm._v(_vm._s(item.name))
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "mail" }, [
+                          _c("span", { attrs: { "uk-icon": "mail" } }),
+                          _vm._v(_vm._s(item.email))
+                        ]),
+                        _c("div", { staticClass: "che" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.importa[index],
+                                expression: "importa[index]"
+                              }
+                            ],
+                            staticClass: "uk-checkbox",
+                            attrs: { value: "false", type: "checkbox" },
+                            domProps: {
+                              checked: Array.isArray(_vm.importa[index])
+                                ? _vm._i(_vm.importa[index], "false") > -1
+                                : _vm.importa[index]
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.importa[index],
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "false",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.importa,
+                                        index,
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.importa,
+                                        index,
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.importa, index, $$c)
+                                }
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
+                  : _vm._e()
+              ]
+            })
+          ],
+          2
         ),
         _vm._v(" "),
-        _vm._m(0)
+        _c("p", { staticClass: "uk-text-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-default uk-modal-close",
+              attrs: { type: "button" }
+            },
+            [_vm._v("Tanca")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-primary",
+              attrs: { type: "button" },
+              on: { click: _vm.importa_f }
+            },
+            [_vm._v("Importa")]
+          )
+        ])
       ])
     ])
   ])
@@ -86402,24 +86453,12 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "uk-text-right" }, [
-      _c(
-        "button",
-        {
-          staticClass: "uk-button uk-button-default uk-modal-close",
-          attrs: { type: "button" }
-        },
-        [_vm._v("Tanca")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "uk-button uk-button-primary",
-          attrs: { type: "button" }
-        },
-        [_vm._v("Importa")]
-      )
+    return _c("div", { staticClass: "uk-margin uk-overflow-auto" }, [
+      _c("p", [
+        _vm._v(
+          "Els següents usuaris que es poden importar a l'aplicació de fitxatges són (aquells usuaris que el nom d'usuari no siga un correu electrònic no es poden importar):"
+        )
+      ])
     ])
   }
 ]
@@ -87760,8 +87799,13 @@ var render = function() {
         _c(
           "button",
           {
-            staticClass: "uk-button uk-button-default uk-modal-close",
-            attrs: { type: "button" }
+            staticClass: "uk-button uk-button-default",
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                return _vm.ix()
+              }
+            }
           },
           [_vm._v("Cancel·la")]
         ),

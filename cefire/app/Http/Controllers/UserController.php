@@ -6,9 +6,50 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Jobs\SendPasswordMail;
+
+
 
 class UserController extends Controller
 {
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $input = $request->all();
+        $message="";
+        for ($i=0; $i < count($input); $i++) {
+            # code...
+            //array_push($este,$request[$i]);
+            $user_comp=User::where('email','=',$input[$i]['email'])->first();
+            if($user_comp->id){
+                $message=$message." ".$user_comp->email;
+            } else {
+                $dat = new User();
+                $dat->name=$input[$i]['name'];
+                $dat->email=$input[$i]['email'];
+                $passwd = Str::random(40);
+                $dat->password=Hash::make($passwd);
+                $dat->save();
+                $emailJob = (new SendPasswordMail($input[$i]['email'],$passwd))->delay(Carbon::now()->addSeconds(120));
+                dispatch($emailJob);
+            }
+
+        }
+        if ($message==""){
+            return "Tots els usuaris s'han creat";
+        } else {
+            return "Els usuaris amb mail: ".$message.", ja estan creats, per tant no s'han tornar a crear";
+        }
+    }
+
     public function home (){
         $conta = User::find(auth()->id())->notificacions()->count();
         return view('home', ['conta' => $conta]);

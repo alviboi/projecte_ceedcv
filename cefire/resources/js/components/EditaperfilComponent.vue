@@ -57,7 +57,7 @@
                     </div>
             </div>
             <div class="uk-modal-footer uk-text-right">
-                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel·la</button>
+                <button class="uk-button uk-button-default" @click="ix()" type="button">Cancel·la</button>
                 <button class="uk-button uk-button-primary" type="button" @click="envia()">Guarda</button>
             </div>
         </div>
