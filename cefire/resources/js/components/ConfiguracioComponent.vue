@@ -98,6 +98,37 @@ export default {
                 console.error(err);
                 alert(err.message);
             })
+        },
+        get_configuracio(){
+            axios.get("control")
+            .then(res => {
+                this.fitxar_aparell=res.data.aparell;
+                console.log(res)
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        }
+    },
+    mounted() {
+        this.get_configuracio();
+    },
+    watch: {
+        fitxar_aparell(oldval,newval) {
+            let params = {
+                'aparell': newval
+            }
+            axios.post("control/1",params)
+            .then(res => {
+                console.log(res);
+                this.$toast.success(res.data);
+
+            })
+            .catch(err => {
+                console.error(err);
+                this.$toast.error(err.response.data);
+
+            })
         }
     },
 }

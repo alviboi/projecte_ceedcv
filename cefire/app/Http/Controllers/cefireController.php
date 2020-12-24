@@ -6,9 +6,18 @@ use App\Models\cefire;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ControlController;
 
 class cefireController extends Controller
 {
+
+    //protected $Control_data;
+    protected $aparell;
+    public function __construct(ControlController $Control_data)
+    {
+        //$this->Control_data = $Control_data;
+        $this->aparell = $Control_data->index()->aparell;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +26,8 @@ class cefireController extends Controller
     public function index()
     {
         //
-        return cefire::get();
+        $ret = cefire::get();
+        return $ret->toArray();
 
     }
 
@@ -31,7 +41,7 @@ class cefireController extends Controller
         $ret = array();
         $els = cefire::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
         foreach ($els as $el) {
-            $item=array("id"=>$el->id, "name"=>$el->user['name'], "data"=>$el->data, "inici"=>$el->inici->format('H:i'), "fi"=>$el->fi->format('H:i'));
+            $item=array("id"=>$el->id, "name"=>$el->user['name'], "data"=>$el->data, "inici"=>$el->inici->format('H:i:s'), "fi"=>$el->fi->format('H:i:s'));
             array_push($ret, $item);
         }
         return $ret;
@@ -57,14 +67,51 @@ class cefireController extends Controller
     public function store(Request $request)
     {
         //
-        $dat = new cefire();
-        $dat->data = $request->data;
-        $dat->inici = $request->inici;
-        $dat->fi = $request->fi;
-        $dat->user_id = auth()->id();
-        $dat->save();
-        return $dat->toArray();
+        $data_hui = date('Y-m-d');
+        if ($this->aparell == 1){
+            if ($request->data != $data_hui){
+                return response("Està habilitat el fitxatge per dies. Has de fitxar cada dia", 403);
+                //abort(403, 'Està habilitat el fitxatge per dies. Has de fitxar cada dia');
+            } else {
+                $hora = date('H:i:s');
+                if ($request->id == 0){
+                    $dat = new cefire();
+                    $dat->data = $request->data;
+                    $dat->inici = $hora;
+                    $dat->fi = "00:00:00";
+                    $dat->user_id = auth()->id();
+                    $dat->save();
+                    $ret = array("id" => $dat->id,"inici" => $dat->inici->format('H:i:s'),"fi" => $dat->fi->format('H:i:s'));
+                    return $ret;
+                    // return cefire::where('data','=',$request->data)->where('user_id','=',auth()->id())->get();
+                } else {
+                    $cef=cefire::where('id','=',$request->id)->first();
+                    $cef->fi = $hora;
+                    $cef->save();
+                    $ret = array("id" => $cef->id,"inici" => $cef->inici->format('H:i:s'),"fi" => $cef->fi->format('H:i:s'));
+                    return $ret;
+                    // return cefire::where('data','=',$request->data)->where('user_id','=',auth()->id())->get();
 
+                }
+            }
+        } else {
+            $hi_ha=cefire::where('user_id','=',auth()->id())->where('data','=',$request->data)->where('inici','=',$request->inici)->first();
+            if ($hi_ha) {
+                //abort(403, "Ja has fitxat el dia de hui");
+                return response("Ja has fitxat", 403);
+            } else {
+                $dat = new cefire();
+                $dat->data = $request->data;
+                $dat->inici = $request->inici;
+                $dat->fi = $request->fi;
+                $dat->user_id = auth()->id();
+                $dat->save();
+                $ret = array("id" => $dat->id,"inici" => $dat->inici->format('H:i:s'),"fi" => $dat->fi->format('H:i:s'));
+                return $ret;
+                // return cefire::where('data','=',$request->data)->where('user_id','=',auth()->id())->get();
+
+            }
+        }
     }
 
     /**

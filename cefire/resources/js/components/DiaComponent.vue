@@ -10,7 +10,7 @@
           data-toggle="tooltip"
           data-placement="bottom"
           title="CEFIRE"
-          @click="afegix('cefire')"
+          @click="afegix_cefire()"
           class="btn btn-primary btn-sm"
         >
           <i class="fas fa-check"></i>
@@ -64,11 +64,11 @@
       <!-- COLUMNA LATERAL DESPLEGABLE -->
       <!-- ESPAI ON ES POSEN LES ETIQUETES -->
       <div id="principal" class="principal">
-        <transition-group name="list-complete2" tag="div">
+        <transition-group name="list-complete" tag="div">
           <div
             v-for="cef in cefire"
-            class="s-cefire list-complete2-item"
-            :key="'c' + cef.id"
+            class="s-cefire list-complete-item"
+            :key="'c'+ act + cef.id"
             data-uk-tooltip="pos: right; animation: true; offset: 12;"
             :title="cef.inici+'-'+cef.fi"
           >
@@ -77,7 +77,7 @@
 
           <div
             v-for="com in compensa"
-            class="s-compensa list-complete2-item"
+            class="s-compensa list-complete-item"
             :key="'com' + com.id"
             data-uk-tooltip="pos: right; animation: true; offset: 12;"
             :title="com.motiu"
@@ -87,7 +87,7 @@
 
           <div
             v-for="cur in curs"
-            class="s-curs list-complete2-item"
+            class="s-curs list-complete-item"
             :key="'cur' + cur.id"
             data-uk-tooltip="pos: right; animation: true; offset: 12;"
             :title="cur.curs"
@@ -96,7 +96,7 @@
           </div>
           <div
             v-for="vis in visita"
-            class="s-visita list-complete2-item"
+            class="s-visita list-complete-item"
             :key="'vis' + vis.id"
             data-uk-tooltip="pos: right; animation: true; offset: 12;"
             :title="vis.centre"
@@ -105,14 +105,14 @@
           </div>
           <div
             v-for="gua in guardia"
-            class="s-guardia list-complete2-item"
+            class="s-guardia list-complete-item"
             :key="'gua' + gua.id"
           >
             <span @click="borra_par('guardia', gua.id)" class="cerrar" />
           </div>
           <div
             v-for="perm in permis"
-            class="s-permis list-complete2-item"
+            class="s-permis list-complete-item"
             :key="'perm' + perm.id"
             data-uk-tooltip="pos: right; animation: true; offset: 12;"
             :title="perm.motiu"
@@ -277,8 +277,8 @@ export default {
   data() {
     return {
       id: null,
-      cefire: {},
       compensa: {},
+      cefire: {},
       curs: {},
       visita: {},
       guardia: {},
@@ -303,6 +303,7 @@ export default {
     dia_mes: 0,
     arxiu_pujat: '',
     avis_pujada: "",
+    act: 1
     };
   },
   props: ['mati','data'],
@@ -323,7 +324,7 @@ export default {
             link.click();
         })
         .catch(err => {
-            alert("Error: Has pujat un arxiu pdf?");
+            this.$toast.error("Error: Has pujat un arxiu pdf?");
             console.error(err);
         })
     },
@@ -405,9 +406,56 @@ export default {
           console.error(err);
         });
     },
+    afegix_cefire(){
+        //alert(this.data);
+      let inici,fi;
+      var desti='cefire';
+
+      if (this.mati=='m'){
+        inici="9:00:00";
+        fi="14:00:00";
+      } else {
+        inici="16:00:00";
+        fi="20:00:00";
+      }
+      var id=0;
+      if (this.cefire.length === undefined || this.cefire.length == 0){
+          id=0;
+      } else if (this.cefire[this.cefire.length-1]['fi'] != "00:00:00") {
+          id=0;
+      } else {
+          id = this.cefire[this.cefire.length-1]['id'];
+        //   alert(id);
+      }
+      var params = {
+        id: id,
+        data: data_db(this.data),
+        inici: inici,
+        fi: fi,
+      };
+      axios
+        .post("cefire", params)
+        .then((res) => {
+             var aux = res.data;
+            if (Object.keys(this.cefire).length == 0 || aux['fi']=="00:00:00") {
+                this.cefire.push(aux);
+            } else if (aux['fi'] != "00:00:00") {
+                for (let index = 0; index < this.cefire.length; index++) {
+                    if (this.cefire[index]['id']==aux['id']){
+                        this.cefire[index]['fi']=aux['fi'];
+                        this.act++;
+                    }
+                }
+            }
+        })
+        .catch((err) => {
+          this.$toast.error(err.response.data);
+        });
+    },
     afegix(desti) {
       //alert(this.data);
       let inici,fi;
+
       if (this.mati=='m'){
         inici="9:00:00";
         fi="14:00:00";
@@ -425,13 +473,13 @@ export default {
         .then((res) => {
           console.log(res);
           if (Object.keys(this[desti]).length !== 0) {
-            this[desti].push(res.data);
+                this[desti].push(res.data);
           } else {
             this[desti] = [res.data];
           }
         })
         .catch((err) => {
-          console.error(err);
+          this.$toast.error(err.response.data);
         });
     },
     salva(desti) {

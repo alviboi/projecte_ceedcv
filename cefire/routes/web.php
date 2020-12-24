@@ -36,7 +36,7 @@ Route::get('/seccio/{pag?}', function ($pag="principal") {
 //     return view('home')->with(['seccio' => 'contents.principal']);
 // });
 
-Route::get('/home', 'UserController@home');
+Route::get('/home', 'UserController@home')->middleware('auth');;
 
 
 
@@ -98,7 +98,8 @@ Route::group(['middleware' => 'auth'], function() {
         'permis' => permisController::class,
         'user' => UserController::class,
         'visita' => visitaController::class,
-        'avisos' => avisosController::class
+        'avisos' => avisosController::class,
+        'control' => ControlController::class
     ]);
 });
 

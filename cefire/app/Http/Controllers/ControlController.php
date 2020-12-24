@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\control;
 
 use Illuminate\Http\Request;
 
@@ -14,6 +15,8 @@ class ControlController extends Controller
     public function index()
     {
         //
+        return control::find(1);
+
     }
 
     /**
@@ -69,6 +72,7 @@ class ControlController extends Controller
     public function update(Request $request, $id)
     {
         //
+        return "hola";
     }
 
     /**

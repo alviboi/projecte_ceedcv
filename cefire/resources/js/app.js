@@ -7,8 +7,8 @@
 require('./bootstrap');
 require('./home.js');
 
-
-
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 window.Vue = require('vue');
 
 /**
@@ -50,11 +50,11 @@ Vue.component('dadespersonals-component', require('./components/DadespersonalsCo
 
 
 
-
-
-
-
-
+Vue.use(Toast, {
+    transition: "Vue-Toastification__bounce",
+    maxToasts: 5,
+    newestOnTop: true
+  });
 
 
 Vue.prototype.$eventBus = new Vue();
