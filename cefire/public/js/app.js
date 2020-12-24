@@ -88285,7 +88285,7 @@ var render = function() {
               staticClass:
                 "uk-heading-primary uk-margin-remove  uk-text-primary"
             },
-            [_vm._v(_vm._s(_vm.total / 60) + " hores")]
+            [_vm._v(_vm._s((_vm.total / 60).toFixed(2)) + " hores")]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "uk-text-small" }, [

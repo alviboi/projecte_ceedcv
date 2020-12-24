@@ -4,7 +4,7 @@
 				<div class="uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-2 uk-child-width-1-4@l uk-child-width-1-5@xl" data-uk-grid>
 					<div>
 						<span class="uk-text-small"><span data-uk-icon="icon:users" class="uk-margin-small-right uk-text-primary"></span>Temps total</span>
-						<h1 class="uk-heading-primary uk-margin-remove  uk-text-primary">{{total/60}} hores</h1>
+						<h1 class="uk-heading-primary uk-margin-remove  uk-text-primary">{{(total/60).toFixed(2)}} hores</h1>
 						<div class="uk-text-small">
 							Sense contar eixides.
 						</div>
