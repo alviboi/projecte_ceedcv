@@ -25,7 +25,7 @@
                 Habilitar des de l'aparell significa que al fitxar tant des de l'ordinador com de l'aparell quedarà enregistrat amb l'hora que s'ha fet. S'ha d'informar a tots els assessors que s'ha habilitat aquesta opció. Ja que és possible que fitxen amb un dia tota la setmana i no quede enregistrada l'hora correcta d'entrada.
                 <div class="uk-margin">
                     <div class="uk-form-controls uk-form-controls-text">
-                        <label><input v-model="fitxar_aparell" class="uk-checkbox" type="checkbox" > Habilita fitxar desde aparell</label>
+                        <label><input v-model="fitxar_aparell" @click="fitxar_aparell_f()" class="uk-checkbox" type="checkbox" > Habilita fitxar desde aparell</label>
                     </div>
                 </div>
             </div>
@@ -108,17 +108,12 @@ export default {
             .catch(err => {
                 console.error(err);
             })
-        }
-    },
-    mounted() {
-        this.get_configuracio();
-    },
-    watch: {
-        fitxar_aparell(oldval,newval) {
+        },
+        fitxar_aparell_f() {
             let params = {
-                'aparell': newval
+                'aparell': this.fitxar_aparell? 1 : 0
             }
-            axios.post("control/1",params)
+            axios.put("control/1",params)
             .then(res => {
                 console.log(res);
                 this.$toast.success(res.data);
@@ -130,6 +125,9 @@ export default {
 
             })
         }
+    },
+    mounted() {
+        this.get_configuracio();
     },
 }
 </script>

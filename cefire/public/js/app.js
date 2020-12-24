@@ -2713,19 +2713,14 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.error(err);
       });
-    }
-  },
-  mounted: function mounted() {
-    this.get_configuracio();
-  },
-  watch: {
-    fitxar_aparell: function fitxar_aparell(oldval, newval) {
+    },
+    fitxar_aparell_f: function fitxar_aparell_f() {
       var _this3 = this;
 
       var params = {
-        'aparell': newval
+        'aparell': this.fitxar_aparell ? 1 : 0
       };
-      axios.post("control/1", params).then(function (res) {
+      axios.put("control/1", params).then(function (res) {
         console.log(res);
 
         _this3.$toast.success(res.data);
@@ -2735,6 +2730,9 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$toast.error(err.response.data);
       });
     }
+  },
+  mounted: function mounted() {
+    this.get_configuracio();
   }
 });
 
@@ -86409,6 +86407,9 @@ var render = function() {
                             : _vm.fitxar_aparell
                         },
                         on: {
+                          click: function($event) {
+                            return _vm.fitxar_aparell_f()
+                          },
                           change: function($event) {
                             var $$a = _vm.fitxar_aparell,
                               $$el = $event.target,

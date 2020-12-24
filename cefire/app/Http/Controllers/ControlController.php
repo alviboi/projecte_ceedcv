@@ -72,7 +72,10 @@ class ControlController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return "hola";
+        $con = control::find(1);
+        $con->aparell = $request->aparell;
+        $con->save();
+        return "S'han actualitzat les dades";
     }
 
     /**
