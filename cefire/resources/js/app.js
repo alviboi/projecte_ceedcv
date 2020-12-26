@@ -45,6 +45,7 @@ Vue.component('controlass-component', require('./components/ControlassComponent.
 
 Vue.component('dadespersonals-component', require('./components/DadespersonalsComponent.vue').default);
 
+
 //L'error més comú que tens quan modifiques una cosa d'ací, no està funcionant npm run watch, o compila a npm run dev
 
 

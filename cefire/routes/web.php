@@ -18,7 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    return "Cache is cleared";
+});
 
 Auth::routes();
 
@@ -26,7 +30,6 @@ Auth::routes();
 
 Route::view('/demo', 'demo')->name('demo');
 
-Route::view('/prova', 'prova')->name('prova');
 
 Route::get('/seccio/{pag?}', function ($pag="principal") {
     return view('contents.'.$pag)->render();
@@ -36,7 +39,7 @@ Route::get('/seccio/{pag?}', function ($pag="principal") {
 //     return view('home')->with(['seccio' => 'contents.principal']);
 // });
 
-Route::get('/home', 'UserController@home')->middleware('auth');;
+Route::get('/home', 'UserController@home')->name('casa')->middleware('auth');
 
 
 
