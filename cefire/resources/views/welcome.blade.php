@@ -2,19 +2,17 @@
 
 @section('content')
 		<div class="top-wrap uk-position-relative uk-light uk-background-secondary">
-            <div class="uk-cover-container uk-light uk-flex uk-flex-middle top-wrap-height">
+            <div class="uk-cover-container uk-flex uk-flex-middle">
                 <div class="uk-container uk-flex-auto uk-position-relative uk-margin uk-margin-large-top uk-margin-large-bottom" data-uk-parallax="y: 0,99; easing:0; opacity:0.0">
                     <div class="uk-width-1-2@s" data-uk-scrollspy="cls: uk-animation-slide-right-medium; target: > *; delay: 150">
                         <h6 class="uk-text-primary uk-margin-small-bottom">Benvingut!</h6>
                         <h1 class="uk-margin-remove-top">Intranet del CEFIRE de València</h1>
                         <p class="subtitle-text uk-visible@s">Aquesta pàgina és per a gestionar els horaris del centre del CEFIRE de València. A continuació teniu els enllaços per a accedir als diferents recursos.</p>
-                        <button class="uk-button uk-button-primary uk-border-pill">Entra</button>
-                        <a href="{{ route('login') }}" title="Entra" class="uk-button uk-button-primary uk-border-pill">Entra</a>
                     </div>
                 </div>
-                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-srcset="/img/cef_port.png"
+                <img data-srcset="/img/cef_port.png"
 				data-sizes="100vw"
-				data-src="https://picsum.photos/1200/900/?image=816" alt="" data-uk-cover data-uk-img data-uk-parallax="opacity: 0.3,0.1; easing:0"
+				data-src="https://picsum.photos/1200/900/?image=816" alt="" data-uk-cover data-uk-img data-uk-parallax="opacity: 0.2,0.1; easing:0"
 				>
             </div>
 		</div>

@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+App::setlocale('ca');
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('entrada');
 
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');
@@ -87,7 +88,7 @@ Route::post('guardia/insert','guardiaController@put_guardia_id')->name('put_guar
 Route::post('upload_permis','permisController@upload')->middleware('auth');
 Route::post('download_permis','permisController@download')->middleware('auth');
 
-
+Route::resource('control', ControlController::class)->middleware('can:esAdmin');
 
 Route::group(['middleware' => 'auth'], function() {
     Route::resources([
@@ -101,8 +102,7 @@ Route::group(['middleware' => 'auth'], function() {
         'permis' => permisController::class,
         'user' => UserController::class,
         'visita' => visitaController::class,
-        'avisos' => avisosController::class,
-        'control' => ControlController::class
-    ]);
+        'avisos' => avisosController::class
+        ]);
 });
 

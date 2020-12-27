@@ -22,7 +22,7 @@
                         @if (Auth::check())
                         <ul class="uk-navbar-nav">
                                 <li>
-                                    <a href="{{ route('casa') }}"><i class="fa fa-home" aria-hidden="true"></i>Aplicació</a>
+                                    <a href="{{ route('casa') }}"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a>
                                 </li>
                         </ul>
                         @endif
@@ -51,7 +51,7 @@
                                             <li>
                                                 <a href="{{ route('logout') }}"
                                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                                    {{ __('Log Out') }}
+                                                    Surt
                                                 </a>
 
                                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -78,7 +78,7 @@
         <div class="uk-container">
             <div class="uk-grid uk-text-center uk-text-left@s uk-flex-middle" data-uk-grid>
                 <div class="uk-text-small uk-text-muted uk-width-1-2@s">
-                    Aplicació creada per Alfredo Rafael Vicente Boix
+                    Aplicació creada per <a href="mailto:vicente_alf@gva.es">Alfredo Rafael Vicente Boix</a>
                 </div>
 
                 <div class="uk-text-small uk-text-muted uk-text-right uk-text-right@s uk-width-1-2@s">

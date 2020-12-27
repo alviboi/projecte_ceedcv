@@ -3,7 +3,7 @@
 @section('content')
     <div class="uk-section uk-section-small uk-section-muted uk-flex uk-flex-center">
         <div class="uk-card uk-card-default uk-card-body uk-width-large">
-            <h2 class="uk-card-title">Log In</h2>
+            <h2 class="uk-card-title">{{ __('Log In') }}</h2>
             <form method="POST" action="{{ route('login') }}" class="uk-form-stacked">
                 @csrf
                 <div class="uk-margin">

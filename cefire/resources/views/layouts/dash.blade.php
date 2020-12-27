@@ -44,12 +44,15 @@
                                             @csrf
                                         </form>
 									</ul>
-								</div>
-							</li>
+                                </div>
+                            </li>
 						</ul>
 					</div>
 					<div class="uk-navbar-right">
 						<ul class="uk-navbar-nav">
+                            <li>
+                                <a href="{{ route('entrada') }}"><span data-uk-icon="icon: home"></span></a>
+                            </li>
 							<li><a href="#" @click="showMissatge = true" data-uk-icon="icon:mail" title="Envia missatge a company" data-uk-tooltip></a></li>
 							{{-- <li><a href="#" data-uk-icon="icon: commenting" title="Ajuda" data-uk-tooltip></a></li> --}}
 							<li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" data-uk-icon="icon:  sign-out" title="Sign Out" data-uk-tooltip></a></li>
@@ -74,12 +77,23 @@
 				<h4 class="uk-text-center uk-margin-remove-vertical text-light">{{ Auth::user()->name }}</h4>
 
 				<div class="uk-position-relative uk-text-center uk-display-block">
-				    <a href="#" class="uk-text-small uk-text-muted uk-display-block uk-text-center" data-uk-icon="icon: triangle-down; ratio: 0.7">Admin</a>
+				    <a href="#" class="uk-text-small uk-text-muted uk-display-block uk-text-center" data-uk-icon="icon: triangle-down; ratio: 0.7">
+                        @if (Auth::user()->Perfil == 1)
+                            Admin
+                        @elseif (Auth::user()->Perfil == 0)
+                            Assessor
+                        @elseif (Auth::user()->Perfil == 2)
+                            Administratiu
+                        @endif
+
+                    </a>
 				    <!-- user dropdown -->
 				    <div class="uk-dropdown user-drop" data-uk-dropdown="mode: click; pos: bottom-center; animation: uk-animation-slide-bottom-small; duration: 150">
 				    	<ul class="uk-nav uk-dropdown-nav uk-text-left">
-								<li><a href="#" @click="showEdita = true"><span data-uk-icon="icon: refresh"></span> Edita perfil</a></li>
-								<li><a href="#" @click="view = 'configuracio'"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
+                                <li><a href="#" @click="showEdita = true"><span data-uk-icon="icon: refresh"></span> Edita perfil</a></li>
+                                @if (Auth::user()->Perfil == 1)
+                                <li><a href="#" @click="view = 'configuracio'"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
+                                @endif
 								<li class="uk-nav-divider"></li>
 								<li><a href="#" @click.prevent="view = 'personals'"><span data-uk-icon="icon: image"></span> Les teues dades</a></li>
 								<li class="uk-nav-divider"></li>
