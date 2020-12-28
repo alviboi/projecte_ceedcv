@@ -54,6 +54,7 @@ class centresController extends Controller
     public function store(Request $request)
     {
         //
+
     }
 
     /**
@@ -85,9 +86,22 @@ class centresController extends Controller
      * @param  \App\Models\centres  $centres
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, centres $centres)
+    public function update(Request $request, $centres)
     {
         //
+        $centre = centres::find($centres);
+        $centre->user_id = $request->user_id;
+        $centre->nom = $request->nom;
+        $centre->codi = $request->codi;
+        $centre->situacio = $request->situacio;
+        $centre->CP = $request->CP;
+        $centre->ciutat = $request->ciutat;
+        $centre->contacte = $request->contacte;
+        $centre->mail_contacte = $request->mail_contacte;
+        $centre->tlf_contacte = $request->tlf_contacte;
+        $centre->Observacions = $request->Observacions;
+        $centre->save();
+        return $centre;
     }
 
     /**
@@ -96,8 +110,10 @@ class centresController extends Controller
      * @param  \App\Models\centres  $centres
      * @return \Illuminate\Http\Response
      */
-    public function destroy(centres $centres)
+    public function destroy($centres)
     {
         //
+        centres::find($centres)->delete();
+
     }
 }

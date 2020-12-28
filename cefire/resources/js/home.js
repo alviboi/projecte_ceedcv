@@ -37,3 +37,16 @@ window.newTab = function(url){
     var win = window.open(url);
     win.focus();
 }
+
+// window.agafa_users = function(){
+//     var ret = [];
+//     axios.get("user")
+//     .then(res => {
+//         ret = res.data;
+//     })
+//     .catch(err => {
+//         console.error(err);
+//         return err;
+//     })
+//     return ret;
+// }
