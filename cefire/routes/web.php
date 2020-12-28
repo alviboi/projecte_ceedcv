@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-App::setlocale('ca');
+// App::setlocale('ca');
 
 Route::get('/', function () {
     return view('welcome');

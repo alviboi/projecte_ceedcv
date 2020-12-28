@@ -39,6 +39,7 @@ Vue.component('escriumsg-component', require('./components/missatges/EscriumsgCo
 Vue.component('llegirmsg-component', require('./components/missatges/LlegirmsgComponent.vue').default);
 
 Vue.component('centres-component', require('./components/CentresComponent.vue').default);
+
 Vue.component('report-component', require('./components/Reports/ReportComponent.vue').default);
 Vue.component('line-component', require('./components/Reports/LinegrafComponent.vue').default);
 Vue.component('controlass-component', require('./components/ControlassComponent.vue').default);
@@ -143,3 +144,4 @@ const app = new Vue({
     }
 
 });
+

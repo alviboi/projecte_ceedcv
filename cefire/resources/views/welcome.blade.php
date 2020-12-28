@@ -21,42 +21,42 @@
     <div>
         <div class="buttons2">
                 <div class="container2">
-                    <a href="" class="btn2 effect04" data-sm-link-text="Antiga pàgina de gestió de centres" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-graduation-cap fa-3x uk-margin-right" aria-hidden="true"></i> Control de centres</span></a>
+                    <a href="" class="btn2 effect04" data-sm-link-text="Antiga pàgina de gestió de centres" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-graduation-cap fa-3x" aria-hidden="true"></i> Control de centres</span></a>
                 </div>
             </div>
     </div>
     <div>
         <div class="buttons2">
                 <div class="container2">
-                    <a href="" class="btn2 effect04" data-sm-link-text="Aplicació per a la reserva d'Aules" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-check fa-3x uk-margin-right" aria-hidden="true"></i> Reserva d'Aules</span></a>
+                    <a href="" class="btn2 effect04" data-sm-link-text="Aplicació per a la reserva d'Aules" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-check fa-3x" aria-hidden="true"></i> Reserva d'Aules</span></a>
                 </div>
             </div>
     </div>
     <div>
         <div class="buttons2">
                 <div class="container2">
-                    <a href="" class="btn2 effect04" data-sm-link-text="Espai per a enmagatzenar arxius" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-cloud fa-3x uk-margin-right" aria-hidden="true"></i> Owncloud</span></a>
+                    <a href="" class="btn2 effect04" data-sm-link-text="Espai per a enmagatzenar arxius" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-cloud fa-3x" aria-hidden="true"></i> Owncloud</span></a>
                 </div>
             </div>
     </div>
     <div>
         <div class="buttons2">
                 <div class="container2">
-                    <a href="" class="btn2 effect04" data-sm-link-text="Realitzar videoconfènrecies online" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa fa-video fa-3x uk-margin-right" aria-hidden="true"></i> Jitsi Meet</span></a>
+                    <a href="" class="btn2 effect04" data-sm-link-text="Realitzar videoconfènrecies online" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa fa-video fa-3x" aria-hidden="true"></i> Jitsi Meet</span></a>
                 </div>
             </div>
     </div>
     <div>
         <div class="buttons2">
                 <div class="container2">
-                    <a href="" class="btn2 effect04" data-sm-link-text="Arxius per a ús de l'administrador" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-file fa-3x uk-margin-right" aria-hidden="true"></i> Arxius intranet</span></a>
+                    <a href="" class="btn2 effect04" data-sm-link-text="Arxius per a ús de l'administrador" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-file fa-3x" aria-hidden="true"></i> Arxius intranet</span></a>
                 </div>
             </div>
     </div>
     <div>
         <div class="buttons2">
                 <div class="container2">
-                    <a href="" class="btn2 effect04" data-sm-link-text="Espai per a controlar la intranet del CEFIRE" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-cogs fa-3x uk-margin-right" aria-hidden="true"></i> Proxmox</span></a>
+                    <a href="" class="btn2 effect04" data-sm-link-text="Espai per a controlar la intranet del CEFIRE" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-cogs fa-3x" aria-hidden="true"></i> Proxmox</span></a>
                 </div>
             </div>
     </div>
