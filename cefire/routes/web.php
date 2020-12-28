@@ -47,6 +47,9 @@ Route::get('/home', 'UserController@home')->name('casa')->middleware('auth');
 
 // Route::get('home', 'HomeController@index')->name('home');
 
+Route::get('/logat', 'UserController@logat')->middleware('auth');
+
+
 Route::get('/user_cefire/{num}/{any}/{mes}', 'UserController@get_cefire')->middleware('auth');
 Route::get('/user_compensa/{num}/{any}/{mes}', 'UserController@get_compensa')->middleware('auth');
 Route::get('/user_curs/{num}/{any}/{mes}', 'UserController@get_curs')->middleware('auth');

@@ -31,7 +31,7 @@
 								<div class="uk-navbar-dropdown">
 									<ul class="uk-nav uk-navbar-dropdown-nav">
 										<li class="uk-nav-header">EL TEU COMPTE</li>
-										<li><a href="#"><span data-uk-icon="icon: info"></span> Els meus centres</a></li>
+										<li><a href="#" @click="view = 'centresmeus'"><span data-uk-icon="icon: info"></span> Els meus centres</a></li>
 										<li><a href="#" @click="view = 'controlass'"><span data-uk-icon="icon: refresh"></span> Control d'Assessors</a></li>
                                         <li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
                                         <li><a href="#" @click="showModal = true"><span data-uk-icon="icon: warning"></span> Escriu Avís</a></li>

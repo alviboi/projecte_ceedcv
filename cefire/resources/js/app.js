@@ -38,7 +38,9 @@ Vue.component('escriuavis-component', require('./components/avisos/EscriuavisCom
 Vue.component('escriumsg-component', require('./components/missatges/EscriumsgComponent.vue').default);
 Vue.component('llegirmsg-component', require('./components/missatges/LlegirmsgComponent.vue').default);
 
-Vue.component('centres-component', require('./components/CentresComponent.vue').default);
+Vue.component('centres-component', require('./components/Centres/CentresComponent.vue').default);
+Vue.component('centresmeus-component', require('./components/Centres/CentresmeusComponent.vue').default);
+
 
 Vue.component('report-component', require('./components/Reports/ReportComponent.vue').default);
 Vue.component('line-component', require('./components/Reports/LinegrafComponent.vue').default);
@@ -59,7 +61,9 @@ Vue.use(Toast, {
   });
 
 
+
 Vue.prototype.$eventBus = new Vue();
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -96,6 +100,9 @@ const app = new Vue({
         },
         'centres': {
             template: '<div><centres-component /></div>'
+        },
+        'centresmeus': {
+            template: '<div><centresmeus-component /></div>'
         },
         'report1': {
             template: '<div><report-component /></div>'

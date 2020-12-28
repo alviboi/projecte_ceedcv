@@ -38,6 +38,8 @@ window.newTab = function(url){
     win.focus();
 }
 
+
+
 // window.agafa_users = function(){
 //     var ret = [];
 //     axios.get("user")

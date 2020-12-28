@@ -113,8 +113,8 @@
           </div>
 
         <p class="uk-text-right">
-            <button class="uk-button uk-button-default uk-modal-close" type="button">Tanca</button>
-            <button class="uk-button uk-button-danger uk-modal-close" @click="borra()" type="button">Borra centre</button>
+            <button class="uk-button uk-button-default" @click="tanca()" type="button">Tanca</button>
+            <button class="uk-button uk-button-danger" @click="borra()" type="button">Borra centre</button>
             <button class="uk-button uk-button-primary" type="button" @click="envia_dades()">Salva</button>
         </p>
     </div>
@@ -143,6 +143,7 @@ export default {
             datos: []
         }
     },
+    props: ['busqueda2'],
     computed: {
         url () {
             return "http://www.ceice.gva.es/abc/i_guiadecentros/es/centro.asp?codi="+this.editant['codi'];
@@ -249,22 +250,43 @@ export default {
             .then(res => {
                 console.log(res);
                 this.$toast.success("Has esborrat el centre");
+                for (let index = 0; index < this.datos.length; index++) {
+                    if (this.datos[index]['id'] == this.editant['id']){
+                        this.datos.splice(index,1);
+                    }
+                }
+                this.editant = {};
             })
             .catch(err => {
                 console.error(err);
+                this.$toast.error("Alguna cosa ha anat malament");
             })
+        },
+        tanca() {
+            this.editant={};
+            UIkit.modal("#edita-centre").hide();
         }
     },
     watch: {
 		dadesFiltrades () {
-			this.setPagines();
-		}
+            this.setPagines();
+        },
+        busqueda2 () {
+            this.busqueda=this.busqueda2;
+        },
+        centres_per_pagina(newVal,oldVal){
+            this.pagines = [];
+			let NumeroPagines = Math.ceil(this.dadesFiltrades.length / newVal);
+			for (let index = 1; index <= NumeroPagines; index++) {
+				this.pagines.push(index);
+            }
+        }
+
 	},
     mounted() {
         this.get_centres();
         this.agafa_users();
-    },
-
+    }
 }
 </script>
 

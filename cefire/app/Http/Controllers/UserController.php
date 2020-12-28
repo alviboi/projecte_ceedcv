@@ -13,7 +13,11 @@ use App\Jobs\SendPasswordMail;
 
 
 class UserController extends Controller
+
 {
+    public function logat () {
+        return user::find(auth()->id())->name;
+    }
 
     /**
      * Store a newly created resource in storage.

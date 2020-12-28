@@ -11,6 +11,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{-- <meta name="user-name" content="{{ Auth::user()->name }}"> --}}
 </head>
 <body>
     <div class="uk-background-primary uk-light">
@@ -43,7 +44,7 @@
                                 @endif
                             @else
                                 <li>
-                                    <a href="#">
+                                    <a id="nom_log" href="#">
                                         {{ Auth::user()->name }}
                                     </a>
                                     <div class="uk-navbar-dropdown">
