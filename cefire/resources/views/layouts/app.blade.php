@@ -44,7 +44,7 @@
                                 @endif
                             @else
                                 <li>
-                                    <a id="nom_log" href="#">
+                                    <a href="#">
                                         {{ Auth::user()->name }}
                                     </a>
                                     <div class="uk-navbar-dropdown">

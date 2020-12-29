@@ -601,6 +601,7 @@ $fondo:  #f1faee
         z-index: 1
         background-color: $fondo
         border-radius: 10px
+        min-height: 160px
         .s-
             flex: 0 1 auto
             margin: 1px
@@ -670,12 +671,15 @@ $fondo:  #f1faee
 
     .flex-container
         display: flex
-        flex-wrap: wrap
+        flex-wrap: nowrap
         flex-direction: column
         justify-content: flex-start
         align-items: auto
         align-content: flex-start
-        .button
-            flex: 0 1 auto
+        button
+            flex: 1 0 auto
             margin: 1px
+            padding-left: 8px
+            padding-right: 8px
+
 </style>

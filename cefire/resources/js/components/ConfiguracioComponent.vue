@@ -111,7 +111,7 @@ export default {
         },
         fitxar_aparell_f() {
             let params = {
-                'aparell': this.fitxar_aparell? 1 : 0
+                'aparell': this.fitxar_aparell? 0 : 1
             }
             axios.put("control/1",params)
             .then(res => {
