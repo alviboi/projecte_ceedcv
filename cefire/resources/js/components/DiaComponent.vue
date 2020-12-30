@@ -121,11 +121,6 @@
 
           </div>
         </transition-group>
-
-        <!-- <div class="s-compensa"></div>
-        <div class="s-curs"></div>
-        <div class="s-visita"></div>
-        <div class="s-guardia"></div> -->
       </div>
       <!-- ESPAI ON ES POSEN LES ETIQUETES -->
     </div>

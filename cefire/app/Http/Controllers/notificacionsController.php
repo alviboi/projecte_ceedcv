@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MailEntrada;
 use App\Models\notificacions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -65,6 +66,9 @@ class notificacionsController extends Controller
             'missatge' => $notificacio->missatge
         ];
 
+
+        $item=array("id"=>$notificacio->id, "name"=>$notificacio->user['name'], "From"=>$notificacio->From, "user_id"=>$notificacio->user_id, "cap"=>$notificacio->cap, "missatge"=>$notificacio->missatge);
+        broadcast(new MailEntrada($notificacio->user_id, $item))->toOthers();
 
         $emailJob = (new SendMissatgeMail($notificacio->user['email'],$datos))->delay(Carbon::now()->addSeconds(120));
    		dispatch($emailJob);

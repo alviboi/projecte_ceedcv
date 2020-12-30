@@ -24,6 +24,7 @@ export default {
     data() {
         return {
             // users: [],
+            user: 0,
             missatges: [],
             results: []
         }
@@ -31,8 +32,6 @@ export default {
     methods: {
         obri(id){
             UIkit.modal(id).show();
-            // this.results = this.missatges.filter((item => item.id == id));
-            // UIkit.modal('#missatge').show();
         },
         borra(id){
             for (let index = 0; index < this.missatges.length; index++) {
@@ -51,47 +50,47 @@ export default {
             UIkit.modal('#missatge'+id).hide();
         },
 
-
-        // agafa_users(){
-        //     axios.get("user")
-        //     .then(res => {
-        //         console.log(res);
-        //         this.users=res.data;
-        //     })
-        //     .catch(err => {
-        //         console.error(err);
-        //     })
-        // },
         agafa_missatges() {
             axios.get("notificacions")
             .then(res => {
+                this.missatges = res.data;
                 console.log(res);
-                this.missatges=res.data;
             })
             .catch(err => {
-                console.error(err);
+                console.log(err);
             })
-        }
+        },
+
+        channel_create_mail(){
+            var aux;
+            var self=this;
+            let chan='MailEntrada';
+            channel.bind(chan,
+                function(data) {
+                    aux = data;
+                    if(aux.user == Vue.prototype.$user_id){
+                        self.missatges.push(aux.msg);
+                        self.$toast.success("Has rebut un correu de "+aux.msg.name);
+                    }
+                }
+            );
+        },
 
     },
     mounted() {
-        // this.agafa_users();
         this.agafa_missatges();
+        this.channel_create_mail();
     },
 }
 </script>
 
 <style lang="sass" scope>
 
-
 .general
     display: flex
-    // flex-wrap: wrap
     flex-direction: column
-    // justify-content: flex-start
     align-items: stretch
     align-content: flex-start
-    // overflow-y: scroll
 
 .missatge
     display: block
@@ -108,7 +107,5 @@ export default {
     .de
         background: hsl(0, 0%, 85%)
         overflow-y: hidden
-
-    // &.missatge
 
 </style>

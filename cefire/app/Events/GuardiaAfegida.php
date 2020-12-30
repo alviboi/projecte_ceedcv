@@ -49,7 +49,7 @@ class GuardiaAfegida implements ShouldBroadcast
     public function broadcastOn()
     {
         // return new PrivateChannel('guardies');
-        return ['guardies'];
+        return ['cefire'];
     }
 
     public function broadcastAs() {

@@ -159,7 +159,6 @@ export default {
                 console.log(res);
                 id_res=res.data.id;
                 let mati = (this.mati_radio=="m") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-                // let ind = this.index;
                 let drag_item = {
                     id: id_res,
                     title: "<div id="+id_res+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+this.id_drag.textContent+"\">"+mati+" "+this.id_drag.textContent+"</div>",
@@ -179,13 +178,9 @@ export default {
             console.log(e);
         },
         este2(item,e) {
-            //[calendarItem, windowEvent]
             console.log(e);
         },
         borrar(item,e) {
-            // console.log(item);
-            // var doc = new DOMParser().parseFromString(item.title, "text/html");
-            // console.log(doc);
             for (let index = 0; index < this.items.length; index++) {
                 if(this.items[index].id == item.id)
                 this.items.splice(index,1);
@@ -199,32 +194,52 @@ export default {
                 console.error(err);
             })
 		},
-		setdia(d) {
-            this.dia = d;
-            this.items= [];
-            this.get_totes_guardies();
+		// setdia(d) {
+        //     this.dia = d;
+        //     this.items= [];
+        //     this.get_totes_guardies();
 
-		},
-		setSelection(dateRange) {
-			this.selectionEnd = dateRange[1]
-			this.selectionStart = dateRange[0]
-		},
-		finishSelection(dateRange) {
-			this.setSelection(dateRange)
-		},
-		// getRandomEvent(index) {
-		// 	const startDay = Math.floor(Math.random() * 28 + 1)
-		// 	const endDay = Math.floor(Math.random() * 4) + startDay
-		// 	var d = new Date()
-		// 	var i = {
-		// 		id: index,
-		// 		title: "Event " + (index + 1),
-		// 		startDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), startDay),
-		// 		endDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), endDay),
-		// 		classes: "custom-date-class-red",
-		// 	}
-		// 	return i
 		// },
+		// setSelection(dateRange) {
+		// 	this.selectionEnd = dateRange[1]
+		// 	this.selectionStart = dateRange[0]
+		// },
+		// finishSelection(dateRange) {
+		// 	this.setSelection(dateRange)
+        // },
+        channel_create(){
+            var aux;
+            var self=this;
+            let chan='GuardiaAfegida'+data_db(this.data)+this.mati;
+            channel.bind(chan,
+                function(data) {
+                    aux=data.guardia;
+                    // self.afg_guardia(data.guardia);
+                    console.log(aux);
+                    if(aux.user_id == Vue.prototype.$user_id){
+                        self.guardia.push(aux);
+                    }
+                }
+            );
+        },
+        channel_borra(){
+            var aux;
+            var self=this;
+            let chan='GuardiaBorrada'+data_db(this.data)+this.mati;
+            channel.bind(chan,
+                function(data) {
+                    aux=data.guardia;
+                    console.log(aux);
+                    if(aux.user_id == Vue.prototype.$user_id){
+                        for (let index = 0; index < self.guardia.length; index++) {
+                            if(aux.id == self.guardia[index].id){
+                                self.guardia.splice(index,1);
+                            }
+                        }
+                    }
+                }
+            );
+        }
     },
     mounted() {
         this.agafa_users();

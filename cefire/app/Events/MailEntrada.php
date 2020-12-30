@@ -18,12 +18,11 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 
-class GuardiaBorrada implements ShouldBroadcast
+class MailEntrada implements ShouldBroadcast
 {
 
-    public $guardia=array();
     public $user;
-    public $m;
+    public $msg;
 
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -33,12 +32,11 @@ class GuardiaBorrada implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($user,$guardia,$m)
+    public function __construct($user,$msg)
     {
         //
         $this->user = $user;
-        $this->guardia = $guardia;
-        $this->m = $m;;
+        $this->msg = $msg;;
     }
 
     /**
@@ -53,6 +51,6 @@ class GuardiaBorrada implements ShouldBroadcast
     }
 
     public function broadcastAs() {
-        return 'GuardiaBorrada'.$this->guardia['data'].$this->m;
+        return 'MailEntrada';
     }
 }

@@ -2459,20 +2459,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
     },
     finishSelection: function finishSelection(dateRange) {
       this.setSelection(dateRange);
-    } // getRandomEvent(index) {
-    // 	const startDay = Math.floor(Math.random() * 28 + 1)
-    // 	const endDay = Math.floor(Math.random() * 4) + startDay
-    // 	var d = new Date()
-    // 	var i = {
-    // 		id: index,
-    // 		title: "Event " + (index + 1),
-    // 		startDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), startDay),
-    // 		endDate: Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), endDay),
-    // 		classes: "custom-date-class-red",
-    // 	}
-    // 	return i
-    // },
-
+    }
   },
   mounted: function mounted() {
     this.agafa_users();
@@ -3589,11 +3576,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3867,8 +3849,7 @@ __webpack_require__.r(__webpack_exports__);
       var self = this;
       var chan = 'GuardiaBorrada' + data_db(this.data) + this.mati;
       channel.bind(chan, function (data) {
-        aux = data.guardia; // self.afg_guardia(data.guardia);
-
+        aux = data.guardia;
         console.log(aux);
 
         if (aux.user_id == Vue.prototype.$user_id) {
@@ -5074,14 +5055,14 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       // users: [],
+      user: 0,
       missatges: [],
       results: []
     };
   },
   methods: {
     obri: function obri(id) {
-      UIkit.modal(id).show(); // this.results = this.missatges.filter((item => item.id == id));
-      // UIkit.modal('#missatge').show();
+      UIkit.modal(id).show();
     },
     borra: function borra(id) {
       for (var index = 0; index < this.missatges.length; index++) {
@@ -5098,30 +5079,33 @@ __webpack_require__.r(__webpack_exports__);
       });
       UIkit.modal('#missatge' + id).hide();
     },
-    // agafa_users(){
-    //     axios.get("user")
-    //     .then(res => {
-    //         console.log(res);
-    //         this.users=res.data;
-    //     })
-    //     .catch(err => {
-    //         console.error(err);
-    //     })
-    // },
     agafa_missatges: function agafa_missatges() {
       var _this = this;
 
       axios.get("notificacions").then(function (res) {
-        console.log(res);
         _this.missatges = res.data;
+        console.log(res);
       })["catch"](function (err) {
-        console.error(err);
+        console.log(err);
+      });
+    },
+    channel_create_mail: function channel_create_mail() {
+      var aux;
+      var self = this;
+      var chan = 'MailEntrada';
+      channel.bind(chan, function (data) {
+        aux = data;
+
+        if (aux.user == Vue.prototype.$user_id) {
+          self.missatges.push(aux.msg);
+          self.$toast.success("Has rebut un correu de " + aux.msg.name);
+        }
       });
     }
   },
   mounted: function mounted() {
-    // this.agafa_users();
     this.agafa_missatges();
+    this.channel_create_mail();
   }
 });
 
@@ -116426,7 +116410,7 @@ window.pusher = new Pusher('e5f9e09fa9fe46c9b61e', {
   cluster: 'eu',
   encrypted: true
 });
-window.channel = pusher.subscribe('guardies'); // window.channel = pusher.subscribe('private-cefire');
+window.channel = pusher.subscribe('cefire'); // window.channel = pusher.subscribe('private-cefire');
 // Echo.private('chat')
 //   .listen('MessageSent', (e) => {
 //     this.messages.push({
@@ -116477,12 +116461,6 @@ Vue.prototype.$eventBus = new Vue();
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-axios.get("logat_id").then(function (res) {
-  console.log(res);
-  Vue.prototype.$user_id = res.data;
-})["catch"](function (err) {
-  console.error(err);
-});
 var app = new Vue({
   el: '#app',
   data: {
@@ -116544,12 +116522,21 @@ var app = new Vue({
     tanca_edita: function tanca_edita() {
       // alert('hola');
       this.showEdita = false;
+    },
+    log: function log() {
+      axios.get("logat_id").then(function (res) {
+        console.log(res);
+        Vue.prototype.$user_id = res.data;
+      })["catch"](function (err) {
+        console.error(err);
+      });
     }
   },
   created: function created() {
     this.$eventBus.$on('tanca-avis', this.tanca_avis);
     this.$eventBus.$on('tanca-missatge', this.tanca_missatge);
     this.$eventBus.$on('tanca-edita', this.tanca_edita);
+    this.log();
   },
   beforeDestroy: function beforeDestroy() {
     this.$eventBus.$off('tanca-avis');

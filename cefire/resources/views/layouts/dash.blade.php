@@ -73,7 +73,7 @@
 		<!-- LEFT BAR -->
 		<aside id="left-col" class="uk-light uk-visible@m">
 			<div class="left-logo uk-flex uk-flex-middle">
-				{{-- <img class="custom-logo" src="img/dashboard-logo.svg" alt=""> --}}
+				<img class="custom-logo" src="img/cefire_la.png" alt="">
 			</div>
 			<div class="left-content-box  content-box-dark">
 				{{-- <img src="img/avatar.svg" alt="" class="uk-border-circle profile-img"> --}}
@@ -156,8 +156,9 @@
                 <llegirmsg-component />
             </div>
         </div>
-    </div>
         <!-- /OFFCANVAS -->
+    </div>
+
 {{--
 		<script src="js/Chart.min.js"></script>
         <script src="js/chartScripts.js"></script> --}}

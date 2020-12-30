@@ -22,7 +22,7 @@ window.pusher = new Pusher('e5f9e09fa9fe46c9b61e',{
     cluster: 'eu',
     encrypted: true,
   });
-window.channel = pusher.subscribe('guardies');
+window.channel = pusher.subscribe('cefire');
 
 // window.channel = pusher.subscribe('private-cefire');
 
@@ -101,14 +101,6 @@ Vue.prototype.$eventBus = new Vue();
  */
 
 
-axios.get("logat_id")
-.then(res => {
-    console.log(res);
-    Vue.prototype.$user_id = res.data;
-})
-.catch(err => {
-    console.error(err);
-})
 
 const app = new Vue({
     el: '#app',
@@ -173,12 +165,23 @@ const app = new Vue({
         tanca_edita() {
             // alert('hola');
             this.showEdita=false;
+        },
+        log() {
+            axios.get("logat_id")
+            .then(res => {
+                console.log(res);
+                Vue.prototype.$user_id=res.data;
+            })
+            .catch(err => {
+                console.error(err);
+            })
         }
     },
     created() {
         this.$eventBus.$on('tanca-avis', this.tanca_avis);
         this.$eventBus.$on('tanca-missatge', this.tanca_missatge);
         this.$eventBus.$on('tanca-edita', this.tanca_edita);
+        this.log();
 
     },
     beforeDestroy() {
