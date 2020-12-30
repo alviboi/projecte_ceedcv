@@ -17,6 +17,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.1",
+        "pusher/pusher-php-server": "^4.1",
         "torrix/laravel-ui-uikit": "^3.3",
         "uikit/uikit": "^3.5"
     },

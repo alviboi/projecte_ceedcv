@@ -1,6 +1,5 @@
 <template>
 <div>
-
 				<div class="uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-2 uk-child-width-1-4@l uk-child-width-1-5@xl" data-uk-grid>
 					<div>
 						<span class="uk-text-small"><span data-uk-icon="icon:users" class="uk-margin-small-right uk-text-primary"></span>Temps total</span>
@@ -162,6 +161,8 @@ export default {
         this.get_temps2();
 
     },
+
+
 }
 </script>
 

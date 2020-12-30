@@ -15,6 +15,20 @@ use Illuminate\Support\Facades\Route;
 */
 // App::setlocale('ca');
 
+
+// Route::get('test', function () {
+//     event(new App\Events\AfegitCefire("Hola Mundo prova"));
+//     return "Event has been sent!";
+// });
+
+// Route::get('test2', function () {
+//     // event(new App\Events\AfegitCefire("Hola Mundo prova"));
+//     broadcast(new App\Events\GuardiaAfegida(auth()->id(), "000-00-00"));
+
+//     // event(new App\Events\AgegitCefire('hello world'));
+//     //return "Event has been sent!";
+// });
+
 Route::get('/', function () {
     return view('welcome');
 })->name('entrada');
@@ -30,6 +44,9 @@ Auth::routes();
 
 
 Route::view('/demo', 'demo')->name('demo');
+
+
+Route::view('/proves', 'proves')->name('proves');
 
 
 Route::get('/seccio/{pag?}', function ($pag="principal") {
@@ -48,6 +65,8 @@ Route::get('/home', 'UserController@home')->name('casa')->middleware('auth');
 // Route::get('home', 'HomeController@index')->name('home');
 
 Route::get('/logat', 'UserController@logat')->middleware('auth');
+Route::get('/logat_id', 'UserController@logat_id')->middleware('auth');
+
 
 
 Route::get('/user_cefire/{num}/{any}/{mes}', 'UserController@get_cefire')->middleware('auth');

@@ -19,6 +19,10 @@ class UserController extends Controller
         return user::find(auth()->id())->name;
     }
 
+    public function logat_id () {
+        return user::find(auth()->id())->id;
+    }
+
     /**
      * Store a newly created resource in storage.
      *

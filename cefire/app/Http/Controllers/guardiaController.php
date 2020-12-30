@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Events\GuardiaBorrada;
+
+use App\Events\GuardiaAfegida;
 use App\Mail\EnviarGuardia;
 
 use App\Models\guardia;
@@ -64,7 +67,7 @@ class guardiaController extends Controller
         $guardia = new guardia();
         $guardia->user_id=$request->id;
         $guardia->data=$request->data;
-        if ($request->mati="m"){
+        if ($request->mati=="m"){
             $guardia->inici="09:00:00";
             $guardia->fi="14:00:00";
             $txt_rato="MATÍ";
@@ -76,7 +79,7 @@ class guardiaController extends Controller
 
         $guardia->save();
 
-
+        broadcast(new GuardiaAfegida(auth()->id(), $guardia->toArray(),$request->mati))->toOthers();
 
 
         $link="https://calendar.google.com/calendar/render?action=TEMPLATE&text=GUARDIA+CEFIRE&dates=".$guardia->data."T".$guardia->inici."/".$guardia->data."T".$guardia->fi."&details=Guardia+del+Cefire+de+Valencia&location=Valencia&trp=false#eventpage_6";
@@ -169,6 +172,14 @@ class guardiaController extends Controller
     public function destroy($guardia)
     {
         //
-        guardia::find($guardia)->delete();
+        $guardia = guardia::find($guardia);
+        if($guardia->inici == "09:00:00"){
+            $m='m';
+        }else{
+            $m='v';
+        }
+        broadcast(new GuardiaBorrada(auth()->id(), $guardia->toArray(),$m))->toOthers();
+        $guardia->delete();
+
     }
 }

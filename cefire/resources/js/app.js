@@ -9,6 +9,35 @@ require('./home.js');
 
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+
+// import Echo from "laravel-echo"
+
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: 'e5f9e09fa9fe46c9b61e',
+//     cluster: 'eu',
+//     encrypted: true,
+// });
+window.pusher = new Pusher('e5f9e09fa9fe46c9b61e',{
+    cluster: 'eu',
+    encrypted: true,
+  });
+window.channel = pusher.subscribe('guardies');
+
+// window.channel = pusher.subscribe('private-cefire');
+
+
+
+
+// Echo.private('chat')
+//   .listen('MessageSent', (e) => {
+//     this.messages.push({
+//       message: e.message.message,
+//       user: e.user
+//     });
+//   });
+
+
 window.Vue = require('vue');
 
 /**
@@ -71,6 +100,15 @@ Vue.prototype.$eventBus = new Vue();
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+
+axios.get("logat_id")
+.then(res => {
+    console.log(res);
+    Vue.prototype.$user_id = res.data;
+})
+.catch(err => {
+    console.error(err);
+})
 
 const app = new Vue({
     el: '#app',

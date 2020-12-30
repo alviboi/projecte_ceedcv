@@ -1,8 +1,7 @@
 <template>
   <div>
 
-        <div class="titulet" data-uk-tooltip="animation: true; offset: 2;" :title="data">{{ nom_dia }} {{ dia_mes }}  <span v-html="mati_icon"></span></div>
-
+    <div class="titulet" data-uk-tooltip="animation: true; offset: 2;" :title="data">{{ nom_dia }} {{ dia_mes }}  <span v-html="mati_icon"></span></div>
     <div class="dia">
       <!-- COLUMNA LATERAL DESPLEGABLE -->
       <div class="lateral_esquerre flex-container">
@@ -276,6 +275,7 @@
 export default {
   data() {
     return {
+      id_user: null,
       id: null,
       compensa: {},
       cefire: {},
@@ -526,6 +526,42 @@ export default {
       this.avis_pujada="";
       UIkit.modal("#"+desti+"-modal"+this._uid).hide();
     },
+    afg_guardia(dat){
+        this.guardia.push(dat);
+    },
+    channel_create(){
+        var aux;
+        var self=this;
+         let chan='GuardiaAfegida'+data_db(this.data)+this.mati;
+         channel.bind(chan,
+            function(data) {
+                aux=data.guardia;
+                // self.afg_guardia(data.guardia);
+                console.log(aux);
+                if(aux.user_id == Vue.prototype.$user_id){
+                    self.guardia.push(aux);
+                }
+            }
+        );
+    },
+    channel_borra(){
+        var aux;
+        var self=this;
+         let chan='GuardiaBorrada'+data_db(this.data)+this.mati;
+         channel.bind(chan,
+            function(data) {
+                aux=data.guardia;
+                console.log(aux);
+                if(aux.user_id == Vue.prototype.$user_id){
+                    for (let index = 0; index < self.guardia.length; index++) {
+                        if(aux.id == self.guardia[index].id){
+                            self.guardia.splice(index,1);
+                        }
+                    }
+                }
+            }
+        );
+    }
   },
   mounted() {
 
@@ -537,8 +573,8 @@ export default {
     this.get_de_bd("permis");
     this.get_nom_dia();
     this.get_dia_mes();
-
-
+    this.channel_create();
+    this.channel_borra();
 
   },
   computed: {
@@ -546,6 +582,9 @@ export default {
           let m = ((this.mati=='m') ? "<i class='fas fa-sun'></i>" : "<i class='fas fa-moon'></i>");
           return m;
       }
+  },
+  created() {
+
   },
 };
 </script>

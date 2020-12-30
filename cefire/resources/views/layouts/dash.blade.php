@@ -46,6 +46,9 @@
 									</ul>
                                 </div>
                             </li>
+                            <li>
+                                <a @click="view='horari'"><div style="font-size:1.25rem">{{ date("d-m-Y") }}</div></a>
+                            </li>
 						</ul>
 					</div>
 					<div class="uk-navbar-right">
