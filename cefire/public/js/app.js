@@ -2410,8 +2410,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       axios.post(url, params).then(function (res) {
         console.log(res);
         id_res = res.data.id;
-        var mati = _this3.mati_radio == "m" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; // let ind = this.index;
-
+        var mati = _this3.mati_radio == "m" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
         var drag_item = {
           id: id_res,
           title: "<div id=" + id_res + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + _this3.id_drag.textContent + "\">" + mati + " " + _this3.id_drag.textContent + "</div>",
@@ -2430,13 +2429,9 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       console.log(e);
     },
     este2: function este2(item, e) {
-      //[calendarItem, windowEvent]
       console.log(e);
     },
     borrar: function borrar(item, e) {
-      // console.log(item);
-      // var doc = new DOMParser().parseFromString(item.title, "text/html");
-      // console.log(doc);
       for (var index = 0; index < this.items.length; index++) {
         if (this.items[index].id == item.id) this.items.splice(index, 1);
       }
@@ -2448,17 +2443,48 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         console.error(err);
       });
     },
-    setdia: function setdia(d) {
-      this.dia = d;
-      this.items = [];
-      this.get_totes_guardies();
+    // setdia(d) {
+    //     this.dia = d;
+    //     this.items= [];
+    //     this.get_totes_guardies();
+    // },
+    // setSelection(dateRange) {
+    // 	this.selectionEnd = dateRange[1]
+    // 	this.selectionStart = dateRange[0]
+    // },
+    // finishSelection(dateRange) {
+    // 	this.setSelection(dateRange)
+    // },
+    channel_create: function channel_create() {
+      var aux;
+      var self = this;
+      var chan = 'GuardiaAfegida' + data_db(this.data) + this.mati;
+      channel.bind(chan, function (data) {
+        aux = data.guardia; // self.afg_guardia(data.guardia);
+
+        console.log(aux);
+
+        if (aux.user_id == Vue.prototype.$user_id) {
+          self.guardia.push(aux);
+        }
+      });
     },
-    setSelection: function setSelection(dateRange) {
-      this.selectionEnd = dateRange[1];
-      this.selectionStart = dateRange[0];
-    },
-    finishSelection: function finishSelection(dateRange) {
-      this.setSelection(dateRange);
+    channel_borra: function channel_borra() {
+      var aux;
+      var self = this;
+      var chan = 'GuardiaBorrada' + data_db(this.data) + this.mati;
+      channel.bind(chan, function (data) {
+        aux = data.guardia;
+        console.log(aux);
+
+        if (aux.user_id == Vue.prototype.$user_id) {
+          for (var index = 0; index < self.guardia.length; index++) {
+            if (aux.id == self.guardia[index].id) {
+              self.guardia.splice(index, 1);
+            }
+          }
+        }
+      });
     }
   },
   mounted: function mounted() {
