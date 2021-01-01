@@ -73,6 +73,8 @@ Vue.component('centresmeus-component', require('./components/Centres/Centresmeus
 
 Vue.component('report-component', require('./components/Reports/ReportComponent.vue').default);
 Vue.component('line-component', require('./components/Reports/LinegrafComponent.vue').default);
+Vue.component('pie-component', require('./components/Reports/PiegrafComponent.vue').default);
+
 Vue.component('controlass-component', require('./components/ControlassComponent.vue').default);
 
 Vue.component('dadespersonals-component', require('./components/DadespersonalsComponent.vue').default);

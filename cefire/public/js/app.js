@@ -2298,8 +2298,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 __webpack_require__(/*! vue-simple-calendar/static/css/default.css */ "./node_modules/vue-simple-calendar/static/css/default.css");
@@ -2315,6 +2313,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
   },
   data: function data() {
     return {
+      afegit: [],
       users: [],
       mati_radio: 'm',
       id_drag: null,
@@ -2419,6 +2418,8 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         };
 
         _this3.items.push(drag_item);
+
+        _this3.afegit.push(id_res);
       })["catch"](function (err) {
         console.error(err);
       });
@@ -2443,11 +2444,11 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         console.error(err);
       });
     },
-    // setdia(d) {
-    //     this.dia = d;
-    //     this.items= [];
-    //     this.get_totes_guardies();
-    // },
+    setdia: function setdia(d) {
+      this.dia = d;
+      this.items = [];
+      this.get_totes_guardies();
+    },
     // setSelection(dateRange) {
     // 	this.selectionEnd = dateRange[1]
     // 	this.selectionStart = dateRange[0]
@@ -2458,31 +2459,37 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
     channel_create: function channel_create() {
       var aux;
       var self = this;
-      var chan = 'GuardiaAfegida' + data_db(this.data) + this.mati;
+      var chan = 'GuardiaAfegidaGeneral';
       channel.bind(chan, function (data) {
-        aux = data.guardia; // self.afg_guardia(data.guardia);
+        aux = data.guardia; //Per a que no s'afegixca dues vegades
 
-        console.log(aux);
-
-        if (aux.user_id == Vue.prototype.$user_id) {
-          self.guardia.push(aux);
+        if (self.afegit.includes(aux.id)) {
+          self.afegit.splice(self.afegit.indexOf(aux.id), 1);
+        } else {
+          var element = data.guardia;
+          var mati = element.inici == "09:00:00" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          var fechas = element.data.split('-');
+          var i = {
+            id: element[3],
+            title: "<div id=" + element.user_id + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + element.nom + "\">" + mati + " " + element.nom + "</div>",
+            startDate: Date.UTC(fechas[0], fechas[1] - 1, fechas[2]),
+            // endDate: Date.UTC(2020, 11, 10),
+            classes: "custom-date-class-red uk-animation-scale-up"
+          };
+          self.items.push(i);
         }
       });
     },
     channel_borra: function channel_borra() {
       var aux;
       var self = this;
-      var chan = 'GuardiaBorrada' + data_db(this.data) + this.mati;
+      var chan = 'GuardiaBorradaGeneral';
       channel.bind(chan, function (data) {
         aux = data.guardia;
         console.log(aux);
 
-        if (aux.user_id == Vue.prototype.$user_id) {
-          for (var index = 0; index < self.guardia.length; index++) {
-            if (aux.id == self.guardia[index].id) {
-              self.guardia.splice(index, 1);
-            }
-          }
+        for (var index = 0; index < self.items.length; index++) {
+          if (self.items[index].id == aux.id) self.items.splice(index, 1);
         }
       });
     }
@@ -2490,6 +2497,8 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
   mounted: function mounted() {
     this.agafa_users();
     this.get_totes_guardies();
+    this.channel_create();
+    this.channel_borra();
   }
 });
 
@@ -4187,6 +4196,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.dia = new Date(this.dia.setTime(this.dia.getTime() + result * 86400000));
       this.emplena_lloc();
       this.componentKey++;
+      this.dia_aux = this.dia;
     },
     emplena_lloc: function emplena_lloc() {
       var _this = this;
@@ -4215,6 +4225,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   created: function created() {
     this.emplena_lloc();
+  },
+  mounted: function mounted() {
+    this.dia_aux = this.dia;
   },
   components: {
     Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -4546,6 +4559,48 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/PiegrafComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Reports/PiegrafComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Pie"],
+  //   props: ['data','labels','nom_datos','nom'],
+  mounted: function mounted() {
+    this.renderChart({
+      labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+      datasets: [{
+        label: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+        data: [100, 200, 400, 500, 200],
+        backgroundColor: ['Red', 'Orange', 'Yellow', 'Green', 'Blue']
+      }]
+    }, {
+      responsive: true,
+      maintainAspectRatio: false,
+      title: {
+        display: true,
+        text: "Hola"
+      } // scales: {
+      //     yAxes: [{
+      //         ticks: {
+      //             beginAtZero: true
+      //         }
+      //     }]
+      // }
+
+    });
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/ReportComponent.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Reports/ReportComponent.vue?vue&type=script&lang=js& ***!
@@ -4555,6 +4610,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
+/* harmony import */ var vuejs_datepicker_dist_locale__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-datepicker/dist/locale */ "./node_modules/vuejs-datepicker/dist/locale/index.js");
+/* harmony import */ var vuejs_datepicker_dist_locale__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuejs_datepicker_dist_locale__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -4610,13 +4668,74 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// import PiegrafComponent from './PiegrafComponent.vue';
 // import LinegrafComponent from './LinegrafComponent.vue'
 // export default {
 //   components: { LinegrafComponent },
 // }
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      desde: new Date(),
+      fins: new Date(),
+      ca: vuejs_datepicker_dist_locale__WEBPACK_IMPORTED_MODULE_1__["ca"],
       dia: new Date(),
       total_pass: 0,
       total: 0,
@@ -4627,7 +4746,18 @@ __webpack_require__.r(__webpack_exports__);
       refresca: 0
     };
   },
+  components: {
+    Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   methods: {
+    canvia_data: function canvia_data() {
+      console.log(this.fins);
+      console.log(this.desde);
+
+      if (this.fins > this.desde) {
+        this.get_temps();
+      }
+    },
     primer_data_mes_passat: function primer_data_mes_passat(data) {
       var dia = data.getDate();
       var mes = data.getMonth();
@@ -4667,8 +4797,10 @@ __webpack_require__.r(__webpack_exports__);
     get_temps: function get_temps() {
       var _this = this;
 
-      var desde = this.data_mes_inici();
-      var fins = data_db(this.dia);
+      //   let desde = this.data_mes_inici();
+      //   let fins = data_db(this.dia);
+      var desde = data_db(this.desde);
+      var fins = data_db(this.fins);
       var url = "contar/" + desde + "/" + fins;
       axios.get(url).then(function (res) {
         console.log(res);
@@ -4714,6 +4846,7 @@ __webpack_require__.r(__webpack_exports__);
     // data_db(this.dia);
     this.get_temps();
     this.get_temps2();
+    this.desde = this.data_mes_inici();
   }
 });
 
@@ -90935,9 +91068,6 @@ var render = function() {
               startingDayOfWeek: 1
             },
             on: {
-              "date-selection-start": _vm.setSelection,
-              "date-selection": _vm.setSelection,
-              "date-selection-finish": _vm.finishSelection,
               "click-item": _vm.borrar,
               "drag-start": _vm.drag_prova,
               "drop-on-date": _vm.drag_on_prova
@@ -93498,7 +93628,7 @@ var render = function() {
               language: _vm.ca,
               "monday-first": true,
               placeholder: "Escollix data a buscar",
-              value: ""
+              "input-class": "uk-input"
             },
             on: {
               selected: function($event) {
@@ -93743,14 +93873,19 @@ var render = function() {
           _c(
             "h1",
             {
-              staticClass:
-                "uk-heading-primary uk-margin-remove  uk-text-primary"
+              staticClass: "uk-heading-primary uk-margin-remove uk-text-primary"
             },
-            [_vm._v(_vm._s((_vm.total / 60).toFixed(2)) + " hores")]
+            [
+              _vm._v(
+                "\n          " +
+                  _vm._s((_vm.total / 60).toFixed(2)) +
+                  " hores\n        "
+              )
+            ]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "uk-text-small" }, [
-            _vm._v("\n\t\t\t\t\t\t\tSense contar eixides.\n\t\t\t\t\t\t")
+            _vm._v("Sense contar eixides.")
           ])
         ]),
         _vm._v(" "),
@@ -93762,7 +93897,68 @@ var render = function() {
             {
               staticClass: "uk-heading-primary uk-margin-remove uk-text-primary"
             },
-            [_vm._v(_vm._s(_vm.total_pass / 60) + " hores")]
+            [
+              _vm._v(
+                "\n          " +
+                  _vm._s(_vm.total_pass / 60) +
+                  " hores\n        "
+              )
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _vm._m(2),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "uk-margin-top" },
+            [
+              _c("Datepicker", {
+                attrs: {
+                  language: _vm.ca,
+                  "input-class": "uk-input uk-form-small",
+                  "monday-first": true,
+                  placeholder: "Desde",
+                  value: ""
+                },
+                on: {
+                  input: function($event) {
+                    return _vm.canvia_data()
+                  }
+                },
+                model: {
+                  value: _vm.desde,
+                  callback: function($$v) {
+                    _vm.desde = $$v
+                  },
+                  expression: "desde"
+                }
+              }),
+              _vm._v(" "),
+              _c("Datepicker", {
+                attrs: {
+                  "input-class": "uk-input uk-form-small",
+                  language: _vm.ca,
+                  "monday-first": true,
+                  placeholder: "Fins",
+                  value: ""
+                },
+                on: {
+                  input: function($event) {
+                    return _vm.canvia_data()
+                  }
+                },
+                model: {
+                  value: _vm.fins,
+                  callback: function($$v) {
+                    _vm.fins = $$v
+                  },
+                  expression: "fins"
+                }
+              })
+            ],
+            1
           )
         ])
       ]
@@ -93770,21 +93966,35 @@ var render = function() {
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
-    _c(
-      "div",
-      [
-        _c("line-component", {
-          key: _vm.refresca,
-          attrs: {
-            data: _vm.datos,
-            labels: _vm.labels,
-            nom: _vm.nom,
-            nom_datos: _vm.nom_datos
-          }
-        })
-      ],
-      1
-    )
+    _c("div", [
+      _c(
+        "div",
+        {
+          staticClass:
+            "uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-2 uk-child-width-1-2@l uk-child-width-1-2@xl",
+          attrs: { "data-uk-grid": "" }
+        },
+        [
+          _c(
+            "div",
+            [
+              _c("line-component", {
+                key: _vm.refresca,
+                attrs: {
+                  data: _vm.datos,
+                  labels: _vm.labels,
+                  nom: _vm.nom,
+                  nom_datos: _vm.nom_datos
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", [_c("pie-component")], 1)
+        ]
+      )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -93810,6 +94020,18 @@ var staticRenderFns = [
         attrs: { "data-uk-icon": "icon:clock" }
       }),
       _vm._v("Total mes passat")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "uk-text-small" }, [
+      _c("span", {
+        staticClass: "uk-margin-small-right uk-text-primary",
+        attrs: { "data-uk-icon": "icon:clock" }
+      }),
+      _vm._v("Rang de dates:")
     ])
   }
 ]
@@ -116472,6 +116694,7 @@ Vue.component('centres-component', __webpack_require__(/*! ./components/Centres/
 Vue.component('centresmeus-component', __webpack_require__(/*! ./components/Centres/CentresmeusComponent.vue */ "./resources/js/components/Centres/CentresmeusComponent.vue")["default"]);
 Vue.component('report-component', __webpack_require__(/*! ./components/Reports/ReportComponent.vue */ "./resources/js/components/Reports/ReportComponent.vue")["default"]);
 Vue.component('line-component', __webpack_require__(/*! ./components/Reports/LinegrafComponent.vue */ "./resources/js/components/Reports/LinegrafComponent.vue")["default"]);
+Vue.component('pie-component', __webpack_require__(/*! ./components/Reports/PiegrafComponent.vue */ "./resources/js/components/Reports/PiegrafComponent.vue")["default"]);
 Vue.component('controlass-component', __webpack_require__(/*! ./components/ControlassComponent.vue */ "./resources/js/components/ControlassComponent.vue")["default"]);
 Vue.component('dadespersonals-component', __webpack_require__(/*! ./components/DadespersonalsComponent.vue */ "./resources/js/components/DadespersonalsComponent.vue")["default"]); //L'error més comú que tens quan modifiques una cosa d'ací, no està funcionant npm run watch, o compila a npm run dev
 
@@ -117669,6 +117892,56 @@ component.options.__file = "resources/js/components/Reports/LinegrafComponent.vu
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LinegrafComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LinegrafComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/LinegrafComponent.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LinegrafComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Reports/PiegrafComponent.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/Reports/PiegrafComponent.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PiegrafComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PiegrafComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Reports/PiegrafComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _PiegrafComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Reports/PiegrafComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Reports/PiegrafComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/Reports/PiegrafComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PiegrafComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PiegrafComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports/PiegrafComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PiegrafComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 

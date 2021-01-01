@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Events\GuardiaBorrada;
 
 use App\Events\GuardiaAfegida;
+use App\Events\GuardiaBorradaGeneral;
+
+use App\Events\GuardiaAfegidaGeneral;
 use App\Mail\EnviarGuardia;
 
 use App\Models\guardia;
@@ -79,7 +82,12 @@ class guardiaController extends Controller
 
         $guardia->save();
 
+        $env=$guardia->toArray();
+        $env['nom']=$guardia->user['name'];
+
         broadcast(new GuardiaAfegida(auth()->id(), $guardia->toArray(),$request->mati))->toOthers();
+        broadcast(new GuardiaAfegidaGeneral($env))->toOthers();
+
 
 
         $link="https://calendar.google.com/calendar/render?action=TEMPLATE&text=GUARDIA+CEFIRE&dates=".$guardia->data."T".$guardia->inici."/".$guardia->data."T".$guardia->fi."&details=Guardia+del+Cefire+de+Valencia&location=Valencia&trp=false#eventpage_6";
@@ -179,6 +187,8 @@ class guardiaController extends Controller
             $m='v';
         }
         broadcast(new GuardiaBorrada(auth()->id(), $guardia->toArray(),$m))->toOthers();
+        broadcast(new GuardiaBorradaGeneral($guardia->toArray()))->toOthers();
+
         $guardia->delete();
 
     }

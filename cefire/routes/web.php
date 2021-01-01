@@ -104,6 +104,8 @@ Route::get('/guardia/totes/{mes}/{any}', 'guardiaController@get_data_index2')->n
 
 Route::get('/contar/{desde}/{fins}', 'cefireController@contar_cefires')->name('guardia_totes')->middleware('auth');
 
+Route::get('/contar_tot/{desde}/{fins}', 'UserController@contar')->name('contar_tot')->middleware('auth');
+
 
 Route::post('guardia/insert','guardiaController@put_guardia_id')->name('put_guardia_id')->middleware('auth');
 

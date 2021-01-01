@@ -33,7 +33,7 @@
 										<li class="uk-nav-header">EL TEU COMPTE</li>
 										<li><a href="#" @click="view = 'centresmeus'"><span data-uk-icon="icon: info"></span> Els meus centres</a></li>
 										<li><a href="#" @click="view = 'controlass'"><span data-uk-icon="icon: refresh"></span> Control d'Assessors</a></li>
-                                        <li><a href="#"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
+                                        <li><a href="#" @click="view = 'configuracio'"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
                                         <li><a href="#" @click="showModal = true"><span data-uk-icon="icon: warning"></span> Escriu Avís</a></li>
 										<li class="uk-nav-divider"></li>
 										<li><a href="#" @click="view = 'personals'"><span data-uk-icon="icon: image"></span> Dades Personals</a></li>

@@ -21,9 +21,7 @@
                 :current-period-label="themeOptions.currentPeriodLabel"
                 :startingDayOfWeek=1
                 class="holiday-us-traditional holiday-us-official"
-                @date-selection-start="setSelection"
-                @date-selection="setSelection"
-                @date-selection-finish="finishSelection"
+
                 @click-item="borrar"
                 @drag-start="drag_prova"
                 @drop-on-date="drag_on_prova"
@@ -64,6 +62,7 @@ export default {
 	},
 	data: function () {
 		return {
+            afegit: [],
             users: [],
             mati_radio: 'm',
             id_drag: null,
@@ -166,6 +165,7 @@ export default {
                     classes: "custom-date-class-red uk-animation-scale-up",
                 };
                 this.items.push(drag_item);
+                this.afegit.push(id_res);
             })
             .catch(err => {
                 console.error(err);
@@ -194,12 +194,12 @@ export default {
                 console.error(err);
             })
 		},
-		// setdia(d) {
-        //     this.dia = d;
-        //     this.items= [];
-        //     this.get_totes_guardies();
+        setdia(d) {
+            this.dia = d;
+            this.items= [];
+            this.get_totes_guardies();
 
-		// },
+		},
 		// setSelection(dateRange) {
 		// 	this.selectionEnd = dateRange[1]
 		// 	this.selectionStart = dateRange[0]
@@ -210,14 +210,25 @@ export default {
         channel_create(){
             var aux;
             var self=this;
-            let chan='GuardiaAfegida'+data_db(this.data)+this.mati;
+            let chan='GuardiaAfegidaGeneral';
             channel.bind(chan,
                 function(data) {
                     aux=data.guardia;
-                    // self.afg_guardia(data.guardia);
-                    console.log(aux);
-                    if(aux.user_id == Vue.prototype.$user_id){
-                        self.guardia.push(aux);
+                    //Per a que no s'afegixca dues vegades
+                    if (self.afegit.includes(aux.id)){
+                        self.afegit.splice(self.afegit.indexOf(aux.id), 1);
+                    } else {
+                        const element = data.guardia;
+                        let mati = (element.inici=="09:00:00") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                        let fechas = element.data.split('-');
+                        let i = {
+                            id: element[3],
+                            title: "<div id="+element.user_id+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+element.nom+"\">"+mati+" "+element.nom+"</div>",
+                            startDate: Date.UTC(fechas[0], fechas[1]-1, fechas[2]),
+                            // endDate: Date.UTC(2020, 11, 10),
+                            classes: "custom-date-class-red uk-animation-scale-up",
+                        };
+                        self.items.push(i);
                     }
                 }
             );
@@ -225,17 +236,14 @@ export default {
         channel_borra(){
             var aux;
             var self=this;
-            let chan='GuardiaBorrada'+data_db(this.data)+this.mati;
+            let chan='GuardiaBorradaGeneral';
             channel.bind(chan,
                 function(data) {
                     aux=data.guardia;
                     console.log(aux);
-                    if(aux.user_id == Vue.prototype.$user_id){
-                        for (let index = 0; index < self.guardia.length; index++) {
-                            if(aux.id == self.guardia[index].id){
-                                self.guardia.splice(index,1);
-                            }
-                        }
+                    for (let index = 0; index < self.items.length; index++) {
+                        if(self.items[index].id == aux.id)
+                        self.items.splice(index,1);
                     }
                 }
             );
@@ -244,6 +252,8 @@ export default {
     mounted() {
         this.agafa_users();
         this.get_totes_guardies();
+        this.channel_create();
+        this.channel_borra();
     },
 }
 </script>

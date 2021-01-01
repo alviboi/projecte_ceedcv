@@ -11,7 +11,7 @@
                 v-model="dia_aux"
                 @selected="canvia_data()"
                 placeholder="Escollix data a buscar"
-                value=""
+                input-class="uk-input"
                 >
 
                 </Datepicker>
@@ -76,6 +76,7 @@ export default {
       );
       this.emplena_lloc();
       this.componentKey++;
+      this.dia_aux = this.dia;
     },
     async emplena_lloc() {
       let aux_dia = getDiumenge(this.dia);
@@ -89,6 +90,9 @@ export default {
   },
   created() {
     this.emplena_lloc();
+  },
+  mounted() {
+      this.dia_aux = this.dia;
   },
   components: {
         Datepicker,
