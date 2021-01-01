@@ -2935,13 +2935,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       usuaris: {},
+      habilita_registre: null,
       netadmin: "",
       servidor: "",
-      fitxar_aparell: false,
+      fitxar_aparell: null,
       importa: []
     };
   },
@@ -2974,7 +2987,8 @@ __webpack_require__.r(__webpack_exports__);
         UIkit.modal('#usuaris_ldap').show();
       })["catch"](function (err) {
         console.error(err);
-        alert(err.message);
+
+        _this.$toast.error(err.message);
       });
     },
     get_configuracio: function get_configuracio() {
@@ -2982,17 +2996,27 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("control").then(function (res) {
         _this2.fitxar_aparell = res.data.aparell;
+        _this2.habilita_registre = res.data.registra;
         console.log(res);
       })["catch"](function (err) {
+        _this2.$toast.error(err.message);
+
         console.error(err);
       });
     },
-    fitxar_aparell_f: function fitxar_aparell_f() {
+    canvia_dades: function canvia_dades(nom) {
       var _this3 = this;
 
-      var params = {
-        'aparell': this.fitxar_aparell ? 0 : 1
-      };
+      var envia = false;
+
+      if (nom == 'aparell') {
+        envia = this.fitxar_aparell ? 0 : 1;
+      } else {
+        envia = this.habilita_registre ? 0 : 1;
+      }
+
+      var params = {};
+      params[nom] = envia;
       axios.put("control/1", params).then(function (res) {
         console.log(res);
 
@@ -4572,21 +4596,21 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Pie"],
-  //   props: ['data','labels','nom_datos','nom'],
+  props: ['data', 'labels', 'nom'],
   mounted: function mounted() {
     this.renderChart({
-      labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+      labels: this.labels,
       datasets: [{
-        label: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
-        data: [100, 200, 400, 500, 200],
-        backgroundColor: ['Red', 'Orange', 'Yellow', 'Green', 'Blue']
+        label: this.labels,
+        data: this.data,
+        backgroundColor: ['Blue', 'Orange', 'Yellow', 'Green']
       }]
     }, {
       responsive: true,
       maintainAspectRatio: false,
       title: {
         display: true,
-        text: "Hola"
+        text: this.nom
       } // scales: {
       //     yAxes: [{
       //         ticks: {
@@ -4723,6 +4747,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 // import PiegrafComponent from './PiegrafComponent.vue';
 // import LinegrafComponent from './LinegrafComponent.vue'
 // export default {
@@ -4741,7 +4770,10 @@ __webpack_require__.r(__webpack_exports__);
       total: 0,
       datos: [],
       labels: [],
+      datos2: [],
+      labels2: [],
       nom: "Gràfica dels minuts fets al cefire",
+      nom2: "Distribució d'hores realitzades",
       nom_datos: "Cefire",
       refresca: 0
     };
@@ -4764,7 +4796,7 @@ __webpack_require__.r(__webpack_exports__);
       var an = data.getFullYear();
 
       if (mes == 0) {
-        var ret = an - 1 + "-11-1";
+        var ret = an - 1 + "-12-1";
         return ret;
       } else {
         var _ret = an + "-" + mes + "-1";
@@ -4779,7 +4811,7 @@ __webpack_require__.r(__webpack_exports__);
       var an = d.getFullYear();
 
       if (mes == 0) {
-        var ret = an - 1 + "-11-" + dia;
+        var ret = an - 1 + "-12-" + dia;
         return ret;
       } else {
         var _ret2 = an + "-" + mes + "-" + dia;
@@ -4801,12 +4833,20 @@ __webpack_require__.r(__webpack_exports__);
       //   let fins = data_db(this.dia);
       var desde = data_db(this.desde);
       var fins = data_db(this.fins);
-      var url = "contar/" + desde + "/" + fins;
-      axios.get(url).then(function (res) {
+      var url = "/" + desde + "/" + fins;
+      axios.get('contar' + url).then(function (res) {
         console.log(res);
         _this.datos = res.data.data;
         _this.labels = res.data.labels;
         _this.total = res.data.total;
+        _this.refresca++;
+      })["catch"](function (err) {
+        console.error(err);
+      });
+      axios.get('contar_tot' + url).then(function (res) {
+        console.log(res);
+        _this.datos2 = res.data.datos;
+        _this.labels2 = res.data.labels;
         _this.refresca++;
       })["catch"](function (err) {
         console.error(err);
@@ -4816,7 +4856,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var desde = this.primer_data_mes_passat(this.dia);
-      var fins = this.ultim_data_mes_passat(this.dia);
+      var fins = this.ultim_data_mes_passat(this.dia); //   let desde = "2020-12-01";
+      //   let fins = "2020-12-31";
+
       var url = "contar/" + desde + "/" + fins;
       axios.get(url).then(function (res) {
         console.log(res);
@@ -91999,7 +92041,7 @@ var render = function() {
                         },
                         on: {
                           click: function($event) {
-                            return _vm.fitxar_aparell_f()
+                            return _vm.canvia_dades("aparell")
                           },
                           change: function($event) {
                             var $$a = _vm.fitxar_aparell,
@@ -92024,6 +92066,76 @@ var render = function() {
                         }
                       }),
                       _vm._v(" Habilita fitxar desde aparell")
+                    ])
+                  ]
+                )
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "div",
+            {
+              staticClass: "uk-card uk-card-default uk-card-hover uk-card-body"
+            },
+            [
+              _c("h3", { staticClass: "uk-card-title" }, [
+                _vm._v("Habilitar registre")
+              ]),
+              _vm._v(
+                "\n                Aquesta funció habilita el registre d'Assessors. Normalment ho has d'habilitar al començament del curs per a que els nous assessors es donen ells d'alta.\n                "
+              ),
+              _c("div", { staticClass: "uk-margin" }, [
+                _c(
+                  "div",
+                  { staticClass: "uk-form-controls uk-form-controls-text" },
+                  [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.habilita_registre,
+                            expression: "habilita_registre"
+                          }
+                        ],
+                        staticClass: "uk-checkbox",
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.habilita_registre)
+                            ? _vm._i(_vm.habilita_registre, null) > -1
+                            : _vm.habilita_registre
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.canvia_dades("registra")
+                          },
+                          change: function($event) {
+                            var $$a = _vm.habilita_registre,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  (_vm.habilita_registre = $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.habilita_registre = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
+                            } else {
+                              _vm.habilita_registre = $$c
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" Habilita registre")
                     ])
                   ]
                 )
@@ -93900,7 +94012,7 @@ var render = function() {
             [
               _vm._v(
                 "\n          " +
-                  _vm._s(_vm.total_pass / 60) +
+                  _vm._s((_vm.total_pass / 60).toFixed(2)) +
                   " hores\n        "
               )
             ]
@@ -93912,7 +94024,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "uk-margin-top" },
+            { staticClass: "uk-margin-small-top" },
             [
               _c("Datepicker", {
                 attrs: {
@@ -93991,7 +94103,16 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("div", [_c("pie-component")], 1)
+          _c(
+            "div",
+            [
+              _c("pie-component", {
+                key: _vm.refresca + 10000,
+                attrs: { data: _vm.datos2, labels: _vm.labels2, nom: _vm.nom2 }
+              })
+            ],
+            1
+          )
         ]
       )
     ])
@@ -94029,7 +94150,7 @@ var staticRenderFns = [
     return _c("span", { staticClass: "uk-text-small" }, [
       _c("span", {
         staticClass: "uk-margin-small-right uk-text-primary",
-        attrs: { "data-uk-icon": "icon:clock" }
+        attrs: { "data-uk-icon": "icon:calendar" }
       }),
       _vm._v("Rang de dates:")
     ])

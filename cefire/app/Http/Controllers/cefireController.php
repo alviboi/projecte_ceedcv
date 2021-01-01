@@ -183,8 +183,8 @@ class cefireController extends Controller
                 $duration = $cef->inici->diffInMinutes($cef->fi);
                 array_push($labels,$cef->data);
                 array_push($data,$duration);
-                $total=$total+$duration;
             }
+            $total=$total+$duration;
             $data_ant=$cef->data;
         }
         $ret=array('labels' => $labels, 'data' => $data, 'total' => $total);

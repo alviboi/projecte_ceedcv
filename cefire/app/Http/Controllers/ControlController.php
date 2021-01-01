@@ -5,8 +5,23 @@ use App\Models\control;
 
 use Illuminate\Http\Request;
 
+
+use Illuminate\Support\Facades\Route;
+
+
+
+
 class ControlController extends Controller
 {
+    // public function welcome (){
+    //     $reg = control::find(1)->registra;
+    //     if ($reg == 0){
+    //         Auth::routes(['register' => false]);
+    //     }
+    //     Auth::routes(['register' => false]);
+    //     return view('welcome');
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -73,7 +88,12 @@ class ControlController extends Controller
     {
         //
         $con = control::find(1);
-        $con->aparell = $request->aparell;
+        if (isset($request->aparell)){
+            $con->aparell = $request->aparell;
+        }
+        if (isset($request->registra)){
+            $con->registra = $request->registra;
+        }
         $con->save();
         return "S'han actualitzat les dades";
     }

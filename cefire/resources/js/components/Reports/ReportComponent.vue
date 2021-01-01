@@ -26,7 +26,7 @@
           >Total mes passat</span
         >
         <h1 class="uk-heading-primary uk-margin-remove uk-text-primary">
-          {{ total_pass / 60 }} hores
+          {{ (total_pass / 60).toFixed(2) }} hores
         </h1>
         <!-- <div class="uk-text-small">
 							<span class="uk-text-warning" data-uk-icon="icon: triangle-down">-15%</span> less than last week.
@@ -34,10 +34,10 @@
       </div>
       <div>
 
-        <span class="uk-text-small"><span data-uk-icon="icon:clock" class="uk-margin-small-right uk-text-primary"></span>Rang de dates:</span>
+        <span class="uk-text-small"><span data-uk-icon="icon:calendar" class="uk-margin-small-right uk-text-primary"></span>Rang de dates:</span>
                       <!-- v-model="dia_aux"
                 @selected="canvia_data()" -->
-        <div class="uk-margin-top">
+        <div class="uk-margin-small-top">
             <Datepicker
                 :language="ca"
                 input-class="uk-input uk-form-small"
@@ -101,7 +101,12 @@
           />
         </div>
         <div>
-          <pie-component />
+          <pie-component
+            :key="refresca+10000"
+            :data="datos2"
+            :labels="labels2"
+            :nom="nom2"
+          />
         </div>
       </div>
     </div>
@@ -129,7 +134,10 @@ export default {
       total: 0,
       datos: [],
       labels: [],
+      datos2: [],
+      labels2: [],
       nom: "Gràfica dels minuts fets al cefire",
+      nom2: "Distribució d'hores realitzades",
       nom_datos: "Cefire",
       refresca: 0,
     };
@@ -150,7 +158,7 @@ export default {
       let mes = data.getMonth();
       let an = data.getFullYear();
       if (mes == 0) {
-        let ret = an - 1 + "-11-1";
+        let ret = an - 1 + "-12-1";
         return ret;
       } else {
         let ret = an + "-" + mes + "-1";
@@ -163,7 +171,7 @@ export default {
       let mes = d.getMonth();
       let an = d.getFullYear();
       if (mes == 0) {
-        let ret = an - 1 + "-11-" + dia;
+        let ret = an - 1 + "-12-" + dia;
         return ret;
       } else {
         let ret = an + "-" + mes + "-" + dia;
@@ -183,9 +191,9 @@ export default {
     //   let fins = data_db(this.dia);
       let desde = data_db(this.desde);
       let fins = data_db(this.fins);
-      let url = "contar/" + desde + "/" + fins;
+      let url = "/" + desde + "/" + fins;
       axios
-        .get(url)
+        .get('contar'+url)
         .then((res) => {
           console.log(res);
           this.datos = res.data.data;
@@ -196,10 +204,23 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+
+      axios.get('contar_tot'+url)
+      .then(res => {
+          console.log(res)
+          this.datos2 = res.data.datos;
+          this.labels2 = res.data.labels;
+          this.refresca++;
+      })
+      .catch(err => {
+          console.error(err);
+      })
     },
     get_temps2() {
       let desde = this.primer_data_mes_passat(this.dia);
       let fins = this.ultim_data_mes_passat(this.dia);
+    //   let desde = "2020-12-01";
+    //   let fins = "2020-12-31";
       let url = "contar/" + desde + "/" + fins;
       axios
         .get(url)

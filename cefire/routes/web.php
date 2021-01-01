@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-
+use App\Models\control;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,34 +13,38 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// App::setlocale('ca');
 
 
-// Route::get('test', function () {
-//     event(new App\Events\AfegitCefire("Hola Mundo prova"));
-//     return "Event has been sent!";
-// });
 
-// Route::get('test2', function () {
-//     // event(new App\Events\AfegitCefire("Hola Mundo prova"));
-//     broadcast(new App\Events\GuardiaAfegida(auth()->id(), "000-00-00"));
+if (control::where("registra","=", 1)->exists())
+{
+    Auth::routes();
+}
+else
+{
+    Auth::routes([
+        'register' => false
+    ]);
+}
 
-//     // event(new App\Events\AgegitCefire('hello world'));
-//     //return "Event has been sent!";
-// });
+
+
+
+
 
 Route::get('/', function () {
     return view('welcome');
 })->name('entrada');
+
+
+// Route::get('/', 'ControlController@welcome');
+
 
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
     return "Cache is cleared";
 });
-
-Auth::routes();
-
 
 
 Route::view('/demo', 'demo')->name('demo');

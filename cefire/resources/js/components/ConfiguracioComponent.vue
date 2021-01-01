@@ -25,7 +25,19 @@
                 Habilitar des de l'aparell significa que al fitxar tant des de l'ordinador com de l'aparell quedarà enregistrat amb l'hora que s'ha fet. S'ha d'informar a tots els assessors que s'ha habilitat aquesta opció. Ja que és possible que fitxen amb un dia tota la setmana i no quede enregistrada l'hora correcta d'entrada.
                 <div class="uk-margin">
                     <div class="uk-form-controls uk-form-controls-text">
-                        <label><input v-model="fitxar_aparell" @click="fitxar_aparell_f()" class="uk-checkbox" type="checkbox" > Habilita fitxar desde aparell</label>
+                        <label><input v-model="fitxar_aparell" @click="canvia_dades('aparell')" class="uk-checkbox" type="checkbox" > Habilita fitxar desde aparell</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+                <h3 class="uk-card-title">Habilitar registre</h3>
+                Aquesta funció habilita el registre d'Assessors. Normalment ho has d'habilitar al començament del curs per a que els nous assessors es donen ells d'alta.
+                <div class="uk-margin">
+                    <div class="uk-form-controls uk-form-controls-text">
+                        <label><input v-model="habilita_registre" @click="canvia_dades('registra')" class="uk-checkbox" type="checkbox" > Habilita registre</label>
                     </div>
                 </div>
             </div>
@@ -33,25 +45,25 @@
     </div>
 
     <div id="usuaris_ldap" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
-        <h2 class="uk-modal-title">Usuaris importables</h2>
-        <div class="uk-margin uk-overflow-auto">
-            <p>Els següents usuaris que es poden importar a l'aplicació de fitxatges són (aquells usuaris que el nom d'usuari no siga un correu electrònic no es poden importar):</p>
-        </div>
-        <div class="uk-margin">
-            <template v-for="(item, index) in usuaris">
-                <div v-if="item.email.includes('@')" :key="item.id">
-                    <div class="item">
-                        <div class="nom"><span uk-icon="user"></span>{{ item.name }}</div> <div class="mail"><span uk-icon="mail"></span>{{ item.email }}</div><div class="che"><input class="uk-checkbox" value="false" v-model="importa[index]" type="checkbox" ></div>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Usuaris importables</h2>
+            <div class="uk-margin uk-overflow-auto">
+                <p>Els següents usuaris que es poden importar a l'aplicació de fitxatges són (aquells usuaris que el nom d'usuari no siga un correu electrònic no es poden importar):</p>
+            </div>
+            <div class="uk-margin">
+                <template v-for="(item, index) in usuaris">
+                    <div v-if="item.email.includes('@')" :key="item.id">
+                        <div class="item">
+                            <div class="nom"><span uk-icon="user"></span>{{ item.name }}</div> <div class="mail"><span uk-icon="mail"></span>{{ item.email }}</div><div class="che"><input class="uk-checkbox" value="false" v-model="importa[index]" type="checkbox" ></div>
+                        </div>
                     </div>
-                </div>
-            </template>
+                </template>
+            </div>
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Tanca</button>
+                <button class="uk-button uk-button-primary" @click="importa_f" type="button">Importa</button>
+            </p>
         </div>
-        <p class="uk-text-right">
-            <button class="uk-button uk-button-default uk-modal-close" type="button">Tanca</button>
-            <button class="uk-button uk-button-primary" @click="importa_f" type="button">Importa</button>
-        </p>
-    </div>
     </div>
 </div>
 </template>
@@ -61,9 +73,10 @@ export default {
     data() {
         return {
             usuaris: {},
+            habilita_registre: null,
             netadmin: "",
             servidor: "",
-            fitxar_aparell: false,
+            fitxar_aparell: null,
             importa: []
         }
     },
@@ -96,28 +109,34 @@ export default {
             })
             .catch(err => {
                 console.error(err);
-                alert(err.message);
+                this.$toast.error(err.message)
             })
         },
         get_configuracio(){
             axios.get("control")
             .then(res => {
                 this.fitxar_aparell=res.data.aparell;
+                this.habilita_registre=res.data.registra;
                 console.log(res)
             })
             .catch(err => {
+                this.$toast.error(err.message)
                 console.error(err);
             })
         },
-        fitxar_aparell_f() {
-            let params = {
-                'aparell': this.fitxar_aparell? 0 : 1
+        canvia_dades(nom) {
+            var envia = false;
+            if (nom == 'aparell') {
+                envia = this.fitxar_aparell? 0 : 1;
+            } else {
+                envia = this.habilita_registre? 0 : 1;
             }
+            let params={};
+            params[nom] = envia;
             axios.put("control/1",params)
             .then(res => {
                 console.log(res);
                 this.$toast.success(res.data);
-
             })
             .catch(err => {
                 console.error(err);

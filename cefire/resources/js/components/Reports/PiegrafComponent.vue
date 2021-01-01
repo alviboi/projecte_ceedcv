@@ -3,39 +3,20 @@ import { Pie } from "vue-chartjs";
 
 export default {
   extends: Pie,
-//   props: ['data','labels','nom_datos','nom'],
+  props: ['data','labels','nom'],
   mounted() {
     this.renderChart(
       {
-        labels: [
-					'Red',
-					'Orange',
-					'Yellow',
-					'Green',
-					'Blue'
-				],
+        labels: this.labels,
         datasets: [
           {
-            label: [
-					'Red',
-					'Orange',
-					'Yellow',
-					'Green',
-					'Blue'
-				],
-            data: [
-						100,
-						200,
-						400,
-						500,
-						200,
-					],
+            label: this.labels,
+            data: this.data,
             backgroundColor: [
-                   'Red',
+                    'Blue',
 					'Orange',
 					'Yellow',
 					'Green',
-					'Blue'
             ],
           }
         ]
@@ -45,7 +26,7 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "Hola"
+          text: this.nom
         },
         // scales: {
         //     yAxes: [{

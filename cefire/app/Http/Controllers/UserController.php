@@ -9,34 +9,59 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Jobs\SendPasswordMail;
-
-
+use DateTime;
 
 class UserController extends Controller
 
 {
-    public function contar () {
-                //
-                $cefire=cefire::where('user_id','=',auth()->id())->whereBetween('data', [$desde, $fins])->orderBy('data','ASC')->get();
-                $total=0;
-                $labels=array();
-                $data=array();
-                $data_ant=new DateTime();
-                foreach($cefire as $cef){
-                    if ($data_ant == $cef->data) {
-                        $duration = $cef->inici->diffInMinutes($cef->fi);
-                        $valor = array_pop($data);
-                        array_push($data,($valor+$duration));
-                    } else {
-                        $duration = $cef->inici->diffInMinutes($cef->fi);
-                        array_push($labels,$cef->data);
-                        array_push($data,$duration);
-                        $total=$total+$duration;
-                    }
-                    $data_ant=$cef->data;
-                }
-                $ret=array('labels' => $labels, 'data' => $data, 'total' => $total);
-                return ($ret);
+
+    public function home (){
+        $conta = User::find(auth()->id())->notificacions()->count();
+        return view('home', ['conta' => $conta]);
+    }
+
+    public function contar ($desde,$fins) {
+
+        $labels=['cefire','permis','compensa','curs'];
+
+        $cefire=user::find(auth()->id())->cefire()->whereBetween('data', [$desde, $fins])->get();
+        $permis=user::find(auth()->id())->permis()->whereBetween('data', [$desde, $fins])->get();
+        $compensa=user::find(auth()->id())->compensa()->whereBetween('data', [$desde, $fins])->get();
+        $curs=user::find(auth()->id())->curs()->whereBetween('data', [$desde, $fins])->get();
+
+        $total_cef=0;
+        foreach($cefire as $cef){
+            $duration = $cef->inici->diffInMinutes($cef->fi);
+            $total_cef=$total_cef+$duration;
+        }
+
+        $total_per=0;
+        foreach($permis as $perm){
+            $in = Carbon::parse($perm->inici);
+            $fi = Carbon::parse($perm->fi);
+            $duration = $in->diffInMinutes($fi);
+            $total_per=$total_per+$duration;
+        }
+
+        $total_comp=0;
+        foreach($compensa as $comp){
+            $in = Carbon::parse($comp->inici);
+            $fi = Carbon::parse($comp->fi);
+            $duration = $in->diffInMinutes($fi);
+            $total_comp=$total_comp+$duration;
+        }
+
+        $total_curs=0;
+        foreach($curs as $cu){
+            $in = Carbon::parse($cu->inici);
+            $fi = Carbon::parse($cu->fi);
+            $duration = $in->diffInMinutes($fi);
+            $total_curs=$total_curs+$duration;
+        }
+        $datos = [round($total_cef/60,2),round($total_per/60,2),round($total_comp/60,2),round($total_curs/60,2)];
+
+        $ret = array('labels' => $labels, 'datos' => $datos);
+        return ($ret);
     }
 
     public function logat () {
@@ -80,11 +105,6 @@ class UserController extends Controller
         } else {
             return "Els usuaris amb mail: ".$message.", ja estan creats, per tant no s'han tornar a crear";
         }
-    }
-
-    public function home (){
-        $conta = User::find(auth()->id())->notificacions()->count();
-        return view('home', ['conta' => $conta]);
     }
 
     public function get_usuaris_ldap(Request $request)
