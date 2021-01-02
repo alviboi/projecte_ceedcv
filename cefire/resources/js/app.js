@@ -79,6 +79,7 @@ Vue.component('controlass-component', require('./components/ControlassComponent.
 
 Vue.component('dadespersonals-component', require('./components/DadespersonalsComponent.vue').default);
 
+Vue.component('llistatpermisos-component', require('./components/LlistatpermisosComponent.vue').default);
 
 //L'error més comú que tens quan modifiques una cosa d'ací, no està funcionant npm run watch, o compila a npm run dev
 
@@ -147,6 +148,9 @@ const app = new Vue({
         },
         'configuracio': {
             template: '<div><configuracio-component /></div>'
+        },
+        'llistatpermisos': {
+            template: '<div><llistatpermisos-component /></div>'
         },
 
 

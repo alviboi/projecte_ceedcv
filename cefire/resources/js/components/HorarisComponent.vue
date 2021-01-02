@@ -7,7 +7,7 @@
             <div class="uk-width-1-3">
                 <form class="uk-width-expand uk-search uk-search-default" autocomplete="on">
                     <a @click="filterResults()" uk-search-icon></a>
-                    <input list="llista" v-model="busca_ass" class="uk-search-input" @keypress="pressEnter" placeholder="">
+                    <input list="llista" v-model="busca_ass" class="uk-search-input" @keypress="pressEnter">
                       <datalist class="llista" id="llista">
                             <option v-for="(user,key) in users" :key="key" :value="user.name">{{user.name}}</option>
                       </datalist>

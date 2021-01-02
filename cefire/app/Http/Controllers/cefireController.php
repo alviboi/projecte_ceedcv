@@ -174,18 +174,24 @@ class cefireController extends Controller
         $labels=array();
         $data=array();
         $data_ant=new DateTime();
+        $comp = new DateTime("00:00:00");
         foreach($cefire as $cef){
-            if ($data_ant == $cef->data) {
-                $duration = $cef->inici->diffInMinutes($cef->fi);
-                $valor = array_pop($data);
-                array_push($data,($valor+$duration));
+            if($cef->fi == $comp) {
+
             } else {
-                $duration = $cef->inici->diffInMinutes($cef->fi);
-                array_push($labels,$cef->data);
-                array_push($data,$duration);
+                if ($cef->data == $data_ant) {
+                    $duration = $cef->inici->diffInMinutes($cef->fi);
+                    $valor = array_pop($data);
+                    array_push($data,($valor+$duration));
+                } else {
+                    $duration = $cef->inici->diffInMinutes($cef->fi);
+                    array_push($labels,$cef->data);
+                    array_push($data,$duration);
+                }
+                $total=$total+$duration;
+                $data_ant=$cef->data;
             }
-            $total=$total+$duration;
-            $data_ant=$cef->data;
+
         }
         $ret=array('labels' => $labels, 'data' => $data, 'total' => $total);
         return ($ret);

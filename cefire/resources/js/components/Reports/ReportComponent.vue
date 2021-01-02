@@ -10,11 +10,14 @@
             data-uk-icon="icon:users"
             class="uk-margin-small-right uk-text-primary"
           ></span
-          >Temps total</span
+          >Temps total del rang</span
         >
         <h1 class="uk-heading-primary uk-margin-remove uk-text-primary">
-          {{ (total / 60).toFixed(2) }} hores
+          {{ total_calculat }} hores
         </h1>
+        <div class="uk-text-small">
+            <span :class="(mes_per_mes >= 0)? 'uk-text-success' : 'uk-text-warning'" :data-uk-icon="(mes_per_mes >= 0)? 'icon: triangle-up' : 'icon: triangle-down'">{{ mes_per_mes }}%</span> <span v-if="(mes_per_mes >= 0)"> més que el mes passat</span><span v-else>menys que el mes passat</span>
+        </div>
         <div class="uk-text-small">Sense contar eixides.</div>
       </div>
       <div>
@@ -26,9 +29,12 @@
           >Total mes passat</span
         >
         <h1 class="uk-heading-primary uk-margin-remove uk-text-primary">
-          {{ (total_pass / 60).toFixed(2) }} hores
+          {{ total_mes_passat }} hores
         </h1>
-        <!-- <div class="uk-text-small">
+        <div class="uk-text-small">
+            <span :class="(mes_per_mes <= 0)? 'uk-text-success' : 'uk-text-warning'" :data-uk-icon="(mes_per_mes <= 0)? 'icon: triangle-up' : 'icon: triangle-down'">{{ -mes_per_mes }}%</span> <span v-if="(mes_per_mes <= 0)"> més que el càlcul</span><span v-else>menys que el càlcul</span>
+        </div>
+        <!--            <div class="uk-text-small">
 							<span class="uk-text-warning" data-uk-icon="icon: triangle-down">-15%</span> less than last week.
 						</div> -->
       </div>
@@ -60,12 +66,6 @@
         </Datepicker>
 
         </div>
-
-
-        <!-- <div class="uk-text-small">
-            <span class="uk-text-success" data-uk-icon="icon: triangle-up"> 19%</span> more than last week.
-        </div> -->
-
     </div>
 					<!--<div>
 
@@ -145,12 +145,26 @@ export default {
   components: {
         Datepicker,
   },
+  computed: {
+      total_calculat() {
+          return (this.total / 60).toFixed(2);
+      },
+      total_mes_passat() {
+          return (this.total_pass / 60).toFixed(2)
+      },
+      mes_per_mes() {
+         let aux = ((this.total_calculat/this.total_mes_passat)*100-100).toFixed(2);
+         return aux;
+      }
+  },
   methods: {
     canvia_data(){
         console.log(this.fins);
         console.log(this.desde);
         if(this.fins > this.desde) {
             this.get_temps();
+        } else {
+            this.$toast.error("No puc calcular temps invertit");
         }
     },
     primer_data_mes_passat(data) {

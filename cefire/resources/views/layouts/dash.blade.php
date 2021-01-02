@@ -120,7 +120,8 @@
 						<a href="#"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Reports</a>
 						<ul class="uk-nav-sub">
 							<li><a href="#" @click="view='report1'">Personal</a></li>
-							<li><a href="#" @click="view='report2'">General</a></li>
+                            <li><a href="#" @click="view='report2'">General</a></li>
+                            <li><a href="#" @click="view='llistatpermisos'">Llistat permisos</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -150,13 +151,13 @@
 				</div>
 			</div>
         </div>
-		<!-- OFFCANVAS -->
+		<!-- MISATGES -->
 		<div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
 			<div class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide">
                 <llegirmsg-component />
             </div>
         </div>
-        <!-- /OFFCANVAS -->
+        <!-- /MISSATGES -->
     </div>
 
 {{--
