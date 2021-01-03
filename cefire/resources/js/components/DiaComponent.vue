@@ -617,6 +617,7 @@ $fondo:  #f1faee
     font-size: 1.2em
     margin-left: 10px
     font-color: gray
+    overflow: hidden
 
 .dia
     max-width: 150px
