@@ -83,10 +83,8 @@ class UserController extends Controller
         $input = $request->all();
         $message="";
         for ($i=0; $i < count($input); $i++) {
-            # code...
-            //array_push($este,$request[$i]);
             $user_comp=User::where('email','=',$input[$i]['email'])->first();
-            if($user_comp->id){
+            if($user_comp != null){
                 $message=$message." ".$user_comp->email;
             } else {
                 $dat = new User();
@@ -98,7 +96,6 @@ class UserController extends Controller
                 $emailJob = (new SendPasswordMail($input[$i]['email'],$passwd))->delay(Carbon::now()->addSeconds(120));
                 dispatch($emailJob);
             }
-
         }
         if ($message==""){
             return "Tots els usuaris s'han creat";

@@ -2,15 +2,13 @@
 <div id="tabs" class="container">
 
     <div class="tabs">
-        <a v-on:click="activetab='comp1'" v-bind:class="[ activetab === 'comp1' ? 'active' : '' ]">Horaris</a>
-        <a v-on:click="activetab='comp2'" v-bind:class="[ activetab === 'comp2' ? 'active' : '' ]">Horaris Assessors</a>
-        <a v-on:click="activetab='comp3'" v-bind:class="[ activetab === 'comp3' ? 'active' : '' ]">Busca en horaris</a>
-        <a v-on:click="activetab='comp4'" v-bind:class="[ activetab === 'comp4' ? 'active' : '' ]">Afegix guardies</a>
-        <a v-on:click="activetab='comp5'" v-bind:class="[ activetab === 'comp5' ? 'active' : '' ]">Busca en centres</a>
-        <a v-on:click="activetab=3" v-bind:class="[ activetab === 6 ? 'active' : '' ]">Tab 3</a>
-        <a v-on:click="activetab=1" v-bind:class="[ activetab === 7 ? 'active' : '' ]">Horaris</a>
-        <a v-on:click="activetab=2" v-bind:class="[ activetab === 8 ? 'active' : '' ]">Tab 2</a>
-        <a v-on:click="activetab=3" v-bind:class="[ activetab === 9 ? 'active' : '' ]">Tab 3</a>
+        <a v-on:click="activetab='horari'" v-bind:class="[ activetab === 'horari' ? 'active' : '' ]">Horaris</a>
+        <a v-on:click="activetab='horaritots'" v-bind:class="[ activetab === 'horaritots' ? 'active' : '' ]">Horaris Assessors</a>
+        <a v-on:click="activetab='buscaenhoraris'" v-bind:class="[ activetab === 'buscaenhoraris' ? 'active' : '' ]">Busca en horaris</a>
+        <a v-on:click="activetab='centres'" v-bind:class="[ activetab === 'centres' ? 'active' : '' ]">Busca en centres</a>
+        <a v-on:click="activetab='calendar'" v-bind:class="[ activetab === 'calendar' ? 'active' : '' ]">Afegix guardies</a>
+        <a v-on:click="activetab='configuracio'" v-bind:class="[ activetab === 'configuracio' ? 'active' : '' ]">Configuració</a>
+
     </div>
 
     <div class="content">
@@ -19,18 +17,6 @@
             <component  v-bind:is="activetab"></component>
         </transition>
         </div>
-        <!-- <transition-group name="fade" mode="out-in">
-        <div v-if="activetab === 1" class="tabcontent" key="1">
-            Is this the real life? Is this just fantasy?
-            <horariComponent />
-        </div>
-        <div v-if="activetab === 2" class="tabcontent" key="2">
-            Caught in a landslide, no escape from reality
-        </div>
-        <div v-if="activetab === 3" class="tabcontent" key="3">
-            Open your eyes, look up to the skies and see
-        </div>
-        </transition-group> -->
     </div>
 
 </div>
@@ -41,39 +27,50 @@
 Vue.component('horariComponent', require('./horariComponent.vue').default);
 Vue.component('horariasseComponent', require('./horariasseComponent.vue').default);
 Vue.component('buscahorariComponent', require('./buscahorariComponent.vue').default);
+Vue.component('afegixguardiaComponent', require('./afegixguardiaComponent.vue').default);
 Vue.component('centresComponent', require('./centresComponent.vue').default);
-
-
+Vue.component('configComponent', require('./configComponent.vue').default);
 
 
 export default {
     data() {
         return {
             ajuda2: 'aa',
-            activetab: 'comp1',
+            activetab: 'horari',
+            comp: ['horari','horaritots','buscaenhoraris','centres','calendar','configuracio']
         }
     },
     components: {
-        'comp1' : {
+        'horari' : {
         template: '<div ><horariComponent /></div>'
         },
-        'comp2' : {
+        'horaritots' : {
         template: '<div ><horariasseComponent /></div>'
         },
-        'comp3' : {
-        template: '<div ><horariasseComponent /></div>'
+        'buscaenhoraris' : {
+        template: '<div ><buscahorariComponent /></div>'
         },
-        'comp3' : {
+        'centres' : {
         template: '<div ><centresComponent /></div>'
+        },
+        'calendar' : {
+        template: '<div ><afegixguardiaComponent /></div>'
+        },
+        'configuracio' : {
+        template: '<div ><configComponent /></div>'
         }
     },
     methods: {
         activat() {
-            this.activetab = this.$root.$data.ajuda;
+            if(!this.comp.includes(this.$root.$data.ajuda)){
+                this.activetab = 'horari';
+            } else {
+                this.activetab = this.$root.$data.ajuda;
+            }
         }
     },
     mounted() {
-        //this.activat();
+        this.activat();
     },
 
 }

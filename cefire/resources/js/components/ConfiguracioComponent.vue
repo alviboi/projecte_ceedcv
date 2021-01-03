@@ -90,10 +90,12 @@ export default {
             }
             axios.post("user",dades_enviar)
             .then(res => {
-                console.log(res)
+                console.log(res);
+                this.$toast.success(res.data);
             })
             .catch(err => {
                 console.error(err);
+                this.$toast.error(err.message);
             })
         },
         get_usuaris_ldap(){

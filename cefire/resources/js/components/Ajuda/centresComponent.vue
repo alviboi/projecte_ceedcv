@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Agefix guardia</h3>
+    <h3>Busca en centres</h3>
     <p>
       Per accedir a la pàgina de buscar per centres fem click sobre l'apartat busca centres del menú lateral:
     </p>

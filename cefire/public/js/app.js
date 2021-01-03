@@ -1920,22 +1920,6 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -1963,35 +1947,77 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 Vue.component('horariComponent', __webpack_require__(/*! ./horariComponent.vue */ "./resources/js/components/Ajuda/horariComponent.vue")["default"]);
 Vue.component('horariasseComponent', __webpack_require__(/*! ./horariasseComponent.vue */ "./resources/js/components/Ajuda/horariasseComponent.vue")["default"]);
 Vue.component('buscahorariComponent', __webpack_require__(/*! ./buscahorariComponent.vue */ "./resources/js/components/Ajuda/buscahorariComponent.vue")["default"]);
+Vue.component('afegixguardiaComponent', __webpack_require__(/*! ./afegixguardiaComponent.vue */ "./resources/js/components/Ajuda/afegixguardiaComponent.vue")["default"]);
 Vue.component('centresComponent', __webpack_require__(/*! ./centresComponent.vue */ "./resources/js/components/Ajuda/centresComponent.vue")["default"]);
+Vue.component('configComponent', __webpack_require__(/*! ./configComponent.vue */ "./resources/js/components/Ajuda/configComponent.vue")["default"]);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       ajuda2: 'aa',
-      activetab: 'comp1'
+      activetab: 'horari',
+      comp: ['horari', 'horaritots', 'buscaenhoraris', 'centres', 'calendar', 'configuracio']
     };
   },
-  components: _defineProperty({
-    'comp1': {
+  components: {
+    'horari': {
       template: '<div ><horariComponent /></div>'
     },
-    'comp2': {
+    'horaritots': {
       template: '<div ><horariasseComponent /></div>'
     },
-    'comp3': {
-      template: '<div ><horariasseComponent /></div>'
-    }
-  }, "comp3", {
-    template: '<div ><centresComponent /></div>'
-  }),
-  methods: {
-    activat: function activat() {
-      this.activetab = this.$root.$data.ajuda;
+    'buscaenhoraris': {
+      template: '<div ><buscahorariComponent /></div>'
+    },
+    'centres': {
+      template: '<div ><centresComponent /></div>'
+    },
+    'calendar': {
+      template: '<div ><afegixguardiaComponent /></div>'
+    },
+    'configuracio': {
+      template: '<div ><configComponent /></div>'
     }
   },
-  mounted: function mounted() {//this.activat();
+  methods: {
+    activat: function activat() {
+      if (!this.comp.includes(this.$root.$data.ajuda)) {
+        this.activetab = 'horari';
+      } else {
+        this.activetab = this.$root.$data.ajuda;
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.activat();
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
 
@@ -2034,6 +2060,41 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Ajuda/configComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Ajuda/configComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3180,6 +3241,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     importa_f: function importa_f() {
+      var _this = this;
+
       var dades_enviar = [];
 
       for (var index = 0; index < this.importa.length; index++) {
@@ -3190,12 +3253,16 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post("user", dades_enviar).then(function (res) {
         console.log(res);
+
+        _this.$toast.success(res.data);
       })["catch"](function (err) {
         console.error(err);
+
+        _this.$toast.error(err.message);
       });
     },
     get_usuaris_ldap: function get_usuaris_ldap() {
-      var _this = this;
+      var _this2 = this;
 
       var params = {
         'contrasenya': this.netadmin,
@@ -3203,29 +3270,29 @@ __webpack_require__.r(__webpack_exports__);
       };
       axios.post("get_usuaris_ldap", params).then(function (res) {
         console.log(res);
-        _this.usuaris = res.data;
+        _this2.usuaris = res.data;
         UIkit.modal('#usuaris_ldap').show();
       })["catch"](function (err) {
         console.error(err);
 
-        _this.$toast.error(err.message);
+        _this2.$toast.error(err.message);
       });
     },
     get_configuracio: function get_configuracio() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("control").then(function (res) {
-        _this2.fitxar_aparell = res.data.aparell;
-        _this2.habilita_registre = res.data.registra;
+        _this3.fitxar_aparell = res.data.aparell;
+        _this3.habilita_registre = res.data.registra;
         console.log(res);
       })["catch"](function (err) {
-        _this2.$toast.error(err.message);
+        _this3.$toast.error(err.message);
 
         console.error(err);
       });
     },
     canvia_dades: function canvia_dades(nom) {
-      var _this3 = this;
+      var _this4 = this;
 
       var envia = false;
 
@@ -3240,11 +3307,11 @@ __webpack_require__.r(__webpack_exports__);
       axios.put("control/1", params).then(function (res) {
         console.log(res);
 
-        _this3.$toast.success(res.data);
+        _this4.$toast.success(res.data);
       })["catch"](function (err) {
         console.error(err);
 
-        _this3.$toast.error(err.response.data);
+        _this4.$toast.error(err.response.data);
       });
     }
   },
@@ -91316,10 +91383,10 @@ var render = function() {
       _c(
         "a",
         {
-          class: [_vm.activetab === "comp1" ? "active" : ""],
+          class: [_vm.activetab === "horari" ? "active" : ""],
           on: {
             click: function($event) {
-              _vm.activetab = "comp1"
+              _vm.activetab = "horari"
             }
           }
         },
@@ -91329,10 +91396,10 @@ var render = function() {
       _c(
         "a",
         {
-          class: [_vm.activetab === "comp2" ? "active" : ""],
+          class: [_vm.activetab === "horaritots" ? "active" : ""],
           on: {
             click: function($event) {
-              _vm.activetab = "comp2"
+              _vm.activetab = "horaritots"
             }
           }
         },
@@ -91342,10 +91409,10 @@ var render = function() {
       _c(
         "a",
         {
-          class: [_vm.activetab === "comp3" ? "active" : ""],
+          class: [_vm.activetab === "buscaenhoraris" ? "active" : ""],
           on: {
             click: function($event) {
-              _vm.activetab = "comp3"
+              _vm.activetab = "buscaenhoraris"
             }
           }
         },
@@ -91355,23 +91422,10 @@ var render = function() {
       _c(
         "a",
         {
-          class: [_vm.activetab === "comp4" ? "active" : ""],
+          class: [_vm.activetab === "centres" ? "active" : ""],
           on: {
             click: function($event) {
-              _vm.activetab = "comp4"
-            }
-          }
-        },
-        [_vm._v("Afegix guardies")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          class: [_vm.activetab === "comp5" ? "active" : ""],
-          on: {
-            click: function($event) {
-              _vm.activetab = "comp5"
+              _vm.activetab = "centres"
             }
           }
         },
@@ -91381,53 +91435,27 @@ var render = function() {
       _c(
         "a",
         {
-          class: [_vm.activetab === 6 ? "active" : ""],
+          class: [_vm.activetab === "calendar" ? "active" : ""],
           on: {
             click: function($event) {
-              _vm.activetab = 3
+              _vm.activetab = "calendar"
             }
           }
         },
-        [_vm._v("Tab 3")]
+        [_vm._v("Afegix guardies")]
       ),
       _vm._v(" "),
       _c(
         "a",
         {
-          class: [_vm.activetab === 7 ? "active" : ""],
+          class: [_vm.activetab === "configuracio" ? "active" : ""],
           on: {
             click: function($event) {
-              _vm.activetab = 1
+              _vm.activetab = "configuracio"
             }
           }
         },
-        [_vm._v("Horaris")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          class: [_vm.activetab === 8 ? "active" : ""],
-          on: {
-            click: function($event) {
-              _vm.activetab = 2
-            }
-          }
-        },
-        [_vm._v("Tab 2")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          class: [_vm.activetab === 9 ? "active" : ""],
-          on: {
-            click: function($event) {
-              _vm.activetab = 3
-            }
-          }
-        },
-        [_vm._v("Tab 3")]
+        [_vm._v("Configuració")]
       )
     ]),
     _vm._v(" "),
@@ -91449,6 +91477,61 @@ var render = function() {
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=template&id=581293c7&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=template&id=581293c7& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("h3", [_vm._v("Agefix guardia")]),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "\n    Per accedir a la pàgina d'afegir guàrdies fem click sobre l'apartat busca horaris del menú lateral:\n  "
+        )
+      ]),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "uk-align-center",
+        attrs: { src: "img/ajuda/afegixguardies/menu.png", alt: "" }
+      }),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "Una vegada allí veuràs las disposició del mes en que et trobes. A la part dreta están tots els assessors. Per a afegir una guàrdia agafes i arrastres l'assessor al dia de guàrdia que li pertoca.\n      Una vegada faces açò el seu horari també s'actualitzarà i se li enviarà un mail amb la informació. Si vols borrar una guàrdia ja afegida simplement fes click sobre la guàrdia i s'esborrarà.\n  "
+        )
+      ]),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "uk-align-center",
+        attrs: { src: "img/ajuda/afegixguardies/principal.png", alt: "" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -91544,7 +91627,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", [
-      _c("h3", [_vm._v("Agefix guardia")]),
+      _c("h3", [_vm._v("Busca en centres")]),
       _vm._v(" "),
       _c("p", [
         _vm._v(
@@ -91566,6 +91649,106 @@ var staticRenderFns = [
       _c("img", {
         staticClass: "uk-align-center",
         attrs: { src: "img/ajuda/centres/principal.png", alt: "" }
+      })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Ajuda/configComponent.vue?vue&type=template&id=6d0144da&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Ajuda/configComponent.vue?vue&type=template&id=6d0144da& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("h3", [_vm._v("Configuració de l'aplicació")]),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "\n    Per accedir a la pàgina de configuració fem click al següent menú:\n  "
+        )
+      ]),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "uk-align-center",
+        attrs: { src: "img/ajuda/config/menu.png", alt: "" }
+      }),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "Hi han 3 apartats de configuració. Per a importar usuari de LDAP, per a configurar el fitxatge per hores i per a habilitar el registre d'assessors.\n  "
+        )
+      ]),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "uk-align-center",
+        attrs: { src: "img/ajuda/config/principal.png", alt: "" }
+      }),
+      _vm._v(" "),
+      _c("h4", [_vm._v("Configuració de LDAP")]),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "\n    Per a poder importar usuaris d'un LDAP cal que emplenes la IP i el usuari netadmin d'un servidor LliureX. Els usuaris que vullguen importar han de tenir el correu electrònic com el seu id, sinó no donarà l'opció d'importar-los.\n  "
+        )
+      ]),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "uk-align-center",
+        attrs: {
+          width: "50%",
+          height: "50%",
+          src: "img/ajuda/config/ldap1.png",
+          alt: ""
+        }
+      }),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "Una vegada li donem a importar ens apareixerà un llistat amb tots el usuaris que es volen importar, els seleccionarem i li donarem a importar."
+        )
+      ]),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "uk-align-center",
+        attrs: {
+          width: "50%",
+          height: "50%",
+          src: "img/ajuda/config/ldap2.png",
+          alt: ""
+        }
+      }),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "Una vegada importats ens apareixerà in missatge que ens confirmarà l'èxit de l'operació."
+        )
+      ]),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "uk-align-center",
+        attrs: { src: "img/ajuda/config/ldap3.png", alt: "" }
       })
     ])
   }
@@ -118338,6 +118521,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Ajuda/afegixguardiaComponent.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/Ajuda/afegixguardiaComponent.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _afegixguardiaComponent_vue_vue_type_template_id_581293c7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./afegixguardiaComponent.vue?vue&type=template&id=581293c7& */ "./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=template&id=581293c7&");
+/* harmony import */ var _afegixguardiaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./afegixguardiaComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _afegixguardiaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _afegixguardiaComponent_vue_vue_type_template_id_581293c7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _afegixguardiaComponent_vue_vue_type_template_id_581293c7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Ajuda/afegixguardiaComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_afegixguardiaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./afegixguardiaComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_afegixguardiaComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=template&id=581293c7&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=template&id=581293c7& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_afegixguardiaComponent_vue_vue_type_template_id_581293c7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./afegixguardiaComponent.vue?vue&type=template&id=581293c7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Ajuda/afegixguardiaComponent.vue?vue&type=template&id=581293c7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_afegixguardiaComponent_vue_vue_type_template_id_581293c7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_afegixguardiaComponent_vue_vue_type_template_id_581293c7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Ajuda/buscahorariComponent.vue":
 /*!****************************************************************!*\
   !*** ./resources/js/components/Ajuda/buscahorariComponent.vue ***!
@@ -118471,6 +118723,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_centresComponent_vue_vue_type_template_id_7252f214___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_centresComponent_vue_vue_type_template_id_7252f214___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Ajuda/configComponent.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/Ajuda/configComponent.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _configComponent_vue_vue_type_template_id_6d0144da___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./configComponent.vue?vue&type=template&id=6d0144da& */ "./resources/js/components/Ajuda/configComponent.vue?vue&type=template&id=6d0144da&");
+/* harmony import */ var _configComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./configComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Ajuda/configComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _configComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _configComponent_vue_vue_type_template_id_6d0144da___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _configComponent_vue_vue_type_template_id_6d0144da___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Ajuda/configComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Ajuda/configComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/Ajuda/configComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_configComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./configComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Ajuda/configComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_configComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Ajuda/configComponent.vue?vue&type=template&id=6d0144da&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/Ajuda/configComponent.vue?vue&type=template&id=6d0144da& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_configComponent_vue_vue_type_template_id_6d0144da___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./configComponent.vue?vue&type=template&id=6d0144da& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Ajuda/configComponent.vue?vue&type=template&id=6d0144da&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_configComponent_vue_vue_type_template_id_6d0144da___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_configComponent_vue_vue_type_template_id_6d0144da___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
