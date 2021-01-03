@@ -25,15 +25,13 @@
 	<hr>
 
     <div class="grid-container">
-      <div v-for="(key, index) in 7" :key="key" :class="'d' + (index + 1)">
+      <div v-for="(key, index) in 7" :key="key" :class="'d' + (index + 1) + ' z'+index">
         <dia-component
-          class="sombra"
           :data="lloc[index + 1]"
           mati="m"
           :key="index+componentKey+1000"
         />
         <dia-component
-          class="sombra"
           :data="lloc[index + 1]"
           mati="v"
           :key="index+componentKey"
@@ -134,5 +132,10 @@ export default {
         margin-top: 5px
     .avant
         grid-area: avant
+
+@for $i from 0 through 7
+    .z#{$i}
+        z-index: #{100000+$i*10}
+
 
 </style>

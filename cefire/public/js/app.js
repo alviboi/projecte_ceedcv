@@ -4505,8 +4505,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -22196,7 +22194,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".general2 {\n  padding: 1%;\n  width: 100%;\n}\n.grid-container {\n  display: grid;\n  margin-left: 2%;\n  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n  gap: 10px;\n  grid-template-areas: \"d1 d2 d3 d4 d5 d6 d7\";\n}\n.grid-container .d0 {\n  grid-area: d0;\n}\n.grid-container .d1 {\n  grid-area: d1;\n}\n.grid-container .d2 {\n  grid-area: d2;\n}\n.grid-container .d3 {\n  grid-area: d3;\n}\n.grid-container .d4 {\n  grid-area: d4;\n}\n.grid-container .d5 {\n  grid-area: d5;\n}\n.grid-container .d6 {\n  grid-area: d6;\n}\n.cabecal {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 20px;\n  grid-template-areas: \"arrere mig mig avant\";\n}\n.cabecal .arrere {\n  grid-area: arrere;\n}\n.cabecal .mig {\n  grid-area: mig;\n  text-align: center;\n  margin-bottom: 0px;\n  margin-top: 5px;\n}\n.cabecal .avant {\n  grid-area: avant;\n}", ""]);
+exports.push([module.i, ".general2 {\n  padding: 1%;\n  width: 100%;\n}\n.grid-container {\n  display: grid;\n  margin-left: 2%;\n  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n  gap: 10px;\n  grid-template-areas: \"d1 d2 d3 d4 d5 d6 d7\";\n}\n.grid-container .d0 {\n  grid-area: d0;\n}\n.grid-container .d1 {\n  grid-area: d1;\n}\n.grid-container .d2 {\n  grid-area: d2;\n}\n.grid-container .d3 {\n  grid-area: d3;\n}\n.grid-container .d4 {\n  grid-area: d4;\n}\n.grid-container .d5 {\n  grid-area: d5;\n}\n.grid-container .d6 {\n  grid-area: d6;\n}\n.cabecal {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr 1fr;\n  grid-template-rows: 1fr;\n  gap: 0px 20px;\n  grid-template-areas: \"arrere mig mig avant\";\n}\n.cabecal .arrere {\n  grid-area: arrere;\n}\n.cabecal .mig {\n  grid-area: mig;\n  text-align: center;\n  margin-bottom: 0px;\n  margin-top: 5px;\n}\n.cabecal .avant {\n  grid-area: avant;\n}\n.z0 {\n  z-index: 100000;\n}\n.z1 {\n  z-index: 100010;\n}\n.z2 {\n  z-index: 100020;\n}\n.z3 {\n  z-index: 100030;\n}\n.z4 {\n  z-index: 100040;\n}\n.z5 {\n  z-index: 100050;\n}\n.z6 {\n  z-index: 100060;\n}\n.z7 {\n  z-index: 100070;\n}", ""]);
 
 // exports
 
@@ -94957,17 +94955,15 @@ var render = function() {
       _vm._l(7, function(key, index) {
         return _c(
           "div",
-          { key: key, class: "d" + (index + 1) },
+          { key: key, class: "d" + (index + 1) + " z" + index },
           [
             _c("dia-component", {
               key: index + _vm.componentKey + 1000,
-              staticClass: "sombra",
               attrs: { data: _vm.lloc[index + 1], mati: "m" }
             }),
             _vm._v(" "),
             _c("dia-component", {
               key: index + _vm.componentKey,
-              staticClass: "sombra",
               attrs: { data: _vm.lloc[index + 1], mati: "v" }
             })
           ],
