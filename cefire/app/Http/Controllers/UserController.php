@@ -260,7 +260,14 @@ class UserController extends Controller
     public function get_cefire(Request $request, $num,$any,$mes)
     {
         //
-        return User::find($num)->cefire()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+        $cefire=User::find($num)->cefire()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
+        $ret2=array();
+        foreach ($cefire as  $value) {
+            # code...
+            $ret1 = array("data"=>$value->data ,"id" => $value->id, "user_id" => $value->user_id,"inici" => $value->inici->format('H:i:s'),"fi" => $value->fi->format('H:i:s'));
+            array_push($ret2,$ret1);
+        }
+        return $ret2;
     }
 
     /**

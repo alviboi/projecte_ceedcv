@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Models\permis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class permisController extends Controller
 {
@@ -68,9 +69,15 @@ class permisController extends Controller
      * @param  \App\Models\permis  $permis
      * @return \Illuminate\Http\Response
      */
-    public function show(permis $permis)
+    public function permis_desde(Request $request)
     {
         //
+        $per = permis::where('user_id','=',$request->id)->whereBetween('data', [$request->desde, $request->fins])->get();
+        if ($per->isEmpty()){
+            abort(403,"No hi ha resultats");
+        } else {
+            return $per;
+        }
 
     }
 
@@ -139,10 +146,10 @@ class permisController extends Controller
     public function download(Request $request)
     {
         //
-        return response()->download(storage_path("app/".$request->arxiu));
+        // return response()->download(storage_path("app/".$request->arxiu));
+        $arx = response()->download(storage_path("app/".$request->arxiu), 'permis.pdf', [], 'inline');
+
    }
 
 
-
-   //
 }

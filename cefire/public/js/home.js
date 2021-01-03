@@ -17326,10 +17326,25 @@ var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.j
     delay = _require.delay;
 
 window.data_db = function (data) {
+  var mes_s = '';
+  var dia_s = '';
   var dia = data.getDate();
   var mes = data.getMonth() + 1;
   var an = data.getFullYear();
-  var ret = an + "-" + mes + "-" + dia;
+
+  if (mes < 10) {
+    mes_s = '0' + mes;
+  } else {
+    mes_s = mes;
+  }
+
+  if (dia < 10) {
+    dia_s = '0' + dia;
+  } else {
+    dia_s = dia;
+  }
+
+  var ret = an + "-" + mes_s + "-" + dia_s;
   return ret;
 };
 

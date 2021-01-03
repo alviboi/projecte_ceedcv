@@ -308,21 +308,48 @@ export default {
         let params={
             "arxiu": d
         }
-        axios.post(url,params)
+        axios(
+            {
+                url: url,
+                method: 'POST',
+                responseType: 'blob', // important
+                params: params
+            }
+            )
         .then(response => {
             console.log(response);
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
+            var blob = new Blob([response.data], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'file.pdf');
-            document.body.appendChild(link);
+            link.download = 'permis.pdf'
             link.click();
         })
         .catch(err => {
-            this.$toast.error("Error: Has pujat un arxiu pdf?");
+            this.$toast.error("Error: Pareix que no ha pujat el permís");
             console.error(err);
         })
     },
+    // mira_arxiu(d){
+    //     let url="download_permis";
+    //     let params={
+    //         "arxiu": d
+    //     }
+    //     axios.post(url,params)
+    //     .then(response => {
+    //         console.log(response);
+    //         const url = window.URL.createObjectURL(new Blob([response.data]));
+    //         const link = document.createElement('a');
+    //         link.href = url;
+    //         link.setAttribute('download', 'file.pdf');
+    //         document.body.appendChild(link);
+    //         link.click();
+    //     })
+    //     .catch(err => {
+    //         this.$toast.error("Error: Has pujat un arxiu pdf?");
+    //         console.error(err);
+    //     })
+    // },
     obre_permis(){
             self=this;
             var arxiu_p;

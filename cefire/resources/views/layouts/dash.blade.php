@@ -115,7 +115,7 @@
 					<li><a href="#" @click="view='buscaenhoraris'"><span data-uk-icon="icon: search" class="uk-margin-small-right"></span>Busca en horaris</a></li>
 					<li><a href="#" @click="view='calendar'"><span data-uk-icon="icon: calendar" class="uk-margin-small-right"></span>Afegix guàrdies</a></li>
 					<li><a href="#" @click="view='centres'"><span data-uk-icon="icon: thumbnails" class="uk-margin-small-right"></span>Filtra centres</a></li>
-					<li><a href="#"><span data-uk-icon="icon: lifesaver" class="uk-margin-small-right"></span>Ajuda</a></li>
+					<li><a href="#" @click="ajuda_f()"><span data-uk-icon="icon: lifesaver" class="uk-margin-small-right"></span>Ajuda</a></li>
 					<li class="uk-parent">
 						<a href="#"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Reports</a>
 						<ul class="uk-nav-sub">
@@ -140,7 +140,7 @@
                     <!-- panel -->
                     <div class="uk-width-1-1">
                         <transition name="component-fade" mode="out-in">
-                            <component v-bind:is="view"></component>
+                            <component v-bind:is="view" ></component>
                         </transition>
 					<div>
                         @include('modals')

@@ -81,6 +81,9 @@ Vue.component('dadespersonals-component', require('./components/DadespersonalsCo
 
 Vue.component('llistatpermisos-component', require('./components/LlistatpermisosComponent.vue').default);
 
+Vue.component('ajuda-component', require('./components/Ajuda/AjudaComponent.vue').default);
+
+
 //L'error més comú que tens quan modifiques una cosa d'ací, no està funcionant npm run watch, o compila a npm run dev
 
 
@@ -113,7 +116,8 @@ const app = new Vue({
         // calendar: false,
         // horari: false,
         showEdita: false,
-        view: 'principal'
+        view: 'principal',
+        ajuda: '',
     },
     components: {
         'calendar': {
@@ -152,6 +156,9 @@ const app = new Vue({
         'llistatpermisos': {
             template: '<div><llistatpermisos-component /></div>'
         },
+        'ajuda': {
+            template: '<div><ajuda-component /></div>',
+        }
 
 
       },
@@ -181,6 +188,10 @@ const app = new Vue({
             .catch(err => {
                 console.error(err);
             })
+        },
+        ajuda_f() {
+            this.ajuda=this.view;
+            this.view='ajuda';
         }
     },
     created() {

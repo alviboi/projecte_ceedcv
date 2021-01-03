@@ -4,10 +4,22 @@ const { delay } = require("lodash");
 
 
 window.data_db = function (data) {
+    var mes_s = '';
+    var dia_s = '';
     let dia = data.getDate();
     let mes = data.getMonth() + 1;
     let an = data.getFullYear();
-    let ret = an + "-" + mes + "-" + dia;
+    if (mes < 10){
+        mes_s = '0'+ mes;
+    } else {
+        mes_s = mes;
+    }
+    if (dia < 10){
+        dia_s = '0'+dia;
+    } else {
+        dia_s = dia;
+    }
+    let ret = an + "-" + mes_s + "-" + dia_s;
     return ret;
 }
 
