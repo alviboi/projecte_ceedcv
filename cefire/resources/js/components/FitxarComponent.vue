@@ -133,9 +133,9 @@ export default {
     .avant
         grid-area: avant
 
-@for $i from 0 through 7
+@for $i from 1 through 7
     .z#{$i}
-        z-index: #{100000+$i*10}
+        z-index: #{$i}
 
 
 </style>
