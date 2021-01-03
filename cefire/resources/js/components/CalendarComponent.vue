@@ -312,10 +312,11 @@ $linea: #dddddd
         border: 1px solid black
         border-radius: 5px
         margin-bottom: 3px
+        padding: 5px
     & .assessor_nom
         max-width: 10em
         vertical-align: top
-        height: 1.3em
+        // height: 1.3em
         line-height: 1.3em
         font-size: 0.9em
         white-space: nowrap

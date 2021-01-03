@@ -4,9 +4,9 @@
     <div class="tabs">
         <a v-on:click="activetab='comp1'" v-bind:class="[ activetab === 'comp1' ? 'active' : '' ]">Horaris</a>
         <a v-on:click="activetab='comp2'" v-bind:class="[ activetab === 'comp2' ? 'active' : '' ]">Horaris Assessors</a>
-        <a v-on:click="activetab='comp3'" v-bind:class="[ activetab === 'comp3' ? 'active' : '' ]">Tab 3</a>
-        <a v-on:click="activetab=1" v-bind:class="[ activetab === 4 ? 'active' : '' ]">Horaris</a>
-        <a v-on:click="activetab=2" v-bind:class="[ activetab === 5 ? 'active' : '' ]">Tab 2</a>
+        <a v-on:click="activetab='comp3'" v-bind:class="[ activetab === 'comp3' ? 'active' : '' ]">Busca en horaris</a>
+        <a v-on:click="activetab='comp4'" v-bind:class="[ activetab === 'comp4' ? 'active' : '' ]">Afegix guardies</a>
+        <a v-on:click="activetab='comp5'" v-bind:class="[ activetab === 'comp5' ? 'active' : '' ]">Busca en centres</a>
         <a v-on:click="activetab=3" v-bind:class="[ activetab === 6 ? 'active' : '' ]">Tab 3</a>
         <a v-on:click="activetab=1" v-bind:class="[ activetab === 7 ? 'active' : '' ]">Horaris</a>
         <a v-on:click="activetab=2" v-bind:class="[ activetab === 8 ? 'active' : '' ]">Tab 2</a>
@@ -40,6 +40,10 @@
 
 Vue.component('horariComponent', require('./horariComponent.vue').default);
 Vue.component('horariasseComponent', require('./horariasseComponent.vue').default);
+Vue.component('buscahorariComponent', require('./buscahorariComponent.vue').default);
+Vue.component('centresComponent', require('./centresComponent.vue').default);
+
+
 
 
 export default {
@@ -55,12 +59,21 @@ export default {
         },
         'comp2' : {
         template: '<div ><horariasseComponent /></div>'
+        },
+        'comp3' : {
+        template: '<div ><horariasseComponent /></div>'
+        },
+        'comp3' : {
+        template: '<div ><centresComponent /></div>'
         }
     },
     methods: {
-        este() {
-            alert(this.$root.$data.ajuda);
+        activat() {
+            this.activetab = this.$root.$data.ajuda;
         }
+    },
+    mounted() {
+        //this.activat();
     },
 
 }

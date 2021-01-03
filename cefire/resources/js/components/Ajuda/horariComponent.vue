@@ -2,7 +2,7 @@
   <div>
     <h3>Ajuda Pàgina Horaris</h3>
     <p>
-      Per accedir a la pàgina principa d'horaris fem click sobre l'apartat
+      Per accedir a la pàgina principal d'horaris fem click sobre l'apartat
       horaris del menú lateral:
     </p>
     <img class="uk-align-center" src="img/ajuda/horaris/menu_principal.png" alt="" />
@@ -26,9 +26,6 @@ export default {};
 </script>
 
 <style lang="sass" scope>
-.menu_principal
-    position: relative
-    left: 20%
-    top: 30%
+
 
 </style>

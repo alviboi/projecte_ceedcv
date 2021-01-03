@@ -291,9 +291,7 @@ export default {
 </script>
 
 <style lang="sass" scope>
-
     .general_centres
-
         table
             /* border: 2px solid #42b983; */
             border-radius: 3px
@@ -343,6 +341,8 @@ export default {
         font-weight: 500
         background-color: white
         border: #22111a 1px solid
+        padding: 3px
+        cursor: pointer
 
     .offset
         width: 500px !important
@@ -370,6 +370,7 @@ export default {
         color: white
         border-color: #444
         cursor: pointer
+        padding: 3px
 
 
 </style>

@@ -159,6 +159,7 @@ export default {
                     break;
             }
             for (let index = 0; index < result.length; index++) {
+                var text = '';
                 const ele = result[index];
                 let inici=ele.inici.replace(/:/g,'');
                 let inici_int=Number(inici);
@@ -168,9 +169,14 @@ export default {
                 console.log("Fi_int: "+fi_int);
                 let mati = (inici_int>=80000 && inici_int<150000) ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
                 let fechas = ele.data.split('-');
+                if (toti == 'inici') {
+                    text = ele['inici']+'-'+ele['fi'];
+                } else {
+                    text = ele[toti];
+                }
                 let i = {
                     id: (ele.id+num),
-                    title: "<div id="+(ele.id+num)+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+ele[toti]+"\">"+mati+" "+ele.name+"</div>",
+                    title: "<div id="+(ele.id+num)+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+text+"\">"+mati+" "+ele.name+"</div>",
                     startDate: Date.UTC(fechas[0], fechas[1]-1, fechas[2]),
                     classes: clase+" uk-animation-scale-up",
                 };
