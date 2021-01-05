@@ -41,6 +41,10 @@
                 </Datepicker>
             </div>
         </div>
+        <div>
+            <button class="uk-button uk-button-primary" @click="agafa_dades_permisos_sense_arxius()">Busca assessors sense permís pujat</button>
+            <button class="uk-button uk-button-primary uk-margin-top">Busca arxius orfes i elimina'ls</button>
+        </div>
     </div>
 
     <hr />
@@ -52,7 +56,7 @@
       >
             <div class="element_permis uk-margin-small-right" v-for="permis in permisos" :key="permis.id">
                 <div class="file">
-                    <span @click="mira_arxiu(permis.arxiu)"><i class="fas fa-file-pdf fa-6x"></i></span>
+                    <span @click="mira_arxiu(permis.arxiu)"><i :class='permis.arxiu !== null? "fas fa-file-pdf fa-6x" : "fas fa-exclamation-circle fa-6x uk-text-danger"'></i></span>
                 </div>
                 <div class="Dia_p">
                     <b>Data: </b>{{permis.data}}
@@ -60,7 +64,8 @@
                     <b>Fi: </b>{{permis.fi}}
                 </div>
                 <div class="Nom">
-                    <h4><b>Motiu: </b>{{permis.motiu}}</h4>
+                    <h5><b>Motiu: </b>{{permis.motiu}}<br>
+                    <b>Nom: </b>{{permis.name}}</h5>
                 </div>
             </div>
 
@@ -82,7 +87,8 @@ import { ca } from "vuejs-datepicker/dist/locale";
                 desde: '0000-00-00',
                 fins: '0000-00-00',
                 permisos: {},
-                results: []
+                results: [],
+                arxiu: null
             };
         },
         components: {
@@ -94,7 +100,6 @@ import { ca } from "vuejs-datepicker/dist/locale";
                 if (this.results[0] !== undefined){
                     this.completa();
                 }
-                //this.tots_els_elements_get();
             },
             agafa_users(){
                 axios.get("user")
@@ -112,10 +117,6 @@ import { ca } from "vuejs-datepicker/dist/locale";
                 if(this.fins > this.desde) {
                     this.filterResults();
                 }
-
-                // else if(this.desde != '0000-00-00' && this.desde != '0000-00-00') {
-                //     this.$toast.error("No puc calcular temps invertit");
-                // }
             },
             agafa_dades_permisos () {
                 if (this.results[0]['id'] !== undefined)
@@ -133,9 +134,20 @@ import { ca } from "vuejs-datepicker/dist/locale";
                         })
                         .catch(err => {
                             this.$toast.error(err.response.data.message);
-                            //console.error(err.response.data.message);
                         })
                     }
+            },
+            agafa_dades_permisos_sense_arxius () {
+
+                    let url = "permis_sense_arxiu";
+                    axios.post(url)
+                    .then(res => {
+                        this.permisos = res.data;
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        this.$toast.error(err.response.data.message);
+                    })
             },
             completa () {
                 if (this.busca_ass != '' && this.desde != '0000-00-00' && this.fins != '0000-00-00'){
@@ -151,7 +163,7 @@ import { ca } from "vuejs-datepicker/dist/locale";
                     {
                         url: url,
                         method: 'POST',
-                        responseType: 'blob', // important
+                        responseType: 'blob', // important per a rebre arxius
                         params: params
                     }
                     )
@@ -203,4 +215,5 @@ import { ca } from "vuejs-datepicker/dist/locale";
     .Nom
         margin-top: 6px
         grid-area: Nom
+        overflow: auto
 </style>

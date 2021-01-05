@@ -76,10 +76,39 @@ class permisController extends Controller
         if ($per->isEmpty()){
             abort(403,"No hi ha resultats");
         } else {
-            return $per;
+            $ret = array();
+            foreach ($per as $el) {
+                $item=array("id"=>$el->id, "name"=>$el->user['name'], "data"=>$el->data, "inici"=>$el->inici, "fi"=>$el->fi, "motiu"=>$el->motiu, "arxiu"=>$el->arxiu);
+                array_push($ret, $item);
+            }
+            return $ret;
         }
 
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\permis  $permis
+     * @return \Illuminate\Http\Response
+     */
+    public function permis_sense_arxiu(Request $request)
+    {
+        //
+        $per = permis::where('arxiu','=',null)->get();
+        if ($per->isEmpty()){
+            abort(403,"No hi ha resultats");
+        } else {
+            $ret = array();
+            foreach ($per as $el) {
+                $item=array("id"=>$el->id, "name"=>$el->user['name'], "data"=>$el->data, "inici"=>$el->inici, "fi"=>$el->fi, "motiu"=>$el->motiu, "arxiu"=>$el->arxiu);
+                array_push($ret, $item);
+            }
+            return $ret;
+        }
+
+    }
+
 
     /**
      * Show the form for editing the specified resource.

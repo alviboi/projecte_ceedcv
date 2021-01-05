@@ -4502,9 +4502,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4943,6 +4940,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4954,7 +4956,8 @@ __webpack_require__.r(__webpack_exports__);
       desde: '0000-00-00',
       fins: '0000-00-00',
       permisos: {},
-      results: []
+      results: [],
+      arxiu: null
     };
   },
   components: {
@@ -4970,8 +4973,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.results[0] !== undefined) {
         this.completa();
-      } //this.tots_els_elements_get();
-
+      }
     },
     agafa_users: function agafa_users() {
       var _this2 = this;
@@ -4990,10 +4992,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.fins > this.desde) {
         this.filterResults();
-      } // else if(this.desde != '0000-00-00' && this.desde != '0000-00-00') {
-      //     this.$toast.error("No puc calcular temps invertit");
-      // }
-
+      }
     },
     agafa_dades_permisos: function agafa_dades_permisos() {
       var _this3 = this;
@@ -5009,10 +5008,20 @@ __webpack_require__.r(__webpack_exports__);
           _this3.permisos = res.data;
           console.log(res);
         })["catch"](function (err) {
-          _this3.$toast.error(err.response.data.message); //console.error(err.response.data.message);
-
+          _this3.$toast.error(err.response.data.message);
         });
       }
+    },
+    agafa_dades_permisos_sense_arxius: function agafa_dades_permisos_sense_arxius() {
+      var _this4 = this;
+
+      var url = "permis_sense_arxiu";
+      axios.post(url).then(function (res) {
+        _this4.permisos = res.data;
+        console.log(res);
+      })["catch"](function (err) {
+        _this4.$toast.error(err.response.data.message);
+      });
     },
     completa: function completa() {
       if (this.busca_ass != '' && this.desde != '0000-00-00' && this.fins != '0000-00-00') {
@@ -5020,7 +5029,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     mira_arxiu: function mira_arxiu(d) {
-      var _this4 = this;
+      var _this5 = this;
 
       var url = "download_permis";
       var params = {
@@ -5030,7 +5039,7 @@ __webpack_require__.r(__webpack_exports__);
         url: url,
         method: 'POST',
         responseType: 'blob',
-        // important
+        // important per a rebre arxius
         params: params
       }).then(function (response) {
         console.log(response);
@@ -5043,7 +5052,7 @@ __webpack_require__.r(__webpack_exports__);
         link.download = 'permis.pdf';
         link.click();
       })["catch"](function (err) {
-        _this4.$toast.error("Error: Pareix que no ha pujat el permís");
+        _this5.$toast.error("Error: Pareix que no ha pujat el permís");
 
         console.error(err);
       });
@@ -22232,7 +22241,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".element_permis {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 0px 0px;\n  grid-template-areas: \"file Dia\" \"Nom Nom\";\n  border: 1px solid;\n  padding: 15px;\n  margin: 20px;\n  border-radius: 8px;\n  background: #e6d5e7;\n}\n.element_permis .file {\n  grid-area: file;\n  overflow: hidden;\n  cursor: pointer;\n}\n.element_permis .Dia_p {\n  grid-area: Dia;\n}\n.element_permis .Nom {\n  margin-top: 6px;\n  grid-area: Nom;\n}", ""]);
+exports.push([module.i, ".element_permis {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 0px 0px;\n  grid-template-areas: \"file Dia\" \"Nom Nom\";\n  border: 1px solid;\n  padding: 15px;\n  margin: 20px;\n  border-radius: 8px;\n  background: #e6d5e7;\n}\n.element_permis .file {\n  grid-area: file;\n  overflow: hidden;\n  cursor: pointer;\n}\n.element_permis .Dia_p {\n  grid-area: Dia;\n}\n.element_permis .Nom {\n  margin-top: 6px;\n  grid-area: Nom;\n  overflow: auto;\n}", ""]);
 
 // exports
 
@@ -95260,6 +95269,27 @@ var render = function() {
             ],
             1
           )
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "button",
+            {
+              staticClass: "uk-button uk-button-primary",
+              on: {
+                click: function($event) {
+                  return _vm.agafa_dades_permisos_sense_arxius()
+                }
+              }
+            },
+            [_vm._v("Busca assessors sense permís pujat")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "uk-button uk-button-primary uk-margin-top" },
+            [_vm._v("Busca arxius orfes i elimina'ls")]
+          )
         ])
       ]
     ),
@@ -95295,7 +95325,14 @@ var render = function() {
                         }
                       }
                     },
-                    [_c("i", { staticClass: "fas fa-file-pdf fa-6x" })]
+                    [
+                      _c("i", {
+                        class:
+                          permis.arxiu !== null
+                            ? "fas fa-file-pdf fa-6x"
+                            : "fas fa-exclamation-circle fa-6x uk-text-danger"
+                      })
+                    ]
                   )
                 ]),
                 _vm._v(" "),
@@ -95309,9 +95346,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "Nom" }, [
-                  _c("h4", [
+                  _c("h5", [
                     _c("b", [_vm._v("Motiu: ")]),
-                    _vm._v(_vm._s(permis.motiu))
+                    _vm._v(_vm._s(permis.motiu)),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("b", [_vm._v("Nom: ")]),
+                    _vm._v(_vm._s(permis.name))
                   ])
                 ])
               ]

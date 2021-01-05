@@ -13,10 +13,7 @@
                 placeholder="Escollix data a buscar"
                 input-class="uk-input"
                 >
-
                 </Datepicker>
-
-
         </div>
         <div class="avant">
             <button @click="canvia('av')" class="uk-button uk-button-primary uk-button-large uk-float-right"><span uk-icon="arrow-right"></span></button>
@@ -136,6 +133,5 @@ export default {
 @for $i from 1 through 7
     .z#{$i}
         z-index: #{$i}
-
 
 </style>

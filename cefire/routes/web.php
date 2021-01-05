@@ -116,6 +116,8 @@ Route::post('guardia/insert','guardiaController@put_guardia_id')->name('put_guar
 Route::post('upload_permis','permisController@upload')->middleware('auth');
 Route::post('download_permis','permisController@download')->middleware('auth');
 Route::post('permis_desde','permisController@permis_desde')->middleware('can:esAdmin');
+Route::post('permis_sense_arxiu','permisController@permis_sense_arxiu')->middleware('can:esAdmin');
+
 
 
 Route::resource('control', ControlController::class)->middleware('can:esAdmin');
