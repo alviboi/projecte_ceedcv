@@ -613,6 +613,9 @@ export default {
 
 <style lang="sass" scope>
 $fondo:  #f1faee
+
+@import "../../sass/_variables.scss"
+
 .titulet
     font-size: 1.2em
     margin-left: 10px
@@ -676,7 +679,7 @@ $fondo:  #f1faee
             max-width: 130px
             &cefire
                 @extend .s-
-                background-color: blue
+                background-color: $blue
                 &:before
                     content: "CEFIRE"
             &compensa

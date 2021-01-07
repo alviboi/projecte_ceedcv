@@ -306,6 +306,10 @@ export default {
 </script>
 
 <style lang="sass" scope>
+
+@import "../../sass/_variables.scss"
+
+
 $color_guardia: red
 $linea: #dddddd
 
@@ -337,11 +341,12 @@ item-general
 
 .cv-item.custom-date-class-yellow
     @extend item-general
-    background-color: yellow
+    background-color: $yellow
+    color: #000
 
 .cv-item.custom-date-class-blue
     @extend item-general
-    background-color: blue
+    background-color: $blue
 
 .cv-item.custom-date-class-green
     @extend item-general
