@@ -5472,6 +5472,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5488,6 +5493,24 @@ __webpack_require__.r(__webpack_exports__);
         _this.avisos = res.data;
       })["catch"](function (err) {
         console.error(err);
+      });
+    },
+    borra: function borra(id) {
+      var _this2 = this;
+
+      var url = "avisos/" + id;
+      axios["delete"](url).then(function (res) {
+        console.log(res);
+
+        for (var index = 0; index < _this2.avisos.length; index++) {
+          if (_this2.avisos[index].id == id) _this2.avisos.splice(index, 1);
+        }
+
+        _this2.$toast.success(res.data);
+      })["catch"](function (err) {
+        console.error(err);
+
+        _this2.$toast.error(err.response.data.message);
       });
     }
   },
@@ -95661,59 +95684,91 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.avisos, function(avis, key) {
-      return _c("div", { key: key }, [
-        _c(
-          "div",
-          {
-            staticClass: "uk-card uk-card-default uk-width-1-1 margens",
-            attrs: { "uk-margin": "" }
-          },
-          [
-            _c("div", { staticClass: "uk-card-header" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "uk-grid-small uk-flex-middle",
-                  attrs: { "uk-grid": "" }
-                },
-                [
-                  _vm._m(0, true),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "uk-width-expand" }, [
-                    _c(
-                      "h3",
-                      { staticClass: "uk-card-title uk-margin-remove-bottom" },
-                      [_vm._v(_vm._s(avis.cap))]
-                    ),
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _vm._l(_vm.avisos, function(avis, key) {
+        return _c("div", { key: key }, [
+          _c(
+            "div",
+            {
+              staticClass: "uk-card uk-card-default uk-width-1-1 margens",
+              attrs: { "uk-margin": "" }
+            },
+            [
+              _c("div", { staticClass: "uk-card-header" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "uk-grid-small uk-flex-middle",
+                    attrs: { "uk-grid": "" }
+                  },
+                  [
+                    _vm._m(1, true),
                     _vm._v(" "),
-                    _c(
-                      "p",
-                      { staticClass: "uk-text-meta uk-margin-remove-top" },
-                      [
-                        _c(
-                          "time",
-                          { attrs: { datetime: "2016-04-01T19:00" } },
-                          [_vm._v(_vm._s(avis.data))]
-                        )
-                      ]
-                    )
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "uk-card-body" }, [
-              _c("p", [_vm._v(_vm._s(avis.avis))])
-            ])
-          ]
-        )
-      ])
-    }),
-    0
+                    _c("div", { staticClass: "uk-width-expand" }, [
+                      _c(
+                        "h3",
+                        {
+                          staticClass: "uk-card-title uk-margin-remove-bottom"
+                        },
+                        [_vm._v(_vm._s(avis.cap))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "p",
+                        { staticClass: "uk-text-meta uk-margin-remove-top" },
+                        [
+                          _c(
+                            "time",
+                            { attrs: { datetime: "2016-04-01T19:00" } },
+                            [_vm._v(_vm._s(avis.data))]
+                          )
+                        ]
+                      )
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "uk-card-body" }, [
+                _c("p", { staticClass: "uk-text-large" }, [
+                  _vm._v(_vm._s(avis.avis))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "uk-card-footer" }, [
+                _c("span", [_vm._v("Creat per " + _vm._s(avis.nom))]),
+                _c(
+                  "div",
+                  {
+                    staticClass: "uk-button uk-button-text uk-float-right",
+                    on: {
+                      click: function($event) {
+                        return _vm.borra(avis.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Borra avís")]
+                )
+              ])
+            ]
+          )
+        ])
+      })
+    ],
+    2
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "uk-float-center" }, [
+      _c("h2", [_vm._v("Avisos")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

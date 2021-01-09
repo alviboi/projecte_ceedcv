@@ -1,6 +1,8 @@
 <template>
   <div>
-
+      <div class="uk-float-center">
+          <h2>Avisos</h2>
+      </div>
       <div v-for="(avis, key) in avisos" :key="key">
           <div class="uk-card uk-card-default uk-width-1-1 margens" uk-margin>
             <div class="uk-card-header">
@@ -15,7 +17,10 @@
                 </div>
             </div>
             <div class="uk-card-body">
-                <p>{{avis.avis}}</p>
+                <p class="uk-text-large">{{avis.avis}}</p>
+            </div>
+            <div class="uk-card-footer">
+                <span>Creat per {{avis.nom}}</span><div @click="borra(avis.id)"  class="uk-button uk-button-text uk-float-right">Borra avís</div>
             </div>
         </div>
       </div>
@@ -40,6 +45,23 @@ export default {
             })
             .catch(err => {
                 console.error(err);
+            })
+        },
+        borra(id) {
+            let url="avisos/"+id;
+
+            axios.delete(url)
+            .then(res => {
+                console.log(res);
+                for (let index = 0; index < this.avisos.length; index++) {
+                    if(this.avisos[index].id == id)
+                    this.avisos.splice(index,1);
+                }
+                this.$toast.success(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                this.$toast.error(err.response.data.message);
             })
         }
     },

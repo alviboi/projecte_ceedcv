@@ -144,6 +144,6 @@
 		margin-right: auto;
 	}
     .cv-item.custom-date-class-red {
-	background-color: #ff6666;
+	    background-color: #ff6666;
 }
 </style>

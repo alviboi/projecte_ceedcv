@@ -15,7 +15,14 @@ class avisosController extends Controller
     public function index()
     {
         //
-        return avisos::orderby('id','DESC')->get();
+        $avisos=avisos::orderby('id','DESC')->get();
+        $ret=array();
+        foreach ($avisos as $avis) {
+            # code...
+            $el = ["nom"=>$avis->user['name'],"cap"=>$avis->cap,"data"=>$avis->data,"avis"=>$avis->avis,"id"=>$avis->id];
+            array_push($ret,$el);
+        }
+        return $ret;
     }
 
     /**
@@ -45,6 +52,7 @@ class avisosController extends Controller
         $avis->cap = $request->cap;
         $avis->avis = $request->avis;
         $avis->data = date("Y-m-d");
+        $avis->user_id = auth()->id();
         //  Store data in database
         $avis->save();
         //
@@ -92,8 +100,16 @@ class avisosController extends Controller
      * @param  \App\Models\avisos  $avisos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(avisos $avisos)
+    public function destroy($avisos)
     {
         //
+
+        $avis=avisos::find($avisos);
+        if ($avis->id == auth()->id() || auth()->user()->Perfil == 1){
+            $avis->delete();
+            return "Borrat correctament";
+        } else {
+            abort(403,"No tens permís per a borrar aquest avís");
+        }
     }
 }
