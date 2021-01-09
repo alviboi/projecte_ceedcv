@@ -43,7 +43,7 @@
         </div>
         <div>
             <button class="uk-button uk-button-primary" @click="agafa_dades_permisos_sense_arxius()">Busca assessors sense permís pujat</button>
-            <button class="uk-button uk-button-primary uk-margin-top">Busca arxius orfes i elimina'ls</button>
+            <!-- <button class="uk-button uk-button-primary uk-margin-top">Busca arxius orfes i elimina'ls</button> -->
         </div>
     </div>
 
@@ -81,6 +81,7 @@ import { ca } from "vuejs-datepicker/dist/locale";
     export default {
         data() {
             return {
+                hui: new Date(),
                 users: [],
                 busca_ass: '',
                 ca: ca,
@@ -119,6 +120,7 @@ import { ca } from "vuejs-datepicker/dist/locale";
                 }
             },
             agafa_dades_permisos () {
+                //this.busca_ass="";
                 if (this.results[0]['id'] !== undefined)
                     {
                         let url = "permis_desde";
@@ -150,7 +152,21 @@ import { ca } from "vuejs-datepicker/dist/locale";
                     })
             },
             completa () {
-                if (this.busca_ass != '' && this.desde != '0000-00-00' && this.fins != '0000-00-00'){
+                this.permisos = [];
+                if (this.desde != '0000-00-00' && this.fins != '0000-00-00'){
+                    if (this.busca_ass != ''){
+                        this.agafa_dades_permisos();
+                    }
+                } else if (this.busca_ass != '') {
+
+                    let any = this.hui.getFullYear();
+                    if (8 > this.hui.getMonth() >=0) {
+                        this.desde = new Date((any-1)+'-09-01');
+                    } else {
+                        this.desde = new Date(any+'-09-01');
+                    }
+                    this.fins = this.hui;
+                    console.log(this.fins);
                     this.agafa_dades_permisos();
                 }
             },

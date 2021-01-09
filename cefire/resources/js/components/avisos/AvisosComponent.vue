@@ -3,7 +3,8 @@
       <div class="uk-float-center">
           <h2>Avisos</h2>
       </div>
-      <div v-for="(avis, key) in avisos" :key="key">
+    <transition-group name="avis-complete" tag="p">
+      <div v-for="avis in avisos" :key="avis.id" class="avis-complete-item">
           <div class="uk-card uk-card-default uk-width-1-1 margens" uk-margin>
             <div class="uk-card-header">
                 <div class="uk-grid-small uk-flex-middle" uk-grid>
@@ -24,6 +25,7 @@
             </div>
         </div>
       </div>
+      </transition-group>
   </div>
 </template>
 
@@ -57,7 +59,6 @@ export default {
                     if(this.avisos[index].id == id)
                     this.avisos.splice(index,1);
                 }
-                this.$toast.success(res.data);
             })
             .catch(err => {
                 console.error(err);
@@ -80,6 +81,21 @@ export default {
 <style lang="sass" scope>
 .margens
     margin-top: 10px
+
+.avis-complete-item
+    transition: all 1s
+    display: inline-block
+    margin-right: 10px
+    min-width: 100%
+    *
+        background-color: #fce8e8
+
+.avis-complete-enter, .avis-complete-leave-to
+    opacity: 0
+    transform: translateX(30px)
+
+.avis-complete-leave-active
+    position: absolute
 
 
 </style>

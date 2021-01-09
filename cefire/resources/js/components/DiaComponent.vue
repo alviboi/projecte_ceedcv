@@ -617,10 +617,15 @@ $fondo:  #f1faee
 @import "../../sass/_variables.scss"
 
 .titulet
-    font-size: 1.2em
+
     margin-left: 10px
     font-color: gray
     overflow: hidden
+    transition: all 1s
+    @media (min-width: 1480px)
+        font-size: 1.2em
+    @media (max-width: 1480px)
+        font-size: 0.8em
 
 .dia
     max-width: 150px
@@ -686,19 +691,29 @@ $fondo:  #f1faee
                 @extend .s-
                 background-color: gray
                 &:before
-                    content: "COMPENSA"
+                    @media (min-width: 1380px)
+                        content: "COMPENSA"
+                    @media (max-width: 1380px)
+                        content: "COM..."
 
             &guardia
                 @extend .s-
                 background-color: red
                 &:before
-                    content: "GUARDIA"
+                    @media (min-width: 1220px)
+                        content: "GUARDIA"
+                    @media (max-width: 1220px)
+                        content: "GUA..."
+
 
             &visita
                 @extend .s-
                 background-color: pink
                 &:before
-                    content: "VISITA"
+                    @media (min-width: 1024px)
+                        content: "VISITA"
+                    @media (max-width: 1024px)
+                        content: "VIS..."
 
             &curs
                 @extend .s-
@@ -709,7 +724,11 @@ $fondo:  #f1faee
                 @extend .s-
                 background-color: green
                 &:before
-                    content: "PERMÍS"
+                    @media (min-width: 1280px)
+                        content: "PERMÍS"
+                    @media (max-width: 1280px)
+                        content: "PER..."
+
 
     .cerrar
         font-family: "Font Awesome 5 Free"
@@ -719,7 +738,6 @@ $fondo:  #f1faee
         color: #373444
         font-weight: bold
         cursor: pointer
-        pointers: all
         &:before
             content: "\f2ed"
     .arxiu

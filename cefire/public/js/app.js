@@ -4950,6 +4950,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      hui: new Date(),
       users: [],
       busca_ass: '',
       ca: vuejs_datepicker_dist_locale__WEBPACK_IMPORTED_MODULE_1__["ca"],
@@ -4997,6 +4998,7 @@ __webpack_require__.r(__webpack_exports__);
     agafa_dades_permisos: function agafa_dades_permisos() {
       var _this3 = this;
 
+      //this.busca_ass="";
       if (this.results[0]['id'] !== undefined) {
         var url = "permis_desde";
         var params = {
@@ -5024,7 +5026,23 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     completa: function completa() {
-      if (this.busca_ass != '' && this.desde != '0000-00-00' && this.fins != '0000-00-00') {
+      this.permisos = [];
+
+      if (this.desde != '0000-00-00' && this.fins != '0000-00-00') {
+        if (this.busca_ass != '') {
+          this.agafa_dades_permisos();
+        }
+      } else if (this.busca_ass != '') {
+        var any = this.hui.getFullYear();
+
+        if (8 > this.hui.getMonth() >= 0) {
+          this.desde = new Date(any - 1 + '-09-01');
+        } else {
+          this.desde = new Date(any + '-09-01');
+        }
+
+        this.fins = this.hui;
+        console.log(this.fins);
         this.agafa_dades_permisos();
       }
     },
@@ -5477,6 +5495,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5505,8 +5525,6 @@ __webpack_require__.r(__webpack_exports__);
         for (var index = 0; index < _this2.avisos.length; index++) {
           if (_this2.avisos[index].id == id) _this2.avisos.splice(index, 1);
         }
-
-        _this2.$toast.success(res.data);
       })["catch"](function (err) {
         console.error(err);
 
@@ -22207,7 +22225,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.titulet {\n  font-size: 1.2em;\n  margin-left: 10px;\n  font-color: gray;\n  overflow: hidden;\n}\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n  box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -webkit-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -moz-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n  min-height: 160px;\n}\n.dia .principal .s-, .dia .principal .s-permis, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n  max-width: 130px;\n}\n.dia .principal .s-cefire {\n  background-color: #3490dc;\n}\n.dia .principal .s-cefire:before {\n  content: \"CEFIRE\";\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n.dia .principal .s-compensa:before {\n  content: \"COMPENSA\";\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n.dia .principal .s-guardia:before {\n  content: \"GUARDIA\";\n}\n.dia .principal .s-visita {\n  background-color: pink;\n}\n.dia .principal .s-visita:before {\n  content: \"VISITA\";\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-permis {\n  background-color: green;\n}\n.dia .principal .s-permis:before {\n  content: \"PERM\\CDS\";\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .arxiu {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .arxiu:before {\n  content: \"\\F15B\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: nowrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container button {\n  flex: 1 0 auto;\n  margin: 1px;\n  padding-left: 8px;\n  padding-right: 8px;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.titulet {\n  margin-left: 10px;\n  font-color: gray;\n  overflow: hidden;\n  transition: all 1s;\n}\n@media (min-width: 1480px) {\n.titulet {\n    font-size: 1.2em;\n}\n}\n@media (max-width: 1480px) {\n.titulet {\n    font-size: 0.8em;\n}\n}\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n  box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -webkit-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -moz-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n  min-height: 160px;\n}\n.dia .principal .s-, .dia .principal .s-permis, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n  max-width: 130px;\n}\n.dia .principal .s-cefire {\n  background-color: #3490dc;\n}\n.dia .principal .s-cefire:before {\n  content: \"CEFIRE\";\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n@media (min-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COMPENSA\";\n}\n}\n@media (max-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COM...\";\n}\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n@media (min-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUARDIA\";\n}\n}\n@media (max-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUA...\";\n}\n}\n.dia .principal .s-visita {\n  background-color: pink;\n}\n@media (min-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VISITA\";\n}\n}\n@media (max-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VIS...\";\n}\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-permis {\n  background-color: green;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PERM\\CDS\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PER...\";\n}\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .arxiu {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .arxiu:before {\n  content: \"\\F15B\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: nowrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container button {\n  flex: 1 0 auto;\n  margin: 1px;\n  padding-left: 8px;\n  padding-right: 8px;\n}", ""]);
 
 // exports
 
@@ -22283,7 +22301,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".margens {\n  margin-top: 10px;\n}", ""]);
+exports.push([module.i, ".margens {\n  margin-top: 10px;\n}\n.avis-complete-item {\n  transition: all 1s;\n  display: inline-block;\n  margin-right: 10px;\n  min-width: 100%;\n}\n.avis-complete-item * {\n  background-color: #fce8e8;\n}\n.avis-complete-enter, .avis-complete-leave-to {\n  opacity: 0;\n  transform: translateX(30px);\n}\n.avis-complete-leave-active {\n  position: absolute;\n}", ""]);
 
 // exports
 
@@ -95306,12 +95324,6 @@ var render = function() {
               }
             },
             [_vm._v("Busca assessors sense permís pujat")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "uk-button uk-button-primary uk-margin-top" },
-            [_vm._v("Busca arxius orfes i elimina'ls")]
           )
         ])
       ]
@@ -95687,77 +95699,93 @@ var render = function() {
     [
       _vm._m(0),
       _vm._v(" "),
-      _vm._l(_vm.avisos, function(avis, key) {
-        return _c("div", { key: key }, [
-          _c(
+      _c(
+        "transition-group",
+        { attrs: { name: "avis-complete", tag: "p" } },
+        _vm._l(_vm.avisos, function(avis) {
+          return _c(
             "div",
-            {
-              staticClass: "uk-card uk-card-default uk-width-1-1 margens",
-              attrs: { "uk-margin": "" }
-            },
+            { key: avis.id, staticClass: "avis-complete-item" },
             [
-              _c("div", { staticClass: "uk-card-header" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "uk-grid-small uk-flex-middle",
-                    attrs: { "uk-grid": "" }
-                  },
-                  [
-                    _vm._m(1, true),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "uk-width-expand" }, [
-                      _c(
-                        "h3",
-                        {
-                          staticClass: "uk-card-title uk-margin-remove-bottom"
-                        },
-                        [_vm._v(_vm._s(avis.cap))]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "p",
-                        { staticClass: "uk-text-meta uk-margin-remove-top" },
-                        [
+              _c(
+                "div",
+                {
+                  staticClass: "uk-card uk-card-default uk-width-1-1 margens",
+                  attrs: { "uk-margin": "" }
+                },
+                [
+                  _c("div", { staticClass: "uk-card-header" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "uk-grid-small uk-flex-middle",
+                        attrs: { "uk-grid": "" }
+                      },
+                      [
+                        _c("div", { staticClass: "uk-width-auto" }, [
+                          _c("span", {
+                            attrs: { "uk-icon": "icon: warning; ratio: 2.5" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "uk-width-expand" }, [
                           _c(
-                            "time",
-                            { attrs: { datetime: "2016-04-01T19:00" } },
-                            [_vm._v(_vm._s(avis.data))]
+                            "h3",
+                            {
+                              staticClass:
+                                "uk-card-title uk-margin-remove-bottom"
+                            },
+                            [_vm._v(_vm._s(avis.cap))]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            {
+                              staticClass: "uk-text-meta uk-margin-remove-top"
+                            },
+                            [
+                              _c(
+                                "time",
+                                { attrs: { datetime: "2016-04-01T19:00" } },
+                                [_vm._v(_vm._s(avis.data))]
+                              )
+                            ]
                           )
-                        ]
-                      )
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "uk-card-body" }, [
+                    _c("p", { staticClass: "uk-text-large" }, [
+                      _vm._v(_vm._s(avis.avis))
                     ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "uk-card-body" }, [
-                _c("p", { staticClass: "uk-text-large" }, [
-                  _vm._v(_vm._s(avis.avis))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "uk-card-footer" }, [
-                _c("span", [_vm._v("Creat per " + _vm._s(avis.nom))]),
-                _c(
-                  "div",
-                  {
-                    staticClass: "uk-button uk-button-text uk-float-right",
-                    on: {
-                      click: function($event) {
-                        return _vm.borra(avis.id)
-                      }
-                    }
-                  },
-                  [_vm._v("Borra avís")]
-                )
-              ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "uk-card-footer" }, [
+                    _c("span", [_vm._v("Creat per " + _vm._s(avis.nom))]),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "uk-button uk-button-text uk-float-right",
+                        on: {
+                          click: function($event) {
+                            return _vm.borra(avis.id)
+                          }
+                        }
+                      },
+                      [_vm._v("Borra avís")]
+                    )
+                  ])
+                ]
+              )
             ]
           )
-        ])
-      })
+        }),
+        0
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = [
@@ -95767,14 +95795,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "uk-float-center" }, [
       _c("h2", [_vm._v("Avisos")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "uk-width-auto" }, [
-      _c("span", { attrs: { "uk-icon": "icon: warning; ratio: 2.5" } })
     ])
   }
 ]
