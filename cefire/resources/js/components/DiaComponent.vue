@@ -72,6 +72,7 @@
             :title="cef.inici+'-'+cef.fi"
           >
             <span @click="borra_par('cefire', cef.id)" class="cerrar" />
+            <span :class="(cef.fi=='00:00:00') ? 'falta_fitxar' : ''"></span>
           </div>
 
           <div
@@ -686,7 +687,10 @@ $fondo:  #f1faee
                 @extend .s-
                 background-color: $blue
                 &:before
-                    content: "CEFIRE"
+                    @media (min-width: 1280px)
+                        content: "CEFIRE"
+                    @media (max-width: 1280px)
+                        content: "CEF..."
             &compensa
                 @extend .s-
                 background-color: gray
@@ -740,6 +744,17 @@ $fondo:  #f1faee
         cursor: pointer
         &:before
             content: "\f2ed"
+
+    .falta_fitxar
+        font-family: "Font Awesome 5 Free"
+        text-align: right
+        float: right
+        margin-right: 3px
+        color: red
+        font-weight: bold
+        &:before
+            content: "\f4fd"
+
     .arxiu
         font-family: "Font Awesome 5 Free"
         text-align: right

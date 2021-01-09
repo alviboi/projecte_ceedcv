@@ -3922,6 +3922,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5289,31 +5290,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// import PiegrafComponent from './PiegrafComponent.vue';
-// import LinegrafComponent from './LinegrafComponent.vue'
-// export default {
-//   components: { LinegrafComponent },
-// }
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5390,18 +5366,23 @@ __webpack_require__.r(__webpack_exports__);
         return _ret2;
       }
     },
-    data_mes_inici: function data_mes_inici() {
+    // data_mes_inici() {
+    //   let dia = this.dia.getDate();
+    //   let mes = this.dia.getMonth() + 1;
+    //   let an = this.dia.getFullYear();
+    //   let ret = an + "-" + mes + "-01";
+    //   return ret;
+    // },
+    data_mes_inici_date: function data_mes_inici_date() {
       var dia = this.dia.getDate();
       var mes = this.dia.getMonth() + 1;
       var an = this.dia.getFullYear();
-      var ret = an + "-" + mes + "-01";
+      var ret = new Date(an + "-" + mes + "-01");
       return ret;
     },
     get_temps: function get_temps() {
       var _this = this;
 
-      //   let desde = this.data_mes_inici();
-      //   let fins = data_db(this.dia);
       var desde = data_db(this.desde);
       var fins = data_db(this.fins);
       var url = "/" + desde + "/" + fins;
@@ -5437,29 +5418,12 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.error(err);
       });
-    } // get_temps() {
-    //     let desde= "2020-10-01";
-    //     let fins= "2020-12-31";
-    //     let url="contar/"+desde+"/"+fins;
-    //     axios.get(url)
-    //     .then(res => {
-    //         console.log(res)
-    //         this.datos=res.data.data;
-    //         this.labels=res.data.labels;
-    //         this.total=res.data.total;
-    //         this.refresca++;
-    //     })
-    //     .catch(err => {
-    //         console.error(err);
-    //     })
-    // }
-
+    }
   },
   mounted: function mounted() {
-    // data_db(this.dia);
+    this.desde = this.data_mes_inici_date();
     this.get_temps();
     this.get_temps2();
-    this.desde = this.data_mes_inici();
   }
 });
 
@@ -22233,7 +22197,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.titulet {\n  margin-left: 10px;\n  font-color: gray;\n  overflow: hidden;\n  transition: all 1s;\n}\n@media (min-width: 1480px) {\n.titulet {\n    font-size: 1.2em;\n}\n}\n@media (max-width: 1480px) {\n.titulet {\n    font-size: 0.8em;\n}\n}\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n  box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -webkit-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -moz-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n  min-height: 160px;\n}\n.dia .principal .s-, .dia .principal .s-permis, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n  max-width: 130px;\n}\n.dia .principal .s-cefire {\n  background-color: #3490dc;\n}\n.dia .principal .s-cefire:before {\n  content: \"CEFIRE\";\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n@media (min-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COMPENSA\";\n}\n}\n@media (max-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COM...\";\n}\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n@media (min-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUARDIA\";\n}\n}\n@media (max-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUA...\";\n}\n}\n.dia .principal .s-visita {\n  background-color: pink;\n}\n@media (min-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VISITA\";\n}\n}\n@media (max-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VIS...\";\n}\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-permis {\n  background-color: green;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PERM\\CDS\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PER...\";\n}\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .arxiu {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .arxiu:before {\n  content: \"\\F15B\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: nowrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container button {\n  flex: 1 0 auto;\n  margin: 1px;\n  padding-left: 8px;\n  padding-right: 8px;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.titulet {\n  margin-left: 10px;\n  font-color: gray;\n  overflow: hidden;\n  transition: all 1s;\n}\n@media (min-width: 1480px) {\n.titulet {\n    font-size: 1.2em;\n}\n}\n@media (max-width: 1480px) {\n.titulet {\n    font-size: 0.8em;\n}\n}\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n  box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -webkit-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -moz-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n  min-height: 160px;\n}\n.dia .principal .s-, .dia .principal .s-permis, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n  max-width: 130px;\n}\n.dia .principal .s-cefire {\n  background-color: #3490dc;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEFIRE\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEF...\";\n}\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n@media (min-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COMPENSA\";\n}\n}\n@media (max-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COM...\";\n}\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n@media (min-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUARDIA\";\n}\n}\n@media (max-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUA...\";\n}\n}\n.dia .principal .s-visita {\n  background-color: pink;\n}\n@media (min-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VISITA\";\n}\n}\n@media (max-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VIS...\";\n}\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-permis {\n  background-color: green;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PERM\\CDS\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PER...\";\n}\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .falta_fitxar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: red;\n  font-weight: bold;\n}\n.dia .falta_fitxar:before {\n  content: \"\\F4FD\";\n}\n.dia .arxiu {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .arxiu:before {\n  content: \"\\F15B\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: nowrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container button {\n  flex: 1 0 auto;\n  margin: 1px;\n  padding-left: 8px;\n  padding-right: 8px;\n}", ""]);
 
 // exports
 
@@ -22309,7 +22273,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".margens {\n  margin-top: 10px;\n}\n.avis-complete-item {\n  transition: all 1s;\n  display: inline-block;\n  margin-right: 10px;\n  min-width: 100%;\n}\n.avis-complete-item * {\n  background-color: #fce8e8;\n}\n.avis-complete-enter, .avis-complete-leave-to {\n  opacity: 0;\n  transform: translateX(30px);\n}\n.avis-complete-leave-active {\n  position: absolute;\n}", ""]);
+exports.push([module.i, ".margens {\n  margin-top: 10px;\n}\n.avis-complete-item {\n  transition: all 1s;\n  display: inline-block;\n  margin-right: 10px;\n  min-width: 100%;\n}\n.avis-complete-item * {\n  background-color: #fce8e8;\n}\n.avis-complete-enter, .avis-complete-leave-to {\n  opacity: 0;\n}\n.avis-complete-leave-active {\n  position: absolute;\n}", ""]);
 
 // exports
 
@@ -94164,6 +94128,10 @@ var render = function() {
                           return _vm.borra_par("cefire", cef.id)
                         }
                       }
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      class: cef.fi == "00:00:00" ? "falta_fitxar" : ""
                     })
                   ]
                 )
@@ -95474,7 +95442,7 @@ var render = function() {
             },
             [
               _vm._v(
-                "\n          " + _vm._s(_vm.total_calculat) + " hores\n        "
+                "\n        " + _vm._s(_vm.total_calculat) + " hores\n      "
               )
             ]
           ),
@@ -95515,9 +95483,7 @@ var render = function() {
             },
             [
               _vm._v(
-                "\n          " +
-                  _vm._s(_vm.total_mes_passat) +
-                  " hores\n        "
+                "\n        " + _vm._s(_vm.total_mes_passat) + " hores\n      "
               )
             ]
           ),
@@ -95751,13 +95717,7 @@ var render = function() {
                             {
                               staticClass: "uk-text-meta uk-margin-remove-top"
                             },
-                            [
-                              _c(
-                                "time",
-                                { attrs: { datetime: "2016-04-01T19:00" } },
-                                [_vm._v(_vm._s(avis.data))]
-                              )
-                            ]
+                            [_vm._v(_vm._s(avis.data))]
                           )
                         ])
                       ]

@@ -34,15 +34,11 @@
         <div class="uk-text-small">
             <span :class="(mes_per_mes <= 0)? 'uk-text-success' : 'uk-text-warning'" :data-uk-icon="(mes_per_mes <= 0)? 'icon: triangle-up' : 'icon: triangle-down'">{{ -mes_per_mes }}%</span> <span v-if="(mes_per_mes <= 0)"> més que el càlcul</span><span v-else>menys que el càlcul</span>
         </div>
-        <!--            <div class="uk-text-small">
-							<span class="uk-text-warning" data-uk-icon="icon: triangle-down">-15%</span> less than last week.
-						</div> -->
       </div>
       <div>
 
         <span class="uk-text-small"><span data-uk-icon="icon:calendar" class="uk-margin-small-right uk-text-primary"></span>Rang de dates:</span>
-                      <!-- v-model="dia_aux"
-                @selected="canvia_data()" -->
+
         <div class="uk-margin-small-top">
             <Datepicker
                 :language="ca"
@@ -67,22 +63,6 @@
 
         </div>
     </div>
-					<!--<div>
-
-						<span class="uk-text-small"><span data-uk-icon="icon:search" class="uk-margin-small-right uk-text-primary"></span>Week Search</span>
-						<h1 class="uk-heading-primary uk-margin-remove uk-text-primary">9.543</h1>
-						<div class="uk-text-small">
-							<span class="uk-text-danger" data-uk-icon="icon: triangle-down"> -23%</span> less than last week.
-						</div>
-
-					</div>
-					<div class="uk-visible@xl">
-						<span class="uk-text-small"><span data-uk-icon="icon:users" class="uk-margin-small-right uk-text-primary"></span>Lorem ipsum</span>
-						<h1 class="uk-heading-primary uk-margin-remove uk-text-primary">5.284</h1>
-						<div class="uk-text-small">
-							<span class="uk-text-success" data-uk-icon="icon: triangle-up"> 7%</span> more than last week.
-						</div>
-					</div> -->
     </div>
 
     <hr />
@@ -114,12 +94,6 @@
 </template>
 
 <script>
-// import PiegrafComponent from './PiegrafComponent.vue';
-// import LinegrafComponent from './LinegrafComponent.vue'
-// export default {
-//   components: { LinegrafComponent },
-
-// }
 
 import Datepicker from "vuejs-datepicker";
 import { ca } from "vuejs-datepicker/dist/locale";
@@ -192,17 +166,22 @@ export default {
         return ret;
       }
     },
-    data_mes_inici() {
+    // data_mes_inici() {
+    //   let dia = this.dia.getDate();
+    //   let mes = this.dia.getMonth() + 1;
+    //   let an = this.dia.getFullYear();
+    //   let ret = an + "-" + mes + "-01";
+    //   return ret;
+    // },
+    data_mes_inici_date() {
       let dia = this.dia.getDate();
       let mes = this.dia.getMonth() + 1;
       let an = this.dia.getFullYear();
-      let ret = an + "-" + mes + "-01";
+      let ret = new Date(an + "-" + mes + "-01");
       return ret;
     },
 
     get_temps() {
-    //   let desde = this.data_mes_inici();
-    //   let fins = data_db(this.dia);
       let desde = data_db(this.desde);
       let fins = data_db(this.fins);
       let url = "/" + desde + "/" + fins;
@@ -246,29 +225,12 @@ export default {
           console.error(err);
         });
     },
-
-    // get_temps() {
-    //     let desde= "2020-10-01";
-    //     let fins= "2020-12-31";
-    //     let url="contar/"+desde+"/"+fins;
-    //     axios.get(url)
-    //     .then(res => {
-    //         console.log(res)
-    //         this.datos=res.data.data;
-    //         this.labels=res.data.labels;
-    //         this.total=res.data.total;
-    //         this.refresca++;
-    //     })
-    //     .catch(err => {
-    //         console.error(err);
-    //     })
-    // }
   },
   mounted() {
-    // data_db(this.dia);
+    this.desde = this.data_mes_inici_date();
     this.get_temps();
     this.get_temps2();
-    this.desde = this.data_mes_inici();
+
   },
 };
 </script>

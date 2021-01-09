@@ -177,6 +177,7 @@ class permisController extends Controller
         //
         // return response()->download(storage_path("app/".$request->arxiu));
         $arx = response()->download(storage_path("app/".$request->arxiu), 'permis.pdf', [], 'inline');
+        return $arx;
 
    }
 

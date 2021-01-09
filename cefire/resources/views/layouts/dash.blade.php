@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 		<title>CEFIRE VALENCIA</title>
-		<!-- CSS FILES -->
+		<!-- CSS -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/dashboard.css">
             <script>
@@ -70,7 +70,7 @@
 			</div>
 		</header>
 		<!--/HEADER-->
-		<!-- LEFT BAR -->
+		<!-- LBARRA DRETA -->
 		<aside id="left-col" class="uk-light uk-visible@m">
 			<div class="left-logo uk-flex uk-flex-middle">
 				<img class="custom-logo" src="img/cefire_la.png" alt="">
@@ -90,7 +90,7 @@
                         @endif
 
                     </a>
-				    <!-- user dropdown -->
+				    <!-- dropdown -->
 				    <div class="uk-dropdown user-drop" data-uk-dropdown="mode: click; pos: bottom-center; animation: uk-animation-slide-bottom-small; duration: 150">
 				    	<ul class="uk-nav uk-dropdown-nav uk-text-left">
                                 <li><a href="#" @click="showEdita = true"><span data-uk-icon="icon: refresh"></span> Edita perfil</a></li>
@@ -111,6 +111,7 @@
 				<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
                     <li class="uk-nav-header">ACTIONS</li>
                     <li><a href="#" @click="view='horari'"><span data-uk-icon="icon: user" class="uk-margin-small-right"></span>Horari</a></li>
+                    <li><a href="#" @click="view='principal'"><span data-uk-icon="icon: info" class="uk-margin-small-right"></span>Avisos</a></li>
                     <li><a href="#" @click="view='horaritots'"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Horaris Assessors</a></li>
 					<li><a href="#" @click="view='buscaenhoraris'"><span data-uk-icon="icon: search" class="uk-margin-small-right"></span>Busca en horaris</a></li>
 					<li><a href="#" @click="view='calendar'"><span data-uk-icon="icon: calendar" class="uk-margin-small-right"></span>Afegix guàrdies</a></li>
@@ -120,21 +121,17 @@
 						<a href="#"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Reports</a>
 						<ul class="uk-nav-sub">
 							<li><a href="#" @click="view='report1'">Personal</a></li>
-                            <li><a href="#" @click="view='report2'">General</a></li>
+                            {{-- <li><a href="#" @click="view='report2'">General</a></li> --}}
                             <li><a href="#" @click="view='llistatpermisos'">Llistat permisos</a></li>
 						</ul>
 					</li>
 				</ul>
 			</div>
 		</aside>
-        <!-- /LEFT BAR -->
+        <!-- /BARRA DRETA -->
 
         <div id="content" data-uk-height-viewport="expand: true">
 			<div class="uk-container uk-container-expand">
-				{{-- <div class="uk-grid uk-grid-divider uk-grid-medium uk-child-width-1-2 uk-child-width-1-4@l uk-child-width-1-5@xl" data-uk-grid>
-
-				</div>
-				<hr> --}}
 				<div class="uk-grid uk-grid-medium" data-uk-grid>
 
                     <!-- panel -->
@@ -154,15 +151,13 @@
 		<!-- MISATGES -->
 		<div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
 			<div class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide">
+                <h4 class="uk-text-muted">Missatges Rebuts</h4>
                 <llegirmsg-component />
             </div>
         </div>
         <!-- /MISSATGES -->
     </div>
 
-{{--
-		<script src="js/Chart.min.js"></script>
-        <script src="js/chartScripts.js"></script> --}}
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('js/home.js') }}" defer></script>
 

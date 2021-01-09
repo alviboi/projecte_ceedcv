@@ -13,7 +13,7 @@
                     </div>
                     <div class="uk-width-expand">
                         <h3 class="uk-card-title uk-margin-remove-bottom">{{avis.cap}}</h3>
-                        <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">{{avis.data}}</time></p>
+                        <p class="uk-text-meta uk-margin-remove-top">{{avis.data}}</p>
                     </div>
                 </div>
             </div>
@@ -92,7 +92,6 @@ export default {
 
 .avis-complete-enter, .avis-complete-leave-to
     opacity: 0
-    transform: translateX(30px)
 
 .avis-complete-leave-active
     position: absolute
