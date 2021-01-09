@@ -4693,7 +4693,10 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       this.results = this.users.filter(function (item) {
         return item.name.toLowerCase() == _this.busca_ass.toLowerCase();
       });
-      this.tots_els_elements_get();
+
+      if (this.results[0] !== undefined) {
+        this.tots_els_elements_get();
+      }
     },
     tots_els_elements_get: function tots_els_elements_get() {
       this.items = [];
@@ -4852,6 +4855,11 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
   },
   mounted: function mounted() {
     this.agafa_users();
+  },
+  watch: {
+    busca_ass: function busca_ass() {
+      this.filterResults();
+    }
   }
 });
 

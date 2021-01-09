@@ -98,7 +98,9 @@ export default {
         },
         filterResults() {
             this.results = this.users.filter((item => item.name.toLowerCase() == this.busca_ass.toLowerCase()));
-            this.tots_els_elements_get();
+            if (this.results[0] !== undefined){
+                this.tots_els_elements_get();
+            }
         },
         tots_els_elements_get() {
             this.items= [];
@@ -241,6 +243,11 @@ export default {
     },
     mounted() {
         this.agafa_users();
+    },
+    watch: {
+        busca_ass() {
+            this.filterResults();
+        }
     },
 }
 </script>
