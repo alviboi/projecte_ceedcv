@@ -167,7 +167,7 @@ class permisController extends Controller
 
     }
     /**
-     * Remove the specified resource from storage.
+     * Descarrega l'arxiu demanat
      *
      * @param  \App\Models\permis  $permis
      * @return \Illuminate\Http\Response
