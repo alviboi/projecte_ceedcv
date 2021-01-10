@@ -176,16 +176,19 @@ class UserController extends Controller
     public function update(Request $request)
     {
         //
-        $user=User::find($request->id);
-        $user->name=$request->nom;
-        $user->email=$request->mail;
-        $user->Perfil=$request->perfil;
-        $user->rfid=$request->rfid;
-        if($user->contrasenya != ""){
-            $user->password=$request->contrasenya;
+        if ($request->id == auth()->id() || auth()->user()->Perfil == 1){
+            $user=User::find($request->id);
+            $user->name=$request->nom;
+            $user->email=$request->mail;
+            $user->Perfil=$request->perfil;
+            $user->rfid=$request->rfid;
+            if($user->contrasenya != ""){
+                $user->password=$request->contrasenya;
+            }
+            $user->save();
+        } else {
+            abort(403,"No tens permís per a realitzar aquesta acció");
         }
-        $user->save();
-
 
 
     }

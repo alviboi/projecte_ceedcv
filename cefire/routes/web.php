@@ -28,16 +28,9 @@ else
 }
 
 
-
-
-
-
 Route::get('/', function () {
     return view('welcome');
 })->name('entrada');
-
-
-// Route::get('/', 'ControlController@welcome');
 
 
 Route::get('/clear-cache', function() {
@@ -50,12 +43,10 @@ Route::get('/clear-cache', function() {
 Route::view('/demo', 'demo')->name('demo');
 
 
-Route::view('/proves', 'proves')->name('proves');
 
-
-Route::get('/seccio/{pag?}', function ($pag="principal") {
-    return view('contents.'.$pag)->render();
-});
+// Route::get('/seccio/{pag?}', function ($pag="principal") {
+//     return view('contents.'.$pag)->render();
+// });
 
 // Route::get('/home', function () {
 //     return view('home')->with(['seccio' => 'contents.principal']);
@@ -106,7 +97,7 @@ Route::get('/dia_permis/{dia}/{mati}', 'UserController@dia_permis')->name('dia_p
 Route::get('/guardia/totes/{mes}/{any}', 'guardiaController@get_data_index2')->name('guardia_totes')->middleware('auth');
 
 
-Route::get('/contar/{desde}/{fins}', 'cefireController@contar_cefires')->name('guardia_totes')->middleware('auth');
+Route::get('/contar/{desde}/{fins}', 'cefireController@contar_cefires')->name('guardia_totes_conta')->middleware('auth');
 
 Route::get('/contar_tot/{desde}/{fins}', 'UserController@contar')->name('contar_tot')->middleware('auth');
 
@@ -117,7 +108,6 @@ Route::post('upload_permis','permisController@upload')->middleware('auth');
 Route::post('download_permis','permisController@download')->middleware('auth');
 Route::post('permis_desde','permisController@permis_desde')->middleware('can:esAdmin');
 Route::post('permis_sense_arxiu','permisController@permis_sense_arxiu')->middleware('can:esAdmin');
-
 
 
 Route::resource('control', ControlController::class)->middleware('can:esAdmin');
