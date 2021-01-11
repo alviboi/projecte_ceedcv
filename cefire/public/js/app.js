@@ -2951,10 +2951,11 @@ __webpack_require__.r(__webpack_exports__);
       },
       busqueda: '',
       columnes: ["id", "assessor", "nom", "codi", "situacio", "CP", "ciutat", "contacte", "mail_contacte", "tlf_contacte", "Observacions"],
-      datos: []
+      datos: [],
+      editable_c: true
     };
   },
-  props: ['busqueda2'],
+  props: ['busqueda2', 'editable'],
   computed: {
     url: function url() {
       return "http://www.ceice.gva.es/abc/i_guiadecentros/es/centro.asp?codi=" + this.editant['codi'];
@@ -3093,6 +3094,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     busqueda2: function busqueda2() {
       this.busqueda = this.busqueda2;
+    },
+    editable: function editable() {
+      this.editable_c = this.editable;
     },
     centres_per_pagina: function centres_per_pagina(newVal, oldVal) {
       this.pagines = [];
@@ -92516,7 +92520,9 @@ var render = function() {
                       )
                     }),
                     _vm._v(" "),
-                    _c("th", [_vm._v("\n            Edita\n        ")])
+                    _vm.editable
+                      ? _c("th", [_vm._v("\n            Edita\n        ")])
+                      : _vm._e()
                   ],
                   2
                 )
@@ -92538,20 +92544,22 @@ var render = function() {
                         ])
                       }),
                       _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "boto_edita",
-                            on: {
-                              click: function($event) {
-                                return _vm.edita_centre(entry)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "fas fa-edit" })]
-                        )
-                      ])
+                      _vm.editable
+                        ? _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "boto_edita",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.edita_centre(entry)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fas fa-edit" })]
+                            )
+                          ])
+                        : _vm._e()
                     ],
                     2
                   )
@@ -93072,7 +93080,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("centres-component", { attrs: { busqueda2: _vm.bus } })
+  return _c("centres-component", {
+    attrs: { busqueda2: _vm.bus, editable: true }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -118386,7 +118396,7 @@ var app = new Vue({
       template: '<div><avisos-component /></div>'
     },
     'centres': {
-      template: '<div><centres-component /></div>'
+      template: '<div><centres-component :editable="true"/></div>'
     },
     'centresmeus': {
       template: '<div><centresmeus-component /></div>'

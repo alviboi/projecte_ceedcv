@@ -136,7 +136,7 @@ const app = new Vue({
             template: '<div><avisos-component /></div>'
         },
         'centres': {
-            template: '<div><centres-component /></div>'
+            template: '<div><centres-component :editable="true"/></div>'
         },
         'centresmeus': {
             template: '<div><centresmeus-component /></div>'

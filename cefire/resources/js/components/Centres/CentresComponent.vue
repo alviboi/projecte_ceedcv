@@ -18,7 +18,7 @@
           <span class="arrow" :class="ordena[key] > 0 ? 'asc' : 'dsc'">
           </span>
         </th>
-        <th>
+        <th v-if="editable">
             Edita
         </th>
       </tr>
@@ -30,7 +30,7 @@
         <td v-for="(key, index2) in columnes" :key=index2>
           {{entry[key]}}
         </td>
-        <td>
+        <td v-if="editable">
             <button @click="edita_centre(entry)" class="boto_edita"><i class="fas fa-edit"></i></button>
         </td>
       </tr>
@@ -140,10 +140,11 @@ export default {
             ordena: {"id":1,"assessor":1,"nom":1,"codi":1,"situacio":1,"CP":1,"ciutat":1,"contacte":1,"mail_contacte":1,"tlf_contacte":1,"Observacions":1},
             busqueda: '',
             columnes: ["id","assessor","nom","codi","situacio","CP","ciutat","contacte","mail_contacte","tlf_contacte","Observacions"],
-            datos: []
+            datos: [],
+            editable_c: true
         }
     },
-    props: ['busqueda2'],
+    props: ['busqueda2','editable'],
     computed: {
         url () {
             return "http://www.ceice.gva.es/abc/i_guiadecentros/es/centro.asp?codi="+this.editant['codi'];
@@ -273,6 +274,9 @@ export default {
         },
         busqueda2 () {
             this.busqueda=this.busqueda2;
+        },
+        editable () {
+            this.editable_c=this.editable;
         },
         centres_per_pagina(newVal,oldVal){
             this.pagines = [];

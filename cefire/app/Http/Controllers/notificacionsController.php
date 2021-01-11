@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\MailEntrada;
 use App\Models\notificacions;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,8 @@ class notificacionsController extends Controller
         $ret = array();
         $els = notificacions::where('user_id','=',auth()->id())->get();
         foreach ($els as $el) {
-            $item=array("id"=>$el->id, "name"=>$el->user['name'], "From"=>$el->From, "user_id"=>$el->user_id, "cap"=>$el->cap, "missatge"=>$el->missatge);
+            $user=user::find($el->From);
+            $item=array("id"=>$el->id, "name"=>$user->name, "From"=>$el->From, "user_id"=>$el->user_id, "cap"=>$el->cap, "missatge"=>$el->missatge);
             array_push($ret, $item);
         }
         return $ret;

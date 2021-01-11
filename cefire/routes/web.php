@@ -40,8 +40,13 @@ Route::get('/clear-cache', function() {
 });
 
 
-Route::view('/demo', 'demo')->name('demo');
+// Route::view('/demo', 'demo')->name('demo');
 
+Route::view('/consultacentres', 'centres')->name('centresconsulta');
+
+// Route::get('/consultacentres', function () {
+//     return view('centres');
+// })->name('centres');
 
 
 // Route::get('/seccio/{pag?}', function ($pag="principal") {
@@ -112,10 +117,11 @@ Route::post('permis_sense_arxiu','permisController@permis_sense_arxiu')->middlew
 
 Route::resource('control', ControlController::class)->middleware('can:esAdmin');
 
+Route::resource('centres', centresController::class);
+
 Route::group(['middleware' => 'auth'], function() {
     Route::resources([
         'cefire' => cefireController::class,
-        'centres' => centresController::class,
         'compensa' => compensaController::class,
         'curs' => cursController::class,
         'guardia' => guardiaController::class,

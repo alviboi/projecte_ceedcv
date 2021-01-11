@@ -1,5 +1,5 @@
 <template>
-    <centres-component :busqueda2="bus" />
+    <centres-component :busqueda2="bus" :editable='true'/>
 </template>
 
 <script>

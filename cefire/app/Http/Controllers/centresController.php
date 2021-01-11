@@ -89,19 +89,24 @@ class centresController extends Controller
     public function update(Request $request, $centres)
     {
         //
-        $centre = centres::find($centres);
-        $centre->user_id = $request->user_id;
-        $centre->nom = $request->nom;
-        $centre->codi = $request->codi;
-        $centre->situacio = $request->situacio;
-        $centre->CP = $request->CP;
-        $centre->ciutat = $request->ciutat;
-        $centre->contacte = $request->contacte;
-        $centre->mail_contacte = $request->mail_contacte;
-        $centre->tlf_contacte = $request->tlf_contacte;
-        $centre->Observacions = $request->Observacions;
-        $centre->save();
-        return $centre;
+        if (auth()->check()) {
+            $centre = centres::find($centres);
+            $centre->user_id = $request->user_id;
+            $centre->nom = $request->nom;
+            $centre->codi = $request->codi;
+            $centre->situacio = $request->situacio;
+            $centre->CP = $request->CP;
+            $centre->ciutat = $request->ciutat;
+            $centre->contacte = $request->contacte;
+            $centre->mail_contacte = $request->mail_contacte;
+            $centre->tlf_contacte = $request->tlf_contacte;
+            $centre->Observacions = $request->Observacions;
+            $centre->save();
+            return $centre;
+        } else {
+            return "No estàs logat";
+        }
+
     }
 
     /**
