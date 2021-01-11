@@ -56,7 +56,7 @@
     <div>
         <div class="buttons2">
                 <div class="container2">
-                    <a href="http://128.0.0.240/gesform/" class="btn2 effect04" data-sm-link-text="Espai per a controlar la intranet del CEFIRE" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-cogs fa-3x" aria-hidden="true"></i> Proxmox</span></a>
+                    <a href="https://128.0.0.238:8006" class="btn2 effect04" data-sm-link-text="Espai per a controlar la intranet del CEFIRE" target="_blank"><span class="uk-flex uk-flex-middle"><i class="fa fa-cogs fa-3x" aria-hidden="true"></i> Proxmox</span></a>
                 </div>
             </div>
     </div>
