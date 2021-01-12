@@ -11,10 +11,18 @@ class cefire extends Model
 {
     public $table = 'cefire';
     use HasFactory;
+    // Per a que eloquent ens mostre les dades en format temps per a facilitar el càlcul
     protected $casts = [
         'inici' => 'datetime',
         'fi' => 'datetime',
     ];
+    /**
+     * user
+     *
+     * Per a crear la relació de molts a un hem afegit aquesta funció
+     *
+     * @return void
+     */
     public function user()
     {
         return $this->belongsTo('App\Models\User');

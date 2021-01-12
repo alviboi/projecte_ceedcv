@@ -29,6 +29,16 @@ class GuardiaAfegida implements ShouldBroadcast
      * @return void
      */
 
+    /**
+     * __construct
+     *
+     * Al crearse l'objecte s'ha de crear l'usuari i el dia concret on va dirigida
+     *
+     * @param  mixed $user
+     * @param  mixed $guardia
+     * @param  mixed $m
+     * @return void
+     */
     public function __construct($user,$guardia,$m)
     {
         //
@@ -44,10 +54,17 @@ class GuardiaAfegida implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        // return new PrivateChannel('guardies');
+        // return new PrivateChannel('cefire');
         return ['cefire'];
     }
 
+    /**
+     * broadcastAs
+     *
+     * El nom amb que volem que es transmeta el event dins del canal cefire
+     *
+     * @return void
+     */
     public function broadcastAs() {
         return 'GuardiaAfegida'.$this->guardia['data'].$this->m;
     }

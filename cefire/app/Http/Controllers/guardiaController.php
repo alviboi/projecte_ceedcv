@@ -29,7 +29,7 @@ class guardiaController extends Controller
         return guardia::get();
     }
     /**
-     * Extrau totes les dades de fitxar del guardia amb el nom
+     * Extrau totes les dades de guardia amb el nom
      *
      * @return \Illuminate\Http\Response
      */
@@ -44,9 +44,9 @@ class guardiaController extends Controller
         return $ret;
     }
     /**
-     * Mostra un llistat de tot el recurs
+     * Mostra un llistat de totes les guardies d'un mes i un any concret
      *
-     * @return \Illuminate\Http\Response
+     * @return array $ret
      */
     public function get_data_index2($mes, $any)
     {
@@ -60,7 +60,8 @@ class guardiaController extends Controller
     }
 
     /**
-     * Mostra un llistat de tot el recurs
+     *
+     * Guardia la guardia d'un moment determinat, després envia una notificació per correu electrònic i pel canal de GuardiaAfegida per a que s'actualitze d'inmediat
      *
      * @return \Illuminate\Http\Response
      */
@@ -97,8 +98,6 @@ class guardiaController extends Controller
             'rato' => $txt_rato,
             'link' => $link
         ];
-        // SendGuardiaMail::dispatch($guardia->user['email'],$datos);
-        // Mail::to($guardia->user['email'])->send(new EnviarGuardia($datos));
 
         $emailJob = (new SendGuardiaMail($guardia->user['email'],$datos))->delay(Carbon::now()->addSeconds(120));
    		dispatch($emailJob);
@@ -106,16 +105,6 @@ class guardiaController extends Controller
 
 
 
-    }
-
-    /**
-     * Crea un element del recurs
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -136,42 +125,10 @@ class guardiaController extends Controller
         return $dat->toArray();
     }
 
-    /**
-     * Mostra l'element del curs
-     *
-     * @param  \App\Models\guardia  $guardia
-     * @return \Illuminate\Http\Response
-     */
-    public function show(guardia $guardia)
-    {
-        //
-    }
+
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\guardia  $guardia
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(guardia $guardia)
-    {
-        //
-    }
-
-    /**
-     * Actualitza l'element del recurs a la base de dades
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\guardia  $guardia
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, guardia $guardia)
-    {
-        //
-    }
-
-    /**
-     * Elimina l'element  del recurs de la base de dades
+     * Elimina l'element  del recurs de la base de dades i després envia a través del websocket una notificació
      *
      * @param  \App\Models\cefire  $cefire
      * @return \Illuminate\Http\Response

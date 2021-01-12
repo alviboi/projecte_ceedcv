@@ -36,18 +36,9 @@ class notificacionsController extends Controller
 
     }
 
-    /**
-     * Crea un element del recurs
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
-     * Guarda l'elememt creat.
+     * Guarda l'element creat i envia una notificació al websocket i un mail
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -86,39 +77,6 @@ class notificacionsController extends Controller
 
     }
 
-    /**
-     * Mostra l'element del curs
-     *
-     * @param  \App\Models\notificacions  $notificacions
-     * @return \Illuminate\Http\Response
-     */
-    public function show(notificacions $notificacions)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\notificacions  $notificacions
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(notificacions $notificacions)
-    {
-        //
-    }
-
-    /**
-     * Actualitza l'element del recurs a la base de dades
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\notificacions  $notificacions
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, notificacions $notificacions)
-    {
-        //
-    }
 
     /**
      * Elimina l'element  del recurs de la base de dades

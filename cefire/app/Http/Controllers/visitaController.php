@@ -18,7 +18,7 @@ class visitaController extends Controller
         return visita::get();
     }
     /**
-     * Extrau totes les dades de fitxar del cefire amb el nom
+     * Extrau totes les dades de visita amb el nom
      *
      * @return \Illuminate\Http\Response
      */
@@ -33,15 +33,6 @@ class visitaController extends Controller
         return $ret;
     }
 
-    /**
-     * Crea un element del recurs
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Guarda l'elememt creat.
@@ -62,39 +53,6 @@ class visitaController extends Controller
         return $dat->toArray();
     }
 
-    /**
-     * Mostra l'element del curs
-     *
-     * @param  \App\Models\visita  $visita
-     * @return \Illuminate\Http\Response
-     */
-    public function show(visita $visita)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\visita  $visita
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(visita $visita)
-    {
-        //
-    }
-
-    /**
-     * Actualitza l'element del recurs a la base de dades
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\visita  $visita
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, visita $visita)
-    {
-        //
-    }
 
     /**
      * Elimina l'element  del recurs de la base de dades
@@ -105,5 +63,6 @@ class visitaController extends Controller
     public function destroy($visita)
     {
         //
-        visita::find($visita)->delete();    }
+        visita::find($visita)->delete();
+    }
 }

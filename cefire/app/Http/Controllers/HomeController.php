@@ -16,7 +16,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Torna la plantilla de blade home
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */

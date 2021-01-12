@@ -49,7 +49,13 @@ class MailEntrada implements ShouldBroadcast
         // return new PrivateChannel('guardies');
         return ['cefire'];
     }
-
+    /**
+     * broadcastAs
+     *
+     * El nom amb que volem que es transmeta el event dins del canal cefire
+     *
+     * @return void
+     */
     public function broadcastAs() {
         return 'MailEntrada';
     }

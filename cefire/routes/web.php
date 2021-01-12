@@ -14,7 +14,7 @@ use App\Models\control;
 |
 */
 
-
+//Comprovem si el registre està habilitat per a mostrar-se o no
 
 if (control::where("registra","=", 1)->exists())
 {
@@ -40,34 +40,13 @@ Route::get('/clear-cache', function() {
 });
 
 
-// Route::view('/demo', 'demo')->name('demo');
-
 Route::view('/consultacentres', 'centres')->name('centresconsulta');
 
-// Route::get('/consultacentres', function () {
-//     return view('centres');
-// })->name('centres');
-
-
-// Route::get('/seccio/{pag?}', function ($pag="principal") {
-//     return view('contents.'.$pag)->render();
-// });
-
-// Route::get('/home', function () {
-//     return view('home')->with(['seccio' => 'contents.principal']);
-// });
 
 Route::get('/home', 'UserController@home')->name('casa')->middleware('auth');
 
-
-
-
-// Route::get('home', 'HomeController@index')->name('home');
-
 Route::get('/logat', 'UserController@logat')->middleware('auth');
 Route::get('/logat_id', 'UserController@logat_id')->middleware('auth');
-
-
 
 Route::get('/user_cefire/{num}/{any}/{mes}', 'UserController@get_cefire')->middleware('auth');
 Route::get('/user_compensa/{num}/{any}/{mes}', 'UserController@get_compensa')->middleware('auth');
@@ -79,8 +58,6 @@ Route::get('/user_all/{de}/{fins}', 'UserController@get_all')->middleware('auth'
 Route::get('/user_get', 'UserController@get_user')->middleware('auth');
 Route::post('/get_usuaris_ldap', 'UserController@get_usuaris_ldap')->middleware('auth');
 
-
-
 Route::prefix('complet')->group(function () {
     Route::get('/cefire/{any}/{mes}', 'cefireController@get_data_index')->middleware('auth');
     Route::get('/compensa/{any}/{mes}', 'compensaController@get_data_index')->middleware('auth');
@@ -90,9 +67,6 @@ Route::prefix('complet')->group(function () {
     Route::get('/visita/{any}/{mes}', 'visitaController@get_data_index')->middleware('auth');
 });
 
-
-
-
 Route::get('/dia_cefire/{dia}/{mati}', 'UserController@dia_cefire')->name('dia_cefire')->middleware('auth');
 Route::get('/dia_compensa/{dia}/{mati}', 'UserController@dia_compensa')->name('dia_compensa')->middleware('auth');
 Route::get('/dia_curs/{dia}/{mati}', 'UserController@dia_curs')->name('dia_curs')->middleware('auth');
@@ -101,11 +75,9 @@ Route::get('/dia_guardia/{dia}/{mati}', 'UserController@dia_guardia')->name('dia
 Route::get('/dia_permis/{dia}/{mati}', 'UserController@dia_permis')->name('dia_permis')->middleware('auth');
 Route::get('/guardia/totes/{mes}/{any}', 'guardiaController@get_data_index2')->name('guardia_totes')->middleware('auth');
 
-
 Route::get('/contar/{desde}/{fins}', 'cefireController@contar_cefires')->name('guardia_totes_conta')->middleware('auth');
 
 Route::get('/contar_tot/{desde}/{fins}', 'UserController@contar')->name('contar_tot')->middleware('auth');
-
 
 Route::post('guardia/insert','guardiaController@put_guardia_id')->name('put_guardia_id')->middleware('auth');
 
@@ -113,7 +85,6 @@ Route::post('upload_permis','permisController@upload')->middleware('auth');
 Route::post('download_permis','permisController@download')->middleware('auth');
 Route::post('permis_desde','permisController@permis_desde')->middleware('can:esAdmin');
 Route::post('permis_sense_arxiu','permisController@permis_sense_arxiu')->middleware('can:esAdmin');
-
 
 Route::resource('control', ControlController::class)->middleware('can:esAdmin');
 

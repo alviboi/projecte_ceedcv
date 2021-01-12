@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'Europe/Madrid',
+    'timezone' => 'Europe/Madrid', //Canviem el timezone
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'ca',
+    'locale' => 'ca', // Assignem la llengua correcta
 
     /*
     |--------------------------------------------------------------------------

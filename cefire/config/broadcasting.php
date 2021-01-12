@@ -15,6 +15,7 @@ return [
     |
     */
 
+    // Canviem el null per la data del .env
     'default' => env('BROADCAST_DRIVER', env('BROADCAST_DRIVER')),
 
     /*

@@ -19,35 +19,35 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\cefire');
     }
     /**
-     * Get the comments permis data.
+     * Get the comments centres data.
      */
     public function centres()
     {
         return $this->hasMany('App\Models\centres');
     }
-      /**
-     * Get the comments permis data.
+    /**
+     * Get the comments compensa data.
      */
     public function compensa()
     {
         return $this->hasMany('App\Models\compensa');
     }
-      /**
-     * Get the comments permis data.
+    /**
+     * Get the comments curs data.
      */
     public function curs()
     {
         return $this->hasMany('App\Models\curs');
     }
-      /**
-     * Get the comments permis data.
+    /**
+     * Get the comments lectura_rfid data.
      */
     public function lectura_rfid()
     {
         return $this->hasMany('App\Models\lectura_rfid');
     }
-      /**
-     * Get the comments permis data.
+    /**
+     * Get the comments notificacions data.
      */
     public function notificacions()
     {

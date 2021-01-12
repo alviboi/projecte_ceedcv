@@ -19,7 +19,7 @@ class permisController extends Controller
         return permis::get();
     }
     /**
-     * Extrau totes les dades de fitxar del cefire amb el nom
+     * Extrau totes les dades del permis entre dades determinades
      *
      * @return \Illuminate\Http\Response
      */
@@ -33,18 +33,9 @@ class permisController extends Controller
         }
         return $ret;
     }
-    /**
-     * Crea un element del recurs
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
-     * Guarda l'elememt creat.
+     * Guarda l'element creat.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -64,7 +55,7 @@ class permisController extends Controller
     }
 
     /**
-     * Mostra l'element del curs
+     * Mostra l'element del curs entre dos dades donades pel request
      *
      * @param  \App\Models\permis  $permis
      * @return \Illuminate\Http\Response
@@ -85,9 +76,8 @@ class permisController extends Controller
         }
 
     }
-
     /**
-     * Mostra l'element del curs
+     * Busca tots els permisos del sistema que no tinguen l'arxiu pujat
      *
      * @param  \App\Models\permis  $permis
      * @return \Illuminate\Http\Response
@@ -108,31 +98,6 @@ class permisController extends Controller
         }
 
     }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\permis  $permis
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(permis $permis)
-    {
-        //
-    }
-
-    /**
-     * Actualitza l'element del recurs a la base de dades
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\permis  $permis
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, permis $permis)
-    {
-        //
-    }
-
     /**
      * Elimina l'element  del recurs de la base de dades
      *
@@ -145,7 +110,7 @@ class permisController extends Controller
         permis::find($permis)->delete();
     }
     /**
-     * Elimina l'element  del recurs de la base de dades
+     * Puja l'arxiu del permís
      *
      * @param  \App\Models\permis  $permis
      * @return \Illuminate\Http\Response
@@ -163,8 +128,6 @@ class permisController extends Controller
             $arxiu=$request->file('arxiu')->store('arxius');
             return $arxiu;
         }
-        //
-
     }
     /**
      * Descarrega l'arxiu demanat
@@ -174,12 +137,9 @@ class permisController extends Controller
      */
     public function download(Request $request)
     {
-        //
-        // return response()->download(storage_path("app/".$request->arxiu));
         $arx = response()->download(storage_path("app/".$request->arxiu), 'permis.pdf', [], 'inline');
         return $arx;
-
-   }
+    }
 
 
 }

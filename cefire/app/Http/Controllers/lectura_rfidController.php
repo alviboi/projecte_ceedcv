@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Aquest classe tot i que no s'utilitza es deixa predefinida per a futures ampliacions o actualitzacions
+ * que permitin compaginat les cridades des d'Arduino amb laravel
+ */
+
 namespace App\Http\Controllers;
 
 use App\Models\lectura_rfid;
