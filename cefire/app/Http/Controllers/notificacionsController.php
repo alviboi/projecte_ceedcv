@@ -68,8 +68,9 @@ class notificacionsController extends Controller
             'missatge' => $notificacio->missatge
         ];
 
+        $user=user::find($notificacio->From);
 
-        $item=array("id"=>$notificacio->id, "name"=>$notificacio->user['name'], "From"=>$notificacio->From, "user_id"=>$notificacio->user_id, "cap"=>$notificacio->cap, "missatge"=>$notificacio->missatge);
+        $item=array("id"=>$notificacio->id, "name"=>$user->name, "From"=>$notificacio->From, "user_id"=>$notificacio->user_id, "cap"=>$notificacio->cap, "missatge"=>$notificacio->missatge);
         broadcast(new MailEntrada($notificacio->user_id, $item))->toOthers();
 
         $emailJob = (new SendMissatgeMail($notificacio->user['email'],$datos))->delay(Carbon::now()->addSeconds(120));

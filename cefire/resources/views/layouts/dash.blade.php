@@ -109,7 +109,7 @@
 
 			<div class="left-nav-wrap">
 				<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
-                    <li class="uk-nav-header">ACTIONS</li>
+                    <li class="uk-nav-header">QUÈ VOLS FER?</li>
                     <li><a href="#" @click="view='horari'"><span data-uk-icon="icon: user" class="uk-margin-small-right"></span>Horari</a></li>
                     <li><a href="#" @click="view='principal'"><span data-uk-icon="icon: info" class="uk-margin-small-right"></span>Avisos</a></li>
                     <li><a href="#" @click="view='horaritots'"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Horaris Assessors</a></li>
