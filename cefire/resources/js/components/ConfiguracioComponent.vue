@@ -69,6 +69,9 @@
 </template>
 
 <script>
+/**
+ * Component per a mostrar el paràmetres de configuració de l'aplicació.
+ */
 export default {
     data() {
         return {
@@ -81,6 +84,7 @@ export default {
         }
     },
     methods: {
+        // Importa usuaris del LDAP
         importa_f(){
             let dades_enviar=[];
             for (let index = 0; index < this.importa.length; index++) {
@@ -98,6 +102,7 @@ export default {
                 this.$toast.error(err.message);
             })
         },
+        // Agafa usuaris del LDAP d'un servidor lliurex
         get_usuaris_ldap(){
             let params = {
                 'contrasenya': this.netadmin,
@@ -114,6 +119,7 @@ export default {
                 this.$toast.error(err.message)
             })
         },
+        // Agafa les dades de configuració
         get_configuracio(){
             axios.get("control")
             .then(res => {
@@ -126,6 +132,7 @@ export default {
                 console.error(err);
             })
         },
+        // Actualitza les dades de configiració
         canvia_dades(nom) {
             var envia = false;
             if (nom == 'aparell') {

@@ -49,6 +49,12 @@
 </template>
 
 <script>
+/**
+ *
+ * Aquest component busca a tots els assessor que tenen un element determinat en un mes determinat donat una sèrie d'element que podem
+ * fitrar segons el checkbox. s'utilitza el component vue-simple-calendar
+ *
+ */
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
 require("vue-simple-calendar/static/css/default.css")
 require("vue-simple-calendar/static/css/holidays-us.css")
@@ -72,6 +78,7 @@ export default {
 		}
 	},
 	computed: {
+        // Passa les dades de formatació del component
 		themeOptions() {
             let ret = {
                 result: null,
@@ -91,6 +98,7 @@ export default {
 		},
 	},
 	methods: {
+        // Definix el dia en el que estem a partir de la variable i reseteja tots els checkbox. Ho utilitzem per quan canvien de mes
         setdia(d) {
             this.dia = d;
             this.items= [];
@@ -102,7 +110,8 @@ export default {
             this.visita= false;
 
             //this.tots_els_elements_get();
-		},
+        },
+        // Agafar totes les dades per a poder emplenar el calendari segons les dades sol·licitades
         get_element(element){
             var result = []
             let any=this.dia.getFullYear();
@@ -118,6 +127,12 @@ export default {
             });
 
         },
+        /**
+         * Emplenem el calendari, per a evitar errors es dona a cada element un rang que determina el seu id, per exemple cefire va desde 1000000 a 2000000,
+         * és molt difícil que hi haja 1 milió de fitxatges en un mes, ni controlant tots els assessors del cefire de tota la comunitat...
+         * Es determina la clase en la que es mostrarà cada element en funció de què és, i el paràmetre toti indica el element que anem a mostrar en l'ajuda
+         * contectual.
+         */
         emplena_calendari(element,result) {
             var num=0;
             var clase="custom-date-class-red";
@@ -158,22 +173,29 @@ export default {
                     clase="custom-date-class-red";
                     break;
             }
+            /**
+             * Es crea un for que anirà omlint l'array de dades que es mostren al calendar
+             */
             for (let index = 0; index < result.length; index++) {
                 var text = '';
                 const ele = result[index];
+                // Les hores es convertixen un número per a poder comparar. La data donava errades
                 let inici=ele.inici.replace(/:/g,'');
                 let inici_int=Number(inici);
                 let fi=ele.inici.replace(/:/g,'');
                 console.log("Fi: "+fi);
                 let fi_int=Number(fi);
                 console.log("Fi_int: "+fi_int);
-                let mati = (inici_int>=80000 && inici_int<150000) ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                // Es compara la data per a saber si es matí o vesprada, en funció de si és entre les 5 o les 15
+                let mati = (inici_int>=50000 && inici_int<150000) ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
                 let fechas = ele.data.split('-');
+                // En cas de que l'element a mostrar siga unes hores es mostra el inici i el final
                 if (toti == 'inici') {
                     text = ele['inici']+'-'+ele['fi'];
                 } else {
                     text = ele[toti];
                 }
+                // Es crea l'element ja formatat que anirà al calendari i s'afegix al array
                 let i = {
                     id: (ele.id+num),
                     title: "<div id="+(ele.id+num)+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+text+"\">"+mati+" "+ele.name+"</div>",
@@ -184,6 +206,7 @@ export default {
             }
             this.index=result.length;
         },
+        // Funció que ens servix per a comprobar a què correspon cada element
         comproba_id_element (id){
             if (id>=1000000) {
                 if (id>=2000000) {
@@ -207,6 +230,7 @@ export default {
             return "Cefire";
             }
         },
+        // Envia un missatge obrint el component modal corresponent enviant la petició al bus d'events
         envia_missatge(calendarItem, windowEvent) {
             var parser = new DOMParser();
             var doc = parser.parseFromString(calendarItem.title, 'text/html');
@@ -226,6 +250,7 @@ export default {
 
     },
     watch: {
+        // Les següent funcions borren l'element buscant en totes les dades pel seu id.
         cefire(newValue, oldValue) {
             if (newValue == true){
                 this.get_element('cefire');

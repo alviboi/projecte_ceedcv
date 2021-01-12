@@ -23,8 +23,8 @@
                 class="holiday-us-traditional holiday-us-official"
 
                 @click-item="borrar"
-                @drag-start="drag_prova"
-                @drop-on-date="drag_on_prova"
+                @drag-start="drag_comencant"
+                @drop-on-date="asolta_en"
             >
                 <calendar-view-header
                     slot="header"
@@ -51,6 +51,10 @@
 </template>
 
 <script>
+/**
+ * Aquest component ens permet afegir elements al calendari utilitzant drag and drop.
+ */
+
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
 require("vue-simple-calendar/static/css/default.css")
 require("vue-simple-calendar/static/css/holidays-us.css")
@@ -71,8 +75,6 @@ export default {
 			selectionEnd: null,
 			theme: "gcal",
 			items: Array()
-				// .fill()
-				// .map((_, i) => this.getRandomEvent(i)),
 		}
 	},
 	computed: {
@@ -119,6 +121,7 @@ export default {
             });
 
         },
+        // Emplena totes les dades del calendari agafant les dades de les guàrdies.
         emplena_calendari_guardies(result) {
             for (let index = 0; index < result.length; index++) {
                 const element = result[index];
@@ -135,13 +138,14 @@ export default {
             }
             this.index=result.length;
         },
+        // Agafem un element de la barra lateral
         comenca_drag(e){
             console.log(e.target);
             this.id_drag=e.target;
 
         },
-        drag_on_prova(calendarItem, date, windowEvent) {//textContent
-            //@drop-on-date([calendarItem, date, windowEvent])
+        // DEixa l'element sobre una data concreta
+        asolta_en(calendarItem, date, windowEvent) {
             console.log(calendarItem);
             console.log(date);
             var id_res=null;
@@ -172,14 +176,13 @@ export default {
             })
 
         },
-        drag_prova(item,e) {
-            //[calendarItem, windowEvent]
+        // Començant a fet el drag dins del calendari. No s'utilitza, però ho deixem per a futures ampliacions com permetres fer el drag and drop en elements
+        // dins del calendari.
+        drag_comencant(item,e) {
             console.log(item);
             console.log(e);
         },
-        este2(item,e) {
-            console.log(e);
-        },
+        // Borra element del calendari
         borrar(item,e) {
             for (let index = 0; index < this.items.length; index++) {
                 if(this.items[index].id == item.id)
@@ -193,20 +196,15 @@ export default {
             .catch(err => {
                 console.error(err);
             })
-		},
+        },
+        // al canviar el mes agafem totes les guardies
         setdia(d) {
             this.dia = d;
             this.items= [];
             this.get_totes_guardies();
 
-		},
-		// setSelection(dateRange) {
-		// 	this.selectionEnd = dateRange[1]
-		// 	this.selectionStart = dateRange[0]
-		// },
-		// finishSelection(dateRange) {
-		// 	this.setSelection(dateRange)
-        // },
+        },
+        // Creem canal per a actualitzar les guardies en el cas de que algun assessor estiga treballant al mateix temps
         channel_create(){
             var aux;
             var self=this;
@@ -233,6 +231,7 @@ export default {
                 }
             );
         },
+        // Canal per a rebre la informació de element borrat
         channel_borra(){
             var aux;
             var self=this;

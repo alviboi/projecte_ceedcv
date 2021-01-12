@@ -267,6 +267,9 @@
 </template>
 
 <script>
+/**
+ * Component d'un únic dia que controla totes les accions que es realitzen sobre el mateix dia
+ */
 
 export default {
   data() {
@@ -279,12 +282,10 @@ export default {
       visita: {},
       guardia: {},
       permis: {},
-    //   data: new Date("2020-01-20"),
       curs_i: "",
       compensa_i: "",
       visita_i: "",
       permis_i: "",
-    //   mati: "m",
       dies: [
             'Diumenge',
             'Dilluns',
@@ -304,6 +305,8 @@ export default {
   },
   props: ['mati','data'],
   methods: {
+    // Mètode per a descarregar el arxiu, es reb com un objecte binari de grans dimensions (blob) per a reconstrueix i permet descarregar-se. D'aquesta
+    // manera l'arxiu no té cap enllaç per a poder-se descarregar.
     mira_arxiu(d){
         let url="download_permis";
         let params={
@@ -331,26 +334,9 @@ export default {
             console.error(err);
         })
     },
-    // mira_arxiu(d){
-    //     let url="download_permis";
-    //     let params={
-    //         "arxiu": d
-    //     }
-    //     axios.post(url,params)
-    //     .then(response => {
-    //         console.log(response);
-    //         const url = window.URL.createObjectURL(new Blob([response.data]));
-    //         const link = document.createElement('a');
-    //         link.href = url;
-    //         link.setAttribute('download', 'file.pdf');
-    //         document.body.appendChild(link);
-    //         link.click();
-    //     })
-    //     .catch(err => {
-    //         this.$toast.error("Error: Has pujat un arxiu pdf?");
-    //         console.error(err);
-    //     })
-    // },
+    /**
+     * Pujada de l'arxiu del permís
+     */
     obre_permis(){
             self=this;
             var arxiu_p;
@@ -402,6 +388,7 @@ export default {
     get_dia_mes() {
         this.dia_mes = this.data.getDate()
     },
+    // Esborra element
     borra_par(bd, id) {
       let url = bd + "/" + id;
       axios
@@ -418,6 +405,7 @@ export default {
           console.error(err);
         });
     },
+    // Agafa elements de la base de dades
     get_de_bd(bd) {
       axios
         .get("dia_"+bd+"/"+data_db(this.data)+"/"+this.mati) ///dia_cefire/{dia}/{mati}
@@ -429,6 +417,7 @@ export default {
           console.error(err);
         });
     },
+    // Afegix element cefire al dia
     afegix_cefire(){
         //alert(this.data);
       let inici,fi;
@@ -475,6 +464,7 @@ export default {
           this.$toast.error(err.response.data);
         });
     },
+    // Afegix qualsevol altre element que necessite hora a la base de dades
     afegix(desti) {
       //alert(this.data);
       let inici,fi;
@@ -505,6 +495,7 @@ export default {
           this.$toast.error(err.response.data);
         });
     },
+    // Afegix element que requerixca el nom d'un motiu
     salva(desti) {
       let varNom = desti + "_i";
       let inici,fi;
@@ -549,9 +540,11 @@ export default {
       this.avis_pujada="";
       UIkit.modal("#"+desti+"-modal"+this._uid).hide();
     },
+    // Afegix guardia al array de guàrdies
     afg_guardia(dat){
         this.guardia.push(dat);
     },
+    // Canal per a veure les actualitzacions de les guàrdies
     channel_create(){
         var aux;
         var self=this;
@@ -567,6 +560,7 @@ export default {
             }
         );
     },
+    // Esborra canal
     channel_borra(){
         var aux;
         var self=this;
@@ -601,6 +595,7 @@ export default {
 
   },
   computed: {
+      // Mostra dia o nit en funció de l'hora
       mati_icon() {
           let m = ((this.mati=='m') ? "<i class='fas fa-sun'></i>" : "<i class='fas fa-moon'></i>");
           return m;
@@ -616,9 +611,8 @@ export default {
 $fondo:  #f1faee
 
 @import "../../sass/_variables.scss"
-
+// Element damunt del dia
 .titulet
-
     margin-left: 10px
     font-color: gray
     overflow: hidden
@@ -627,7 +621,7 @@ $fondo:  #f1faee
         font-size: 1.2em
     @media (max-width: 1480px)
         font-size: 0.8em
-
+// Especificacions de dins del recuadre
 .dia
     max-width: 150px
     display: grid
@@ -648,7 +642,7 @@ $fondo:  #f1faee
         overflow-x: hidden
         white-space: nowrap
         -webkit-overflow-scrolling: touch
-
+    // Botonera que es deplaça des del costat
     .lateral_esquerre
         grid-area: 1 / 1 / 6 / 2
         overflow-x: hidden
@@ -659,7 +653,7 @@ $fondo:  #f1faee
         transition: transform 0.3s, visibility 1s, opacity 0.5s linear
         -webkit-overflow-scrolling: touch
         z-index: 0
-
+    //Llistat d'elelments
     .principal
         grid-area: 1 / 1 / 6 / 6
         display: inline-flex
@@ -673,6 +667,7 @@ $fondo:  #f1faee
         background-color: $fondo
         border-radius: 10px
         min-height: 160px
+        // Cadascun dels elements s'adapta al tamany de la pantalla per a que no es desajuste
         .s-
             flex: 0 1 auto
             margin: 1px
@@ -681,8 +676,8 @@ $fondo:  #f1faee
             padding: 3px
             font-weight: bold
             color: #373444
-            width: 95%
-            max-width: 130px
+            width: 99%
+            max-width: 140px
             &cefire
                 @extend .s-
                 background-color: $blue
@@ -734,6 +729,7 @@ $fondo:  #f1faee
                         content: "PER..."
 
 
+    // Icones dels diferents elements a utilitzar
     .cerrar
         font-family: "Font Awesome 5 Free"
         text-align: right

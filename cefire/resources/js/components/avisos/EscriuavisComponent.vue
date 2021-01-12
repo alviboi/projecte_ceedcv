@@ -32,6 +32,10 @@
 </template>
 
 <script>
+/**
+Aques component crea un modal per a escriure l'avís
+
+ */
 export default {
     data() {
         return {
@@ -45,21 +49,20 @@ export default {
     props: ['show-modal'],
     watch: {
         showModal(){
-            this.este();
+            this.mostra_modal();
         }
     },
 
     methods: {
+        // Botó ixir del modal. Envia event per a tancar-los
         ix() {
             this.$eventBus.$emit('tanca-avis');
             this.resposta="";
             this.cap="";
             this.avis="";
-            //this.showModal=false;
-            // UIkit.modal('#modal_avis').hide();
 
         },
-
+        // Envia la informació emplenada
         envia() {
             console.log(this.cap.length);
             if (this.cap.length===0 || this.avis.length===0) {
@@ -83,7 +86,8 @@ export default {
                 })
             }
         },
-        este() {
+        // Mostra el modal en funció del que diga l'event
+        mostra_modal() {
             if (this.showModal == true) {
                 UIkit.modal('#modal_avis',{ bgClose: false, escClose: false, modal: false, keyboard:false}).show();
             } else {

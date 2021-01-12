@@ -30,7 +30,9 @@
 </template>
 
 <script>
-
+/**
+Aques component s'utilitza per a mostrar els avisos
+*/
 export default {
     data() {
         return {
@@ -38,6 +40,7 @@ export default {
         }
     },
     methods: {
+        // Demana els avisos al servidor
         get_avisos() {
             let url="avisos";
             axios.get(url)
@@ -49,6 +52,7 @@ export default {
                 console.error(err);
             })
         },
+        // Borra l'avís
         borra(id) {
             let url="avisos/"+id;
 
@@ -70,6 +74,7 @@ export default {
         this.get_avisos();
     },
     created() {
+        // Quan es crea un avís es rep un event que crea l'avís per a que es mostre la pantalla actualitzada
         this.$eventBus.$on('avis-enviat', this.get_avisos);
     },
     beforeDestroy() {

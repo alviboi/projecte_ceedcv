@@ -22,6 +22,9 @@
 </template>
 
 <script>
+/**
+ * Llistar tots els missatge al off-canvas
+ */
 export default {
     data() {
         return {
@@ -29,27 +32,29 @@ export default {
         }
     },
     methods: {
+        // Agafa tots el missatges
         get_avisos() {
-            let url="notificacions";
-            axios.get(url)
-            .then(res => {
-                console.log(res);
-                this.avisos=res.data;
-            })
-            .catch(err => {
-                console.error(err);
-            })
+                let url="notificacions";
+                axios.get(url)
+                .then(res => {
+                    console.log(res);
+                    this.avisos=res.data;
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+            }
+        },
+        mounted() {
+            this.get_avisos();
+        },
+        created() {
+            // Comproba el missatges si reps un event
+            this.$eventBus.$on('msg-enviat', this.get_avisos);
+        },
+        beforeDestroy() {
+            this.$eventBus.$off('msg-enviat');
         }
-    },
-    mounted() {
-        this.get_avisos();
-    },
-    created() {
-    this.$eventBus.$on('msg-enviat', this.get_avisos);
-    },
-    beforeDestroy() {
-    this.$eventBus.$off('msg-enviat');
-    }
 }
 </script>
 

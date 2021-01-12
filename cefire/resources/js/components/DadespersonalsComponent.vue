@@ -73,6 +73,9 @@
 </template>
 
 <script>
+/**
+ * Bolcat de totes les dades de l'assessor, s'utilitza per a temes de depuració
+ */
 import Datepicker from "vuejs-datepicker";
 import { ca } from "vuejs-datepicker/dist/locale";
 export default {

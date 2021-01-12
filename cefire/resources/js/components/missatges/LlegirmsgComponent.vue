@@ -21,6 +21,7 @@
 
 <script>
 export default {
+    // Crea tots els modal per a quan vullgues llegir un missatge
     data() {
         return {
             // users: [],
@@ -30,9 +31,11 @@ export default {
         }
     },
     methods: {
+        // Obre el modal del missatge concret
         obri(id){
             UIkit.modal(id).show();
         },
+        // Esborra el missatge de la base de dades
         borra(id){
             for (let index = 0; index < this.missatges.length; index++) {
                 if(this.missatges[index].id == id){
@@ -49,7 +52,7 @@ export default {
             })
             UIkit.modal('#missatge'+id).hide();
         },
-
+        // Agafa tots els missatges
         agafa_missatges() {
             axios.get("notificacions")
             .then(res => {
@@ -60,7 +63,7 @@ export default {
                 console.log(err);
             })
         },
-
+        // Crear canal de websocket per a poder llegir-lo i que et notifique l'arribada d'un missatge
         channel_create_mail(){
             var aux;
             var self=this;

@@ -37,6 +37,9 @@
 </template>
 
 <script>
+/**
+ * Component amb el modal per a escriure un missatge
+ */
 export default {
     data() {
         return {
@@ -53,10 +56,11 @@ export default {
     props: ['show-missatge'],
     watch: {
         showMissatge(){
-            this.este();
+            this.mostra_modal();
         }
     },
     methods: {
+        // Agafa tots els usuaris
         agafa_users(){
             axios.get("user")
             .then(res => {
@@ -67,6 +71,7 @@ export default {
                 console.error(err);
             })
         },
+        // Surt del modal i reseteja totes les dades
         ix() {
             this.$eventBus.$emit('tanca-missatge');
             UIkit.modal('#modal_missatge').hide();
@@ -75,10 +80,12 @@ export default {
             this.avis="";
             this.destinatari="";
         },
+        // filtra els elements
         filterResults() {
             this.results = this.users.filter((item => item.name.toLowerCase() == this.destinatari.toLowerCase()));
             return this.results[0].id;
         },
+        // Envia el misstage
         envia() {
             console.log(this.cap.length);
             if (this.cap.length===0 || this.avis.length===0) {
@@ -104,7 +111,8 @@ export default {
                 })
             }
         },
-        este() {
+        // Mostra modal en funció del bus
+        mostra_modal() {
             if (this.showMissatge == true) {
                 UIkit.modal('#modal_missatge',{ bgClose: false, escClose: false, modal: false, keyboard:false}).show();
             } else {
@@ -112,8 +120,8 @@ export default {
 
             }
         },
+        // Obre el missatge
         obre_missatge(envia) {
-            // console.log(e);
             this.cap=envia.assumpte;
             this.destinatari=envia.destinatari;
             UIkit.modal('#modal_missatge').show();
@@ -125,6 +133,7 @@ export default {
     },
 
     created() {
+        // Crea event per a obrir el missatge
         this.$eventBus.$on('missatge-variables', this.obre_missatge);
     },
     beforeDestroy() {

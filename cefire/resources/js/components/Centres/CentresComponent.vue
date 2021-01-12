@@ -126,6 +126,10 @@
 </template>
 
 <script>
+/**
+ * Modal que mostra tots els centres de la base de dades
+ */
+
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 export default {
@@ -144,11 +148,15 @@ export default {
             editable_c: true
         }
     },
+    // busqueda2 es quan es busquen nomes els centres de l'assessor logat
+    // editable si es pot editar el centre o no
     props: ['busqueda2','editable'],
     computed: {
+        // Torna la url per a enllaçar en la guia de centres
         url () {
             return "http://www.ceice.gva.es/abc/i_guiadecentros/es/centro.asp?codi="+this.editant['codi'];
         },
+        // Mostra les dades filtrades quan es filtres
         dadesFiltrades() {
             var ordenaKey = this.ordenaKey
             var filtraKey = this.busqueda && this.busqueda.toLowerCase()
@@ -171,6 +179,7 @@ export default {
             return data
 
         },
+        // Les dades mostrades es pasen a la funció per a calcula el número de pàgines
         mostra () {
             return this.pagina_f(this.dadesFiltrades);
         }
@@ -181,6 +190,7 @@ export default {
         }
     },
     methods: {
+        // Agafa usuaris de la base de dades
         agafa_users(){
             axios.get("user")
             .then(res => {
@@ -191,14 +201,17 @@ export default {
                 console.error(err);
             })
         },
+        // Obre el modal per a editar un centre
         edita_centre(edit) {
             UIkit.modal("#edita-centre").show();
             this.editant = edit;
         },
+        // Ordena les dades
         sortBy(key) {
             this.ordenaKey = key;
             this.ordena[key] = this.ordena[key] * -1;
         },
+        // Agafa totes les dades d'un centre
         get_centres() {
             axios.get("centres")
             .then(res => {
@@ -210,6 +223,7 @@ export default {
             })
             this.setPagines();
         },
+        // Calcula el nombre de pagines que te la paginacio
         setPagines () {
             this.pagines = [];
 			let NumeroPagines = Math.ceil(this.dadesFiltrades.length / this.centres_per_pagina);
@@ -217,6 +231,7 @@ export default {
 				this.pagines.push(index);
             }
         },
+        // Pagina les dades en funció del numero de pàgines
         pagina_f (datos) {
 			let pagina = this.pagina;
 			let perPagina = this.centres_per_pagina;
@@ -224,6 +239,7 @@ export default {
 			let to = (pagina * perPagina);
 			return  datos.slice(from, to);
         },
+        // Envia les dades d'actualització d'un centre
         envia_dades() {
             let user_id=0;
             for (let index = 0; index < this.users.length; index++) {
@@ -246,6 +262,7 @@ export default {
                 console.error(err);
             })
         },
+        // Envia petició d'esborrar un centre
         borra() {
             axios.delete("centres/"+this.editant['id'])
             .then(res => {
@@ -357,6 +374,8 @@ export default {
         padding-left: 0
         list-style: none
         border-radius: .25rem
+
+    // Format de les transicions del llistat
 
     .ordenaCeldes-enter-active,.ordenaCeldes-leave-active
         transition: all 1s

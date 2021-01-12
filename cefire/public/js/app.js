@@ -2246,6 +2246,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+/**
+ *
+ * Aquest component busca a tots els assessor que tenen un element determinat en un mes determinat donat una sèrie d'element que podem
+ * fitrar segons el checkbox. s'utilitza el component vue-simple-calendar
+ *
+ */
+
 
 __webpack_require__(/*! vue-simple-calendar/static/css/default.css */ "./node_modules/vue-simple-calendar/static/css/default.css");
 
@@ -2272,6 +2279,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
     };
   },
   computed: {
+    // Passa les dades de formatació del component
     themeOptions: function themeOptions() {
       var ret = {
         result: null,
@@ -2290,6 +2298,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
     }
   },
   methods: {
+    // Definix el dia en el que estem a partir de la variable i reseteja tots els checkbox. Ho utilitzem per quan canvien de mes
     setdia: function setdia(d) {
       this.dia = d;
       this.items = [];
@@ -2300,6 +2309,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       this.permis = false;
       this.visita = false; //this.tots_els_elements_get();
     },
+    // Agafar totes les dades per a poder emplenar el calendari segons les dades sol·licitades
     get_element: function get_element(element) {
       var _this = this;
 
@@ -2315,6 +2325,13 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         console.error(err);
       });
     },
+
+    /**
+     * Emplenem el calendari, per a evitar errors es dona a cada element un rang que determina el seu id, per exemple cefire va desde 1000000 a 2000000,
+     * és molt difícil que hi haja 1 milió de fitxatges en un mes, ni controlant tots els assessors del cefire de tota la comunitat...
+     * Es determina la clase en la que es mostrarà cada element en funció de què és, i el paràmetre toti indica el element que anem a mostrar en l'ajuda
+     * contectual.
+     */
     emplena_calendari: function emplena_calendari(element, result) {
       var num = 0;
       var clase = "custom-date-class-red";
@@ -2362,24 +2379,31 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
           clase = "custom-date-class-red";
           break;
       }
+      /**
+       * Es crea un for que anirà omlint l'array de dades que es mostren al calendar
+       */
+
 
       for (var index = 0; index < result.length; index++) {
         var text = '';
-        var ele = result[index];
+        var ele = result[index]; // Les hores es convertixen un número per a poder comparar. La data donava errades
+
         var inici = ele.inici.replace(/:/g, '');
         var inici_int = Number(inici);
         var fi = ele.inici.replace(/:/g, '');
         console.log("Fi: " + fi);
         var fi_int = Number(fi);
-        console.log("Fi_int: " + fi_int);
-        var mati = inici_int >= 80000 && inici_int < 150000 ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        var fechas = ele.data.split('-');
+        console.log("Fi_int: " + fi_int); // Es compara la data per a saber si es matí o vesprada, en funció de si és entre les 5 o les 15
+
+        var mati = inici_int >= 50000 && inici_int < 150000 ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        var fechas = ele.data.split('-'); // En cas de que l'element a mostrar siga unes hores es mostra el inici i el final
 
         if (toti == 'inici') {
           text = ele['inici'] + '-' + ele['fi'];
         } else {
           text = ele[toti];
-        }
+        } // Es crea l'element ja formatat que anirà al calendari i s'afegix al array
+
 
         var i = {
           id: ele.id + num,
@@ -2392,6 +2416,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
 
       this.index = result.length;
     },
+    // Funció que ens servix per a comprobar a què correspon cada element
     comproba_id_element: function comproba_id_element(id) {
       if (id >= 1000000) {
         if (id >= 2000000) {
@@ -2421,6 +2446,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         return "Cefire";
       }
     },
+    // Envia un missatge obrint el component modal corresponent enviant la petició al bus d'events
     envia_missatge: function envia_missatge(calendarItem, windowEvent) {
       var parser = new DOMParser();
       var doc = parser.parseFromString(calendarItem.title, 'text/html');
@@ -2437,6 +2463,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
   },
   mounted: function mounted() {},
   watch: {
+    // Les següent funcions borren l'element buscant en totes les dades pel seu id.
     cefire: function cefire(newValue, oldValue) {
       if (newValue == true) {
         this.get_element('cefire');
@@ -2580,6 +2607,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+/**
+ * Aquest component ens permet afegir elements al calendari utilitzant drag and drop.
+ */
+
 
 __webpack_require__(/*! vue-simple-calendar/static/css/default.css */ "./node_modules/vue-simple-calendar/static/css/default.css");
 
@@ -2602,9 +2633,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       selectionStart: null,
       selectionEnd: null,
       theme: "gcal",
-      items: Array() // .fill()
-      // .map((_, i) => this.getRandomEvent(i)),
-
+      items: Array()
     };
   },
   computed: {
@@ -2650,6 +2679,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         console.error(err);
       });
     },
+    // Emplena totes les dades del calendari agafant les dades de les guàrdies.
     emplena_calendari_guardies: function emplena_calendari_guardies(result) {
       for (var index = 0; index < result.length; index++) {
         var element = result[index];
@@ -2667,15 +2697,15 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
 
       this.index = result.length;
     },
+    // Agafem un element de la barra lateral
     comenca_drag: function comenca_drag(e) {
       console.log(e.target);
       this.id_drag = e.target;
     },
-    drag_on_prova: function drag_on_prova(calendarItem, date, windowEvent) {
+    // DEixa l'element sobre una data concreta
+    asolta_en: function asolta_en(calendarItem, date, windowEvent) {
       var _this3 = this;
 
-      //textContent
-      //@drop-on-date([calendarItem, date, windowEvent])
       console.log(calendarItem);
       console.log(date);
       var id_res = null;
@@ -2705,14 +2735,13 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         console.error(err);
       });
     },
-    drag_prova: function drag_prova(item, e) {
-      //[calendarItem, windowEvent]
+    // Començant a fet el drag dins del calendari. No s'utilitza, però ho deixem per a futures ampliacions com permetres fer el drag and drop en elements
+    // dins del calendari.
+    drag_comencant: function drag_comencant(item, e) {
       console.log(item);
       console.log(e);
     },
-    este2: function este2(item, e) {
-      console.log(e);
-    },
+    // Borra element del calendari
     borrar: function borrar(item, e) {
       for (var index = 0; index < this.items.length; index++) {
         if (this.items[index].id == item.id) this.items.splice(index, 1);
@@ -2725,18 +2754,13 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         console.error(err);
       });
     },
+    // al canviar el mes agafem totes les guardies
     setdia: function setdia(d) {
       this.dia = d;
       this.items = [];
       this.get_totes_guardies();
     },
-    // setSelection(dateRange) {
-    // 	this.selectionEnd = dateRange[1]
-    // 	this.selectionStart = dateRange[0]
-    // },
-    // finishSelection(dateRange) {
-    // 	this.setSelection(dateRange)
-    // },
+    // Creem canal per a actualitzar les guardies en el cas de que algun assessor estiga treballant al mateix temps
     channel_create: function channel_create() {
       var aux;
       var self = this;
@@ -2761,6 +2785,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         }
       });
     },
+    // Canal per a rebre la informació de element borrat
     channel_borra: function channel_borra() {
       var aux;
       var self = this;
@@ -2926,6 +2951,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+/**
+ * Modal que mostra tots els centres de la base de dades
+ */
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2955,11 +2984,15 @@ __webpack_require__.r(__webpack_exports__);
       editable_c: true
     };
   },
+  // busqueda2 es quan es busquen nomes els centres de l'assessor logat
+  // editable si es pot editar el centre o no
   props: ['busqueda2', 'editable'],
   computed: {
+    // Torna la url per a enllaçar en la guia de centres
     url: function url() {
       return "http://www.ceice.gva.es/abc/i_guiadecentros/es/centro.asp?codi=" + this.editant['codi'];
     },
+    // Mostra les dades filtrades quan es filtres
     dadesFiltrades: function dadesFiltrades() {
       var ordenaKey = this.ordenaKey;
       var filtraKey = this.busqueda && this.busqueda.toLowerCase();
@@ -2984,6 +3017,7 @@ __webpack_require__.r(__webpack_exports__);
 
       return data;
     },
+    // Les dades mostrades es pasen a la funció per a calcula el número de pàgines
     mostra: function mostra() {
       return this.pagina_f(this.dadesFiltrades);
     }
@@ -2994,6 +3028,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    // Agafa usuaris de la base de dades
     agafa_users: function agafa_users() {
       var _this = this;
 
@@ -3004,14 +3039,17 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Obre el modal per a editar un centre
     edita_centre: function edita_centre(edit) {
       uikit__WEBPACK_IMPORTED_MODULE_0___default.a.modal("#edita-centre").show();
       this.editant = edit;
     },
+    // Ordena les dades
     sortBy: function sortBy(key) {
       this.ordenaKey = key;
       this.ordena[key] = this.ordena[key] * -1;
     },
+    // Agafa totes les dades d'un centre
     get_centres: function get_centres() {
       var _this2 = this;
 
@@ -3023,6 +3061,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.setPagines();
     },
+    // Calcula el nombre de pagines que te la paginacio
     setPagines: function setPagines() {
       this.pagines = [];
       var NumeroPagines = Math.ceil(this.dadesFiltrades.length / this.centres_per_pagina);
@@ -3031,6 +3070,7 @@ __webpack_require__.r(__webpack_exports__);
         this.pagines.push(index);
       }
     },
+    // Pagina les dades en funció del numero de pàgines
     pagina_f: function pagina_f(datos) {
       var pagina = this.pagina;
       var perPagina = this.centres_per_pagina;
@@ -3038,6 +3078,7 @@ __webpack_require__.r(__webpack_exports__);
       var to = pagina * perPagina;
       return datos.slice(from, to);
     },
+    // Envia les dades d'actualització d'un centre
     envia_dades: function envia_dades() {
       var _this3 = this;
 
@@ -3062,6 +3103,7 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Envia petició d'esborrar un centre
     borra: function borra() {
       var _this4 = this;
 
@@ -3128,6 +3170,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/**
+ * Aquest component agafa només els centres que tinga l'assessor
+ */
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3135,6 +3181,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    // Comproba el nom de l'assessor que està logat
     logat: function logat() {
       var _this = this;
 
@@ -3232,6 +3279,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/**
+ * Component per a mostrar el paràmetres de configuració de l'aplicació.
+ */
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3244,6 +3295,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    // Importa usuaris del LDAP
     importa_f: function importa_f() {
       var _this = this;
 
@@ -3265,6 +3317,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.$toast.error(err.message);
       });
     },
+    // Agafa usuaris del LDAP d'un servidor lliurex
     get_usuaris_ldap: function get_usuaris_ldap() {
       var _this2 = this;
 
@@ -3282,6 +3335,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$toast.error(err.message);
       });
     },
+    // Agafa les dades de configuració
     get_configuracio: function get_configuracio() {
       var _this3 = this;
 
@@ -3295,6 +3349,7 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Actualitza les dades de configiració
     canvia_dades: function canvia_dades(nom) {
       var _this4 = this;
 
@@ -3425,6 +3480,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/**
+ * Component que mostra les dades de tots els assessors
+ */
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3440,6 +3499,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    // Actualitxa assessor
     envia_edit: function envia_edit() {
       var _this = this;
 
@@ -3453,6 +3513,7 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Borra assessor
     borra: function borra(id) {
       var _this2 = this;
 
@@ -3465,6 +3526,7 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Edita assessor
     edita: function edita(id) {
       var results = this.users.filter(function (item) {
         return item.id == id;
@@ -3476,6 +3538,7 @@ __webpack_require__.r(__webpack_exports__);
       this.edita_u.rfid = results[0].rfid;
       UIkit.modal("#edita").show();
     },
+    // Agafa usuaris
     agafa_users: function agafa_users() {
       var _this3 = this;
 
@@ -3580,6 +3643,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/**
+ * Bolcat de totes les dades de l'assessor, s'utilitza per a temes de depuració
+ */
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3927,6 +3994,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/**
+ * Component d'un únic dia que controla totes les accions que es realitzen sobre el mateix dia
+ */
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3938,12 +4009,10 @@ __webpack_require__.r(__webpack_exports__);
       visita: {},
       guardia: {},
       permis: {},
-      //   data: new Date("2020-01-20"),
       curs_i: "",
       compensa_i: "",
       visita_i: "",
       permis_i: "",
-      //   mati: "m",
       dies: ['Diumenge', 'Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte', 'Diumenge'],
       nom_dia: "",
       dia_mes: 0,
@@ -3954,6 +4023,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ['mati', 'data'],
   methods: {
+    // Mètode per a descarregar el arxiu, es reb com un objecte binari de grans dimensions (blob) per a reconstrueix i permet descarregar-se. D'aquesta
+    // manera l'arxiu no té cap enllaç per a poder-se descarregar.
     mira_arxiu: function mira_arxiu(d) {
       var _this = this;
 
@@ -3983,26 +4054,10 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
-    // mira_arxiu(d){
-    //     let url="download_permis";
-    //     let params={
-    //         "arxiu": d
-    //     }
-    //     axios.post(url,params)
-    //     .then(response => {
-    //         console.log(response);
-    //         const url = window.URL.createObjectURL(new Blob([response.data]));
-    //         const link = document.createElement('a');
-    //         link.href = url;
-    //         link.setAttribute('download', 'file.pdf');
-    //         document.body.appendChild(link);
-    //         link.click();
-    //     })
-    //     .catch(err => {
-    //         this.$toast.error("Error: Has pujat un arxiu pdf?");
-    //         console.error(err);
-    //     })
-    // },
+
+    /**
+     * Pujada de l'arxiu del permís
+     */
     obre_permis: function obre_permis() {
       self = this;
       var arxiu_p;
@@ -4053,6 +4108,7 @@ __webpack_require__.r(__webpack_exports__);
     get_dia_mes: function get_dia_mes() {
       this.dia_mes = this.data.getDate();
     },
+    // Esborra element
     borra_par: function borra_par(bd, id) {
       var _this2 = this;
 
@@ -4069,6 +4125,7 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Agafa elements de la base de dades
     get_de_bd: function get_de_bd(bd) {
       var _this3 = this;
 
@@ -4080,6 +4137,7 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Afegix element cefire al dia
     afegix_cefire: function afegix_cefire() {
       var _this4 = this;
 
@@ -4128,6 +4186,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.$toast.error(err.response.data);
       });
     },
+    // Afegix qualsevol altre element que necessite hora a la base de dades
     afegix: function afegix(desti) {
       var _this5 = this;
 
@@ -4159,6 +4218,7 @@ __webpack_require__.r(__webpack_exports__);
         _this5.$toast.error(err.response.data);
       });
     },
+    // Afegix element que requerixca el nom d'un motiu
     salva: function salva(desti) {
       var _this6 = this;
 
@@ -4206,9 +4266,11 @@ __webpack_require__.r(__webpack_exports__);
       this.avis_pujada = "";
       UIkit.modal("#" + desti + "-modal" + this._uid).hide();
     },
+    // Afegix guardia al array de guàrdies
     afg_guardia: function afg_guardia(dat) {
       this.guardia.push(dat);
     },
+    // Canal per a veure les actualitzacions de les guàrdies
     channel_create: function channel_create() {
       var aux;
       var self = this;
@@ -4223,6 +4285,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
+    // Esborra canal
     channel_borra: function channel_borra() {
       var aux;
       var self = this;
@@ -4254,6 +4317,7 @@ __webpack_require__.r(__webpack_exports__);
     this.channel_borra();
   },
   computed: {
+    // Mostra dia o nit en funció de l'hora
     mati_icon: function mati_icon() {
       var m = this.mati == 'm' ? "<i class='fas fa-sun'></i>" : "<i class='fas fa-moon'></i>";
       return m;
@@ -5473,6 +5537,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/**
+Aques component s'utilitza per a mostrar els avisos
+*/
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5480,6 +5548,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    // Demana els avisos al servidor
     get_avisos: function get_avisos() {
       var _this = this;
 
@@ -5491,6 +5560,7 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Borra l'avís
     borra: function borra(id) {
       var _this2 = this;
 
@@ -5512,6 +5582,7 @@ __webpack_require__.r(__webpack_exports__);
     this.get_avisos();
   },
   created: function created() {
+    // Quan es crea un avís es rep un event que crea l'avís per a que es mostre la pantalla actualitzada
     this.$eventBus.$on('avis-enviat', this.get_avisos);
   },
   beforeDestroy: function beforeDestroy() {
@@ -5563,6 +5634,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/**
+Aques component crea un modal per a escriure l'avís
+
+ */
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5575,17 +5651,18 @@ __webpack_require__.r(__webpack_exports__);
   props: ['show-modal'],
   watch: {
     showModal: function showModal() {
-      this.este();
+      this.mostra_modal();
     }
   },
   methods: {
+    // Botó ixir del modal. Envia event per a tancar-los
     ix: function ix() {
       this.$eventBus.$emit('tanca-avis');
       this.resposta = "";
       this.cap = "";
-      this.avis = ""; //this.showModal=false;
-      // UIkit.modal('#modal_avis').hide();
+      this.avis = "";
     },
+    // Envia la informació emplenada
     envia: function envia() {
       var _this = this;
 
@@ -5612,7 +5689,8 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    este: function este() {
+    // Mostra el modal en funció del que diga l'event
+    mostra_modal: function mostra_modal() {
       if (this.showModal == true) {
         UIkit.modal('#modal_avis', {
           bgClose: false,
@@ -5679,6 +5757,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/**
+ * Component amb el modal per a escriure un missatge
+ */
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -5695,10 +5777,11 @@ __webpack_require__.r(__webpack_exports__);
   props: ['show-missatge'],
   watch: {
     showMissatge: function showMissatge() {
-      this.este();
+      this.mostra_modal();
     }
   },
   methods: {
+    // Agafa tots els usuaris
     agafa_users: function agafa_users() {
       var _this = this;
 
@@ -5709,6 +5792,7 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Surt del modal i reseteja totes les dades
     ix: function ix() {
       this.$eventBus.$emit('tanca-missatge');
       UIkit.modal('#modal_missatge').hide();
@@ -5717,6 +5801,7 @@ __webpack_require__.r(__webpack_exports__);
       this.avis = "";
       this.destinatari = "";
     },
+    // filtra els elements
     filterResults: function filterResults() {
       var _this2 = this;
 
@@ -5725,6 +5810,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       return this.results[0].id;
     },
+    // Envia el misstage
     envia: function envia() {
       var _this3 = this;
 
@@ -5751,7 +5837,8 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    este: function este() {
+    // Mostra modal en funció del bus
+    mostra_modal: function mostra_modal() {
       if (this.showMissatge == true) {
         UIkit.modal('#modal_missatge', {
           bgClose: false,
@@ -5763,8 +5850,8 @@ __webpack_require__.r(__webpack_exports__);
         UIkit.modal('#modal_missatge').hide();
       }
     },
+    // Obre el missatge
     obre_missatge: function obre_missatge(envia) {
-      // console.log(e);
       this.cap = envia.assumpte;
       this.destinatari = envia.destinatari;
       UIkit.modal('#modal_missatge').show();
@@ -5775,6 +5862,7 @@ __webpack_require__.r(__webpack_exports__);
     this.id = this._uid;
   },
   created: function created() {
+    // Crea event per a obrir el missatge
     this.$eventBus.$on('missatge-variables', this.obre_missatge);
   },
   beforeDestroy: function beforeDestroy() {
@@ -5815,6 +5903,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  // Crea tots els modal per a quan vullgues llegir un missatge
   data: function data() {
     return {
       // users: [],
@@ -5824,9 +5913,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    // Obre el modal del missatge concret
     obri: function obri(id) {
       UIkit.modal(id).show();
     },
+    // Esborra el missatge de la base de dades
     borra: function borra(id) {
       for (var index = 0; index < this.missatges.length; index++) {
         if (this.missatges[index].id == id) {
@@ -5842,6 +5933,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       UIkit.modal('#missatge' + id).hide();
     },
+    // Agafa tots els missatges
     agafa_missatges: function agafa_missatges() {
       var _this = this;
 
@@ -5852,6 +5944,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     },
+    // Crear canal de websocket per a poder llegir-lo i que et notifique l'arribada d'un missatge
     channel_create_mail: function channel_create_mail() {
       var aux;
       var self = this;
@@ -22201,7 +22294,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.titulet {\n  margin-left: 10px;\n  font-color: gray;\n  overflow: hidden;\n  transition: all 1s;\n}\n@media (min-width: 1480px) {\n.titulet {\n    font-size: 1.2em;\n}\n}\n@media (max-width: 1480px) {\n.titulet {\n    font-size: 0.8em;\n}\n}\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n  box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -webkit-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -moz-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n  min-height: 160px;\n}\n.dia .principal .s-, .dia .principal .s-permis, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 95%;\n  max-width: 130px;\n}\n.dia .principal .s-cefire {\n  background-color: #3490dc;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEFIRE\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEF...\";\n}\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n@media (min-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COMPENSA\";\n}\n}\n@media (max-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COM...\";\n}\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n@media (min-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUARDIA\";\n}\n}\n@media (max-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUA...\";\n}\n}\n.dia .principal .s-visita {\n  background-color: pink;\n}\n@media (min-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VISITA\";\n}\n}\n@media (max-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VIS...\";\n}\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-permis {\n  background-color: green;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PERM\\CDS\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PER...\";\n}\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .falta_fitxar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: red;\n  font-weight: bold;\n}\n.dia .falta_fitxar:before {\n  content: \"\\F4FD\";\n}\n.dia .arxiu {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .arxiu:before {\n  content: \"\\F15B\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: nowrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container button {\n  flex: 1 0 auto;\n  margin: 1px;\n  padding-left: 8px;\n  padding-right: 8px;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.titulet {\n  margin-left: 10px;\n  font-color: gray;\n  overflow: hidden;\n  transition: all 1s;\n}\n@media (min-width: 1480px) {\n.titulet {\n    font-size: 1.2em;\n}\n}\n@media (max-width: 1480px) {\n.titulet {\n    font-size: 0.8em;\n}\n}\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n  box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -webkit-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -moz-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n  min-height: 160px;\n}\n.dia .principal .s-, .dia .principal .s-permis, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 99%;\n  max-width: 140px;\n}\n.dia .principal .s-cefire {\n  background-color: #3490dc;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEFIRE\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEF...\";\n}\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n@media (min-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COMPENSA\";\n}\n}\n@media (max-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COM...\";\n}\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n@media (min-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUARDIA\";\n}\n}\n@media (max-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUA...\";\n}\n}\n.dia .principal .s-visita {\n  background-color: pink;\n}\n@media (min-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VISITA\";\n}\n}\n@media (max-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VIS...\";\n}\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-permis {\n  background-color: green;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PERM\\CDS\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PER...\";\n}\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .falta_fitxar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: red;\n  font-weight: bold;\n}\n.dia .falta_fitxar:before {\n  content: \"\\F4FD\";\n}\n.dia .arxiu {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .arxiu:before {\n  content: \"\\F15B\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: nowrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container button {\n  flex: 1 0 auto;\n  margin: 1px;\n  padding-left: 8px;\n  padding-right: 8px;\n}", ""]);
 
 // exports
 
@@ -92308,8 +92401,8 @@ var render = function() {
             },
             on: {
               "click-item": _vm.borrar,
-              "drag-start": _vm.drag_prova,
-              "drop-on-date": _vm.drag_on_prova
+              "drag-start": _vm.drag_comencant,
+              "drop-on-date": _vm.asolta_en
             },
             scopedSlots: _vm._u([
               {

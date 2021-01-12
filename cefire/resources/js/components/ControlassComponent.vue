@@ -89,6 +89,9 @@
 </template>
 
 <script>
+/**
+ * Component que mostra les dades de tots els assessors
+ */
 export default {
     data() {
         return {
@@ -104,6 +107,7 @@ export default {
         }
     },
     methods: {
+        // Actualitxa assessor
         envia_edit(){
             axios.put("user/"+this.edita_u.id,this.edita_u)
             .then(res => {
@@ -115,6 +119,7 @@ export default {
                 console.error(err);
             })
         },
+        // Borra assessor
         borra(id){
             let url = "user/" + id;
             axios.delete(url)
@@ -126,6 +131,7 @@ export default {
                 console.error(err);
             })
         },
+        // Edita assessor
         edita(id){
             let results = this.users.filter((item => item.id == id));
             this.edita_u.id=results[0].id;
@@ -135,6 +141,7 @@ export default {
             this.edita_u.rfid=results[0].rfid;
             UIkit.modal("#edita").show();
         },
+        // Agafa usuaris
         agafa_users(){
             axios.get("user")
             .then(res => {

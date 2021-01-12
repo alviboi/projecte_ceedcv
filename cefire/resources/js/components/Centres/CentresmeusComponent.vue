@@ -3,6 +3,9 @@
 </template>
 
 <script>
+/**
+ * Aquest component agafa només els centres que tinga l'assessor
+ */
 export default {
     data() {
         return {
@@ -10,6 +13,7 @@ export default {
         }
     },
     methods: {
+        // Comproba el nom de l'assessor que està logat
         logat() {
             axios.get("logat")
             .then(res => {
