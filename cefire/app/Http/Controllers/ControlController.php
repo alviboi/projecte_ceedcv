@@ -13,17 +13,9 @@ use Illuminate\Support\Facades\Route;
 
 class ControlController extends Controller
 {
-    // public function welcome (){
-    //     $reg = control::find(1)->registra;
-    //     if ($reg == 0){
-    //         Auth::routes(['register' => false]);
-    //     }
-    //     Auth::routes(['register' => false]);
-    //     return view('welcome');
-    // }
 
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -35,7 +27,7 @@ class ControlController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Crea un element del recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -45,7 +37,7 @@ class ControlController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda l'elememt creat.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -55,30 +47,9 @@ class ControlController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Actualitza l'element del recurs a la base de dades
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -99,7 +70,7 @@ class ControlController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina l'element  del recurs de la base de dades
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class avisosController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -26,7 +26,7 @@ class avisosController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Crea un element del recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -36,7 +36,7 @@ class avisosController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda l'elememt creat.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -60,42 +60,9 @@ class avisosController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\avisos  $avisos
-     * @return \Illuminate\Http\Response
-     */
-    public function show(avisos $avisos)
-    {
-        //
-    }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\avisos  $avisos
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(avisos $avisos)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\avisos  $avisos
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, avisos $avisos)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Elimina l'element  del recurs de la base de dades
      *
      * @param  \App\Models\avisos  $avisos
      * @return \Illuminate\Http\Response

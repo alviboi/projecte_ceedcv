@@ -8,27 +8,16 @@ use Illuminate\Http\Request;
 class centresController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
-        // $centres=centres::get()->values();
-        // $ret=array();
-        // array_push($ret,array("id","assessor","nom","codi","situacio","CP","ciutat","contacte","mail_contacte","tlf_contacte","Observacions"));
-        // foreach ($centres as $el) {
-        //     //["id","nom","codi","situacio","CP","ciutat","user_id","contacte","mail_contacte","tlf_contacte","Observacions"]
-        //     $item=array($el->id,$el->user['name'],$el->nom,$el->codi,$el->situacio,$el->CP,$el->ciutat,$el->contacte,$el->mail_contacte,$el->tlf_contacte,$el->Observacions);
-        //     array_push($ret, $item);
-        // }
-        // return $ret;
+
         $centres=centres::get()->values();
         $ret=array();
-        // array_push($ret,array("id","assessor","nom","codi","situacio","CP","ciutat","contacte","mail_contacte","tlf_contacte","Observacions"));
         foreach ($centres as $el) {
-            //["id","nom","codi","situacio","CP","ciutat","user_id","contacte","mail_contacte","tlf_contacte","Observacions"]
             $item=array("id" => $el->id,"assessor" => $el->user['name'],"nom" => $el->nom,"codi"=>$el->codi,"situacio"=>$el->situacio,"CP"=>$el->CP,"ciutat"=>$el->ciutat,"contacte"=>$el->contacte,"mail_contacte"=>$el->mail_contacte,"tlf_contacte"=>$el->tlf_contacte,"Observacions"=>$el->Observacions);
             array_push($ret, $item);
         }
@@ -36,7 +25,7 @@ class centresController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Crea un element del recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +35,7 @@ class centresController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda l'element creat. L'element centre no es deu de crear d'un en un l'administrador fa un bolcat a principi de curs des d'un full de calc.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -58,7 +47,7 @@ class centresController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostra l'element del curs
      *
      * @param  \App\Models\centres  $centres
      * @return \Illuminate\Http\Response
@@ -68,19 +57,9 @@ class centresController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\centres  $centres
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(centres $centres)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
+     * Actualitza l'element del recurs a la base de dades
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\centres  $centres
@@ -110,7 +89,7 @@ class centresController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina l'element  del recurs de la base de dades
      *
      * @param  \App\Models\centres  $centres
      * @return \Illuminate\Http\Response

@@ -11,15 +11,25 @@ use App\Http\Controllers\ControlController;
 class cefireController extends Controller
 {
 
-    //protected $Control_data;
     protected $aparell;
+
+    /**
+     * __construct
+     *
+     * Extraguem la informació de configuració de l'aplicació
+     *
+     * aparell = 1 fitxa per temps i l'aparell funciona
+     * aparell = 0 el fitxatge es per dia
+     *
+     * @param  mixed $Control_data
+     * @return void
+     */
     public function __construct(ControlController $Control_data)
     {
-        //$this->Control_data = $Control_data;
         $this->aparell = $Control_data->index()->aparell;
     }
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -48,18 +58,7 @@ class cefireController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Guarda l'elememt creat.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -115,7 +114,7 @@ class cefireController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostra l'element del curs
      *
      * @param  \App\Models\cefire  $cefire
      * @return \Illuminate\Http\Response
@@ -125,31 +124,9 @@ class cefireController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\cefire  $cefire
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(cefire $cefire)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\cefire  $cefire
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, cefire $cefire)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Elimina l'element  del recurs de la base de dades
      *
      * @param  \App\Models\cefire  $cefire
      * @return \Illuminate\Http\Response
@@ -160,11 +137,16 @@ class cefireController extends Controller
         $cefire->delete();
     }
 
-        /**
-     * Remove the specified resource from storage.
+
+    /**
+     * contar_cefires
      *
-     * @param  \App\Models\cefire  $cefire
-     * @return \Illuminate\Http\Response
+     * Calcula el temps que s'ha realitzat al Cefire entre $desde fins a $fins, seccionat per dies. Aquesta funció torna les dades per a poder generar la gràfica de
+     * estadística de l'aplicació.
+     *
+     * @param  mixed $desde
+     * @param  mixed $fins
+     * @return void
      */
     public function contar_cefires($desde,$fins)
     {

@@ -19,7 +19,7 @@ use Carbon\Carbon;
 class guardiaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -44,14 +44,13 @@ class guardiaController extends Controller
         return $ret;
     }
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
     public function get_data_index2($mes, $any)
     {
-        //
-        // return guardia::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->user()->get();
+
         $ret = array();
         $guardies = guardia::whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
         foreach ($guardies as $guardia) {
@@ -61,7 +60,7 @@ class guardiaController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -110,7 +109,7 @@ class guardiaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Crea un element del recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -120,7 +119,7 @@ class guardiaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda l'elememt creat.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -138,7 +137,7 @@ class guardiaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostra l'element del curs
      *
      * @param  \App\Models\guardia  $guardia
      * @return \Illuminate\Http\Response
@@ -160,7 +159,7 @@ class guardiaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualitza l'element del recurs a la base de dades
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\guardia  $guardia
@@ -172,7 +171,7 @@ class guardiaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina l'element  del recurs de la base de dades
      *
      * @param  \App\Models\cefire  $cefire
      * @return \Illuminate\Http\Response

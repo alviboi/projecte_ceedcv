@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class compensaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -37,7 +37,7 @@ class compensaController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
+     * Crea un element del recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -47,7 +47,7 @@ class compensaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda l'elememt creat.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -65,30 +65,10 @@ class compensaController extends Controller
         return $dat->toArray();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\compensa  $compensa
-     * @return \Illuminate\Http\Response
-     */
-    public function show(compensa $compensa)
-    {
-        //
-    }
+
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\compensa  $compensa
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(compensa $compensa)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Actualitza l'element del recurs a la base de dades
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\compensa  $compensa
@@ -100,7 +80,7 @@ class compensaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina l'element  del recurs de la base de dades
      *
      * @param  \App\Models\compensa  $compensa
      * @return \Illuminate\Http\Response

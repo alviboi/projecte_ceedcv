@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class visitaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -34,7 +34,7 @@ class visitaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Crea un element del recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -44,7 +44,7 @@ class visitaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda l'elememt creat.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -63,7 +63,7 @@ class visitaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostra l'element del curs
      *
      * @param  \App\Models\visita  $visita
      * @return \Illuminate\Http\Response
@@ -85,7 +85,7 @@ class visitaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualitza l'element del recurs a la base de dades
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\visita  $visita
@@ -97,7 +97,7 @@ class visitaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina l'element  del recurs de la base de dades
      *
      * @param  \App\Models\visita  $visita
      * @return \Illuminate\Http\Response

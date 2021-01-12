@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class cursController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -35,7 +35,7 @@ class cursController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Crea un element del recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -45,7 +45,7 @@ class cursController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda l'elememt creat.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -63,30 +63,9 @@ class cursController extends Controller
         return $dat->toArray();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\curs  $curs
-     * @return \Illuminate\Http\Response
-     */
-    public function show(curs $curs)
-    {
-        //
-    }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\curs  $curs
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(curs $curs)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Actualitza l'element del recurs a la base de dades
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\curs  $curs
@@ -98,7 +77,7 @@ class cursController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina l'element  del recurs de la base de dades
      *
      * @param  \App\Models\curs  $curs
      * @return \Illuminate\Http\Response

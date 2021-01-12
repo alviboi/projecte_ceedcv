@@ -11,15 +11,39 @@ use Illuminate\Support\Str;
 use App\Jobs\SendPasswordMail;
 use DateTime;
 
+
+/**
+ * UserController Class
+ *
+ * @version 1.0
+ *
+ * Per a totes aquelles connexions realitzades a la taula User
+ *
+ */
+
 class UserController extends Controller
 
 {
 
+
+    /**
+     * @return la vista en blade de home
+     */
     public function home (){
         $conta = User::find(auth()->id())->notificacions()->count();
         return view('home', ['conta' => $conta]);
     }
 
+
+
+
+    /**
+     * contar: Conta tots els elements que té un assessor
+     *
+     * @param  mixed $desde inici del di
+     * @param  mixed $fins fi del dia
+     * @return array de totes les dades contades
+     */
     public function contar ($desde,$fins) {
 
         $labels=['cefire','permis','compensa','curs'];
@@ -73,10 +97,10 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda l'elememt creat.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response missatge de tasca feta
      */
     public function store(Request $request)
     {
@@ -104,6 +128,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * get_usuaris_ldap funció per a demanar tots els usuaris LDAP
+     *
+     * @param  mixed $request es demana la ip i la contrasenya de netadmin per a poder connectar-se a un LliureX
+     * @return text Si ha estat satisfactòria
+     */
     public function get_usuaris_ldap(Request $request)
     {
 
@@ -143,9 +173,9 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Mostra la informació d'un usuari
      *
-     * @return \Illuminate\Http\Response
+     * @return informació
      */
     public function get_user()
     {
@@ -153,7 +183,7 @@ class UserController extends Controller
         return User::find(auth()->id());
     }
     /**
-     * Display a listing of the resource.
+     * Mostra un llistat de tot el recurs
      *
      * @return \Illuminate\Http\Response
      */
@@ -162,16 +192,29 @@ class UserController extends Controller
         //
         return User::orderBy('name', 'ASC')->get();
     }
+
+    /**
+     * destroy
+     *
+     * Elimina el recurs
+     *
+     * @param  mixed $user
+     * @return void
+     */
     public function destroy($user)
     {
         //
         User::find($user)->delete();
     }
 
+
     /**
-     * Display a listing of the resource.
+     * update
      *
-     * @return \Illuminate\Http\Response
+     * Actualitza el recurs
+     *
+     * @param  mixed $request
+     * @return estat de la petició
      */
     public function update(Request $request)
     {
@@ -193,10 +236,15 @@ class UserController extends Controller
 
     }
 
+
     /**
-     * Display a listing of the resource.
+     * dia_cefire
      *
-     * @return \Illuminate\Http\Response
+     * Torna la informació sol·licitada d'un moment concret del dia del recurs
+     *
+     * @param  mixed $dia
+     * @param  mixed $mati
+     * @return array $ret2 amb tota la informació
      */
     public function dia_cefire($dia,$mati)
     {
@@ -205,7 +253,6 @@ class UserController extends Controller
         $cefire = User::find(auth()->id())->cefire()->where('data','=',$dia)->where('fi',$control,'15:00:00')->get();
         $ret2=array();
         foreach ($cefire as  $value) {
-            # code...
             $ret1 = array("id" => $value->id, "user_id" => $value->user_id,"inici" => $value->inici->format('H:i:s'),"fi" => $value->fi->format('H:i:s'));
             array_push($ret2,$ret1);
 
@@ -214,6 +261,15 @@ class UserController extends Controller
         return $ret2;
 
     }
+    /**
+     * dia_guardia
+     *
+     * Torna la informació sol·licitada d'un moment concret del dia del recurs
+     *
+     * @param  mixed $dia
+     * @param  mixed $mati
+     * @return array $ret2 amb tota la informació
+     */
     public function dia_guardia($dia,$mati)
     {
         //
@@ -221,6 +277,15 @@ class UserController extends Controller
         $cefire = User::find(auth()->id())->guardia()->where('data','=',$dia)->where('fi',$control,'15:00:00')->get();
         return $cefire;
     }
+    /**
+     * dia_curs
+     *
+     * Torna la informació sol·licitada d'un moment concret del dia del recurs
+     *
+     * @param  mixed $dia
+     * @param  mixed $mati
+     * @return array $ret2 amb tota la informació
+     */
     public function dia_curs($dia,$mati)
     {
         //
@@ -228,6 +293,15 @@ class UserController extends Controller
         $cefire = User::find(auth()->id())->curs()->where('data','=',$dia)->where('fi',$control,'15:00:00')->get();
         return $cefire;
     }
+    /**
+     * dia_compensa
+     *
+     * Torna la informació sol·licitada d'un moment concret del dia del recurs
+     *
+     * @param  mixed $dia
+     * @param  mixed $mati
+     * @return array $ret2 amb tota la informació
+     */
     public function dia_compensa($dia,$mati)
     {
         //
@@ -235,6 +309,15 @@ class UserController extends Controller
         $cefire = User::find(auth()->id())->compensa()->where('data','=',$dia)->where('fi',$control,'15:00:00')->get();
         return $cefire;
     }
+    /**
+     * dia_visita
+     *
+     * Torna la informació sol·licitada d'un moment concret del dia del recurs
+     *
+     * @param  mixed $dia
+     * @param  mixed $mati
+     * @return array $ret2 amb tota la informació
+     */
     public function dia_visita($dia,$mati)
     {
         //
@@ -242,6 +325,15 @@ class UserController extends Controller
         $cefire = User::find(auth()->id())->visita()->where('data','=',$dia)->where('fi',$control,'15:00:00')->get();
         return $cefire;
     }
+    /**
+     * dia_permis
+     *
+     * Torna la informació sol·licitada d'un moment concret del dia del recurs
+     *
+     * @param  mixed $dia
+     * @param  mixed $mati
+     * @return array $ret2 amb tota la informació
+     */
     public function dia_permis($dia,$mati)
     {
         //
@@ -249,14 +341,19 @@ class UserController extends Controller
         $cefire = User::find(auth()->id())->permis()->where('data','=',$dia)->where('fi',$control,'15:00:00')->get();
         return $cefire;
     }
-    /**
-     * Torna totes les etiquetes cefire d'un mes determinat
-     * @num id de l'assessspr
-     * @any any que volem conèixer
-     * @mes mes que volem conèixer
-     *
-     */
 
+
+    /**
+     * get_cefire
+     *
+     * Torna tots el fitxatges fets durant un temps determinat per $any $mes de l'assesor amb el codi $num
+     *
+     * @param  mixed $request
+     * @param  mixed $num
+     * @param  mixed $any
+     * @param  mixed $mes
+     * @return array $ret2 amb les dades sol·licitades
+     */
     public function get_cefire(Request $request, $num,$any,$mes)
     {
         //
@@ -269,13 +366,16 @@ class UserController extends Controller
         }
         return $ret2;
     }
-
     /**
-     * Torna totes les etiquetes cefire d'un mes determinat
-     * @num id de l'assessspr
-     * @any any que volem conèixer
-     * @mes mes que volem conèixer
+     * get_guardia
      *
+     * Torna totes les guàrdies durant un temps determinat per $any $mes de l'assesor amb el codi $num
+     *
+     * @param  mixed $request
+     * @param  mixed $num
+     * @param  mixed $any
+     * @param  mixed $mes
+     * @return array $ret2 amb les dades sol·licitades
      */
 
     public function get_guardia(Request $request, $num,$any,$mes)
@@ -284,12 +384,16 @@ class UserController extends Controller
         return User::find($num)->guardia()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
     }
 
-        /**
-     * Torna totes les etiquetes cefire d'un mes determinat
-     * @num id de l'assessspr
-     * @any any que volem conèixer
-     * @mes mes que volem conèixer
+    /**
+     * get_curs
      *
+     * Torna tots els curs fets per un assessor durant un temps determinat per $any $mes de l'assesor amb el codi $num
+     *
+     * @param  mixed $request
+     * @param  mixed $num
+     * @param  mixed $any
+     * @param  mixed $mes
+     * @return array $ret2 amb les dades sol·licitades
      */
 
     public function get_curs(Request $request, $num,$any,$mes)
@@ -298,12 +402,16 @@ class UserController extends Controller
         return User::find($num)->curs()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
     }
 
-        /**
-     * Torna totes les etiquetes cefire d'un mes determinat
-     * @num id de l'assessspr
-     * @any any que volem conèixer
-     * @mes mes que volem conèixer
+    /**
+     * get_compensa
      *
+     * Torna totes les compensacions fetes per un assessor durant un temps determinat per $any $mes de l'assesor amb el codi $num
+     *
+     * @param  mixed $request
+     * @param  mixed $num
+     * @param  mixed $any
+     * @param  mixed $mes
+     * @return array $ret2 amb les dades sol·licitades
      */
 
     public function get_compensa(Request $request, $num,$any,$mes)
@@ -312,12 +420,16 @@ class UserController extends Controller
         return User::find($num)->compensa()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
     }
 
-        /**
-     * Torna totes les etiquetes cefire d'un mes determinat
-     * @num id de l'assessspr
-     * @any any que volem conèixer
-     * @mes mes que volem conèixer
+    /**
+     * get_visita
      *
+     * Torna totes les visites durant un temps determinat per $any $mes de l'assesor amb el codi $num
+     *
+     * @param  mixed $request
+     * @param  mixed $num
+     * @param  mixed $any
+     * @param  mixed $mes
+     * @return array $ret2 amb les dades sol·licitades
      */
 
     public function get_visita(Request $request, $num,$any,$mes)
@@ -326,12 +438,16 @@ class UserController extends Controller
         return User::find($num)->visita()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
     }
 
-        /**
-     * Torna totes les etiquetes cefire d'un mes determinat
-     * @num id de l'assessspr
-     * @any any que volem conèixer
-     * @mes mes que volem conèixer
+    /**
+     * get_permis
      *
+     * Torna tots els permisos durant un temps determinat per $any $mes de l'assesor amb el codi $num
+     *
+     * @param  mixed $request
+     * @param  mixed $num
+     * @param  mixed $any
+     * @param  mixed $mes
+     * @return array $ret2 amb les dades sol·licitades
      */
 
     public function get_permis(Request $request, $num,$any,$mes)
@@ -339,16 +455,22 @@ class UserController extends Controller
         //
         return User::find($num)->permis()->whereMonth('data', '=', date($mes))->whereYear('data', '=', date($any))->get();
     }
+
+    // public function __invoke(Request $request)
+    // {
+    //     //
+    // }
+
+
     /**
-     * Handle the incoming request.
+     * get_all
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Torna totes les dades d'un assessor en concret
+     *
+     * @param  mixed $de
+     * @param  mixed $fins
+     * @return array $ret
      */
-    public function __invoke(Request $request)
-    {
-        //
-    }
     public function get_all($de,$fins)
     {
         //
