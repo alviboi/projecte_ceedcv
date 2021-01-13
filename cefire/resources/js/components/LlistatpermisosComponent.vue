@@ -76,6 +76,10 @@
 
 <script>
 
+/**
+ * En aquest component es mostren tots els justificants de tots els permisos dels assessors, es pot buscar per assessor i per dades concretes
+ */
+
 import Datepicker from "vuejs-datepicker";
 import { ca } from "vuejs-datepicker/dist/locale";
     export default {
@@ -96,12 +100,14 @@ import { ca } from "vuejs-datepicker/dist/locale";
             Datepicker,
         },
         methods: {
+            // Filtra els resultats
             filterResults() {
                 this.results = this.users.filter((item => item.name.toLowerCase() == this.busca_ass.toLowerCase()));
                 if (this.results[0] !== undefined){
                     this.completa();
                 }
             },
+            // Agafa a tots el usuaris
             agafa_users(){
                 axios.get("user")
                 .then(res => {
@@ -112,6 +118,7 @@ import { ca } from "vuejs-datepicker/dist/locale";
                     console.error(err);
                 })
             },
+            // Quan es canvia la data es mira si s'han d'actualtizar els resultats
             canvia_data(){
                 console.log(this.fins);
                 console.log(this.desde);
@@ -119,6 +126,7 @@ import { ca } from "vuejs-datepicker/dist/locale";
                     this.filterResults();
                 }
             },
+            // Petició per a demanar tots els permisos
             agafa_dades_permisos () {
                 //this.busca_ass="";
                 if (this.results[0]['id'] !== undefined)
@@ -139,6 +147,7 @@ import { ca } from "vuejs-datepicker/dist/locale";
                         })
                     }
             },
+            // Petició per a demanar tots el permisos que no tinguen un arxiu pujat, es pot demanar el permís sense tindre encara el justificant
             agafa_dades_permisos_sense_arxius () {
 
                     let url = "permis_sense_arxiu";
@@ -151,6 +160,7 @@ import { ca } from "vuejs-datepicker/dist/locale";
                         this.$toast.error(err.response.data.message);
                     })
             },
+            // Si no hi cap data seleccionada es busca tots els permisos del curs
             completa () {
                 this.permisos = [];
                 if (this.desde != '0000-00-00' && this.fins != '0000-00-00'){
@@ -170,6 +180,7 @@ import { ca } from "vuejs-datepicker/dist/locale";
                     this.agafa_dades_permisos();
                 }
             },
+            // Descarrega l'arxiu amb el nom permis.pdf
             mira_arxiu(d){
                 let url="download_permis";
                 let params={

@@ -1,7 +1,12 @@
 const { delay } = require("lodash");
 
 
-
+/**
+ *
+ * Aquesta funció canvia una data al format de la base de dades
+ *
+ * @param {*} data
+ */
 
 window.data_db = function (data) {
     var mes_s = '';
@@ -23,6 +28,8 @@ window.data_db = function (data) {
     return ret;
 }
 
+
+
 window.getDiumenge= function (d) {
     d = new Date(d);
     var day = d.getDay(),
@@ -34,6 +41,13 @@ window.avis = function() {
     UIkit.modal('modal_avis').show();
 }
 
+/**
+ *
+ * Mostrem la data amb format natural
+ *
+ * @param {*} d
+ */
+
 window.fecha_format = function (d = new Date) {
     let mes = String(d.getMonth() + 1);
     let dia = String(d.getDate());
@@ -44,6 +58,14 @@ window.fecha_format = function (d = new Date) {
 
     return `${dia}/${mes}/${any}`;
   }
+
+/**
+ *
+ * Per obrir un element en una nova pestanya.
+ * No s'utiltiza, però es deixa a caràcter optatiu per als fulls dels permisos
+ *
+ * @param {*} url
+ */
 
 window.newTab = function(url){
     var win = window.open(url);

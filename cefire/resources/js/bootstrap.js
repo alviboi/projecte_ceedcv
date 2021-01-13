@@ -1,5 +1,9 @@
 window._ = require('lodash');
 
+/**
+ * Utilitzarem en algun casos el framework uikit
+ */
+
 window.UIkit = require("uikit");
 window.Icons = require("uikit/dist/js/uikit-icons");
 
@@ -32,12 +36,15 @@ if (token) {
 
 try {
     window.$ = window.jQuery = require('jquery');
-
     window.UIkit = require('uikit');
     UIkit.use(Icons);
 } catch (e) {
 
 }
+
+/**
+ * Hem d'importar la llibreria de pusher per al websocket
+ */
 
 import Pusher from "pusher-js"
 Pusher.logToConsole = true;
@@ -47,6 +54,9 @@ Pusher.logToConsole = true;
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
+ *
+ * NO UTILITZAREM LARAVEL-ECHO JA QUE DONA RESULTATS INESPERATS, RESULTA MÉS CÒMODE CREAR LA PETICIÓ DIRECTAMENT
+ *
  */
 
 // import Echo from 'laravel-echo'

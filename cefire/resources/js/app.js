@@ -18,6 +18,14 @@ import "vue-toastification/dist/index.css";
 //     cluster: 'eu',
 //     encrypted: true,
 // });
+
+/**
+ * Es dona d'alta el websocket
+ *
+ * TODO: Crear element en configuració per a afegir el id des de l'aplicació
+ *
+ */
+
 window.pusher = new Pusher('e5f9e09fa9fe46c9b61e',{
     cluster: 'eu',
     encrypted: true,
@@ -108,6 +116,7 @@ Vue.prototype.$eventBus = new Vue();
 
 
 
+
 const app = new Vue({
     el: '#app',
     data: {
@@ -120,6 +129,9 @@ const app = new Vue({
         ajuda: '',
     },
     components: {
+        /**
+         * En funció del valor de la variable view es canviarà el component a mostrar
+         */
         'calendar': {
           template: '<div><calendar-component/></div>'
         },
@@ -163,6 +175,9 @@ const app = new Vue({
 
       },
     methods: {
+        /**
+         * Tenim diferents metodes per a obrir i tancar alguns modals
+         */
         canvi() {
             this.horari=false;
             this.calendar=true;
@@ -195,6 +210,7 @@ const app = new Vue({
         }
     },
     created() {
+        // Creem els elements que es van a escoltar pel bus
         this.$eventBus.$on('tanca-avis', this.tanca_avis);
         this.$eventBus.$on('tanca-missatge', this.tanca_missatge);
         this.$eventBus.$on('tanca-edita', this.tanca_edita);

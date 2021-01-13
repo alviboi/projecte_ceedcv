@@ -39,6 +39,11 @@
 </template>
 
 <script>
+
+/**
+Aquest component mostra tots el dies de la setmana present
+ */
+
 import Datepicker from "vuejs-datepicker";
 import { ca } from "vuejs-datepicker/dist/locale";
 export default {
@@ -53,10 +58,7 @@ export default {
     };
   },
   methods: {
-    // datepickerClosedFunction() {
-    //     this.componentKey++;
-    // },
-
+    // Quan canviem la data, al buscar una data
     canvia_data (val) {
         let aux = new Date(val);
         this.dia=aux;
@@ -64,6 +66,7 @@ export default {
         this.componentKey++;
 
     },
+    // Quan pujem o baixem una setmana
     canvia(ar) {
       let result = ar == "arr" ? -7 : 7;
       this.dia = new Date(
@@ -129,7 +132,7 @@ export default {
         margin-top: 5px
     .avant
         grid-area: avant
-
+// Si la pantalla ajunta molt els elements, el desplegable del dia després es pot superposat al dia abans
 @for $i from 1 through 7
     .z#{$i}
         z-index: #{$i}

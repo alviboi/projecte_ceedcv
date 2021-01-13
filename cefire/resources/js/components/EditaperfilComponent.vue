@@ -66,6 +66,11 @@
 </template>
 
 <script>
+
+/**
+En aquest component es crea el modal per a poder editar les dades de l'assessor
+ */
+
 export default {
     data() {
         return {
@@ -79,11 +84,12 @@ export default {
     props: ['show-edita'],
     watch: {
         showEdita(){
-            this.este();
+            this.mostra_modal();
         }
     },
 
     methods: {
+        // Agafa les dades de l'usuari
         get_datos(){
             axios.get("user_get")
             .then(res => {
@@ -94,10 +100,12 @@ export default {
                 console.error(err);
             })
         },
+        // Surt del modal
         ix() {
             this.$eventBus.$emit('tanca-edita');
             UIkit.modal('#modal_edita').hide();
         },
+        // Envia les dades per a actualitzar
         envia() {
             if (this.contrasenya == this.contrasenya2) {
 
@@ -123,7 +131,8 @@ export default {
             }
 
         },
-        este() {
+        // Funció que mostra el modal
+        mostra_modal() {
             if (this.showEdita == true) {
                 UIkit.modal('#edita_perfil',{ bgClose: false, escClose: false, modal: false, keyboard:false}).show();
                 this.get_datos();

@@ -7,7 +7,7 @@
             <div class="uk-width-1-3">
                 <form class="uk-width-expand uk-search uk-search-default" autocomplete="on">
                     <a @click="filterResults()" uk-search-icon></a>
-                    <input list="llista" v-model="busca_ass" class="uk-search-input" @keypress="pressEnter">
+                    <input list="llista" v-model="busca_ass" class="uk-search-input">
                       <datalist class="llista" id="llista">
                             <option v-for="(user,key) in users" :key="key" :value="user.name">{{user.name}}</option>
                       </datalist>
@@ -45,6 +45,10 @@
 </template>
 
 <script>
+/**
+ * En aquest component podem buscar l'horari de tot el mes d'un assessor
+ */
+
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
 require("vue-simple-calendar/static/css/default.css")
 require("vue-simple-calendar/static/css/holidays-us.css")
@@ -84,6 +88,7 @@ export default {
 		},
 	},
 	methods: {
+        // Quan s'establix un mes es demana tota la informació del dia de tots els elements
         setdia(d) {
             this.dia = d;
             this.items= [];
@@ -91,17 +96,14 @@ export default {
                 this.tots_els_elements_get();
             }
 		},
-        pressEnter(event){
-            if (event.keyCode === 13) {
-                this.filterResults();
-            }
-        },
+        // Filtra els resultats
         filterResults() {
             this.results = this.users.filter((item => item.name.toLowerCase() == this.busca_ass.toLowerCase()));
             if (this.results[0] !== undefined){
                 this.tots_els_elements_get();
             }
         },
+        // Es demanen tots el elements
         tots_els_elements_get() {
             this.items= [];
             this.get_element('cefire');
@@ -111,6 +113,7 @@ export default {
             this.get_element('permis');
             this.get_element('visita');
         },
+        // Petició de les dades de tots els usuaris per al desplegable
         agafa_users(){
             axios.get("user")
             .then(res => {
@@ -121,6 +124,7 @@ export default {
                 console.error(err);
             })
         },
+        // Funció per a demanar el element concret a través de axios
         get_element(element){
             var result = []
             let any=this.dia.getFullYear();
@@ -136,6 +140,12 @@ export default {
             });
 
         },
+        /**
+         * Emplenem el calendari, per a evitar errors es dona a cada element un rang que determina el seu id, per exemple cefire va desde 1000000 a 2000000,
+         * és molt difícil que hi haja 1 milió de fitxatges en un mes, ni controlant tots els assessors del cefire de tota la comunitat...
+         * Es determina la clase en la que es mostrarà cada element en funció de què és, i el paràmetre toti indica el element que anem a mostrar en l'ajuda
+         * contectual.
+         */
         emplena_calendari(element,result) {
             var num=0;
             var clase="custom-date-class-red";
@@ -203,6 +213,7 @@ export default {
             }
             this.index=result.length;
         },
+        // Funció que ens servix per a comprobar a què correspon cada element
         comproba_id_element (id){
             if (id>=1000000) {
                 if (id>=2000000) {
