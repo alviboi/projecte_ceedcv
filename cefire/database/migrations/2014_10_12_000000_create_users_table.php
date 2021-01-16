@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->integer('Perfil');
             $table->string('rfid',12)->nullable();
         });
+
+
     }
 
     /**

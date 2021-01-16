@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Schema;
 use App\Models\control;
 /*
 |--------------------------------------------------------------------------
@@ -16,16 +16,16 @@ use App\Models\control;
 
 //Comprovem si el registre està habilitat per a mostrar-se o no
 
-if (control::where("registra","=", 1)->exists())
-{
-    Auth::routes();
+if (Schema::hasTable('control')) {
+    if (control::where("registra", "=", 1)->exists()) {
+        Auth::routes();
+    } else {
+        Auth::routes([
+            'register' => false
+        ]);
+    }
 }
-else
-{
-    Auth::routes([
-        'register' => false
-    ]);
-}
+
 
 
 Route::get('/', function () {

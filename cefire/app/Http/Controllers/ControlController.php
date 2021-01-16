@@ -22,29 +22,8 @@ class ControlController extends Controller
     public function index()
     {
         //
-        return control::find(1);
+        return control::first();
 
-    }
-
-    /**
-     * Crea un element del recurs
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Guarda l'elememt creat.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
 
@@ -58,7 +37,7 @@ class ControlController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $con = control::find(1);
+        $con = control::first();
         if (isset($request->aparell)){
             $con->aparell = $request->aparell;
         }

@@ -17,7 +17,7 @@ class CreateNotificacionsTable extends Migration
             $table->id();
             $table->integer('From');
             $table->integer('ass_id');
-            $table->string('missatge');
+            $table->string('missatge',1500);
             $table->timestamps();
         });
     }
