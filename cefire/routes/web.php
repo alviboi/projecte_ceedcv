@@ -14,7 +14,8 @@ use App\Models\control;
 |
 */
 
-//Comprovem si el registre està habilitat per a mostrar-se o no
+//Comprovem si el registre està habilitat per a mostrar-se o no, comprovem també si la taula existeix ja que quan corres
+//l'artisan per primera vegada llig el web.php i dona un error si control no existeix.
 
 if (Schema::hasTable('control')) {
     if (control::where("registra", "=", 1)->exists()) {
