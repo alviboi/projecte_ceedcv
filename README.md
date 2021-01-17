@@ -71,3 +71,28 @@ per
     ;fi
 ```
 
+Dins de l'arxiu .env que trobareu dins de la carpeta cefire (una vegada has executat start.sh), has de configurar els següents paràmetres si vols fer ús de websockets i el correu has d'omplir les claus:
+
+```
+PUSHER_APP_ID=
+PUSHER_APP_KEY=
+PUSHER_APP_SECRET=
+PUSHER_APP_CLUSTER=eu
+BROADCAST_DRIVER=pusher
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+Dins de l'arxiu .env de la carpeta laradock cal configurar els següents paràmetres:
+
+```
+
+
+```
