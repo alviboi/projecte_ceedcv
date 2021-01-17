@@ -17,7 +17,7 @@ class CreateAvisosTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string("avis");
-            $table->string("capçalera");
+            //$table->string("capçalera");
         });
     }
 
