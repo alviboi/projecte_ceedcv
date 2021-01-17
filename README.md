@@ -9,6 +9,8 @@ Per a clonar el projecte podem utilitzar el següent comandament:
 ```
 git clone --recurse-submodules https://github.com/alviboi/projecte_ceedcv
 ```
+Has de tenir instal·lat els paquets docker docker-compose:
+
 
 # Instal·lació de l'aplicació
 
@@ -17,6 +19,7 @@ Una vegada descarregat, hem executar el següent comandament que trobarem dins d
 ```
 ./start.sh
 ```
+El comandament tardarà uns minuts en fer totes les operacions.
 
 Per a poder entrar en el workspace del docker, pots utilitzar el següent comandament:
 
