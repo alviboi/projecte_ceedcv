@@ -103,7 +103,7 @@
 								<li class="uk-nav-divider"></li>
 								<li><a href="#" @click.prevent="view = 'personals'"><span data-uk-icon="icon: image"></span> Les teues dades</a></li>
 								<li class="uk-nav-divider"></li>
-								<li><a href="#"><span data-uk-icon="icon: sign-out"></span> Surt</a></li>
+								<li><a href="{{ route('logout') }}"><span data-uk-icon="icon: sign-out"></span> Surt</a></li>
 					    </ul>
 				    </div>
 				    <!-- /user dropdown -->

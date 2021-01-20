@@ -4404,6 +4404,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+/**
+En aquest component es crea el modal per a poder editar les dades de l'assessor
+ */
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4417,10 +4421,11 @@ __webpack_require__.r(__webpack_exports__);
   props: ['show-edita'],
   watch: {
     showEdita: function showEdita() {
-      this.este();
+      this.mostra_modal();
     }
   },
   methods: {
+    // Agafa les dades de l'usuari
     get_datos: function get_datos() {
       var _this = this;
 
@@ -4431,10 +4436,12 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Surt del modal
     ix: function ix() {
       this.$eventBus.$emit('tanca-edita');
       UIkit.modal('#modal_edita').hide();
     },
+    // Envia les dades per a actualitzar
     envia: function envia() {
       var _this2 = this;
 
@@ -4457,7 +4464,8 @@ __webpack_require__.r(__webpack_exports__);
         alert("Les contrasenyes no coincideixen");
       }
     },
-    este: function este() {
+    // Funció que mostra el modal
+    mostra_modal: function mostra_modal() {
       if (this.showEdita == true) {
         UIkit.modal('#edita_perfil', {
           bgClose: false,
@@ -4572,6 +4580,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 
+/**
+Aquest component mostra tots el dies de la setmana present
+ */
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -4585,15 +4597,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    // datepickerClosedFunction() {
-    //     this.componentKey++;
-    // },
+    // Quan canviem la data, al buscar una data
     canvia_data: function canvia_data(val) {
       var aux = new Date(val);
       this.dia = aux;
       this.emplena_lloc();
       this.componentKey++;
     },
+    // Quan pujem o baixem una setmana
     canvia: function canvia(ar) {
       var result = ar == "arr" ? -7 : 7;
       this.dia = new Date(this.dia.setTime(this.dia.getTime() + result * 86400000));
@@ -4702,6 +4713,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+/**
+ * En aquest component podem buscar l'horari de tot el mes d'un assessor
+ */
+
 
 __webpack_require__(/*! vue-simple-calendar/static/css/default.css */ "./node_modules/vue-simple-calendar/static/css/default.css");
 
@@ -4743,6 +4758,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
     }
   },
   methods: {
+    // Quan s'establix un mes es demana tota la informació del dia de tots els elements
     setdia: function setdia(d) {
       this.dia = d;
       this.items = [];
@@ -4751,11 +4767,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         this.tots_els_elements_get();
       }
     },
-    pressEnter: function pressEnter(event) {
-      if (event.keyCode === 13) {
-        this.filterResults();
-      }
-    },
+    // Filtra els resultats
     filterResults: function filterResults() {
       var _this = this;
 
@@ -4767,6 +4779,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         this.tots_els_elements_get();
       }
     },
+    // Es demanen tots el elements
     tots_els_elements_get: function tots_els_elements_get() {
       this.items = [];
       this.get_element('cefire');
@@ -4776,6 +4789,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       this.get_element('permis');
       this.get_element('visita');
     },
+    // Petició de les dades de tots els usuaris per al desplegable
     agafa_users: function agafa_users() {
       var _this2 = this;
 
@@ -4786,6 +4800,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         console.error(err);
       });
     },
+    // Funció per a demanar el element concret a través de axios
     get_element: function get_element(element) {
       var _this3 = this;
 
@@ -4801,6 +4816,13 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         console.error(err);
       });
     },
+
+    /**
+     * Emplenem el calendari, per a evitar errors es dona a cada element un rang que determina el seu id, per exemple cefire va desde 1000000 a 2000000,
+     * és molt difícil que hi haja 1 milió de fitxatges en un mes, ni controlant tots els assessors del cefire de tota la comunitat...
+     * Es determina la clase en la que es mostrarà cada element en funció de què és, i el paràmetre toti indica el element que anem a mostrar en l'ajuda
+     * contectual.
+     */
     emplena_calendari: function emplena_calendari(element, result) {
       var num = 0;
       var clase = "custom-date-class-red";
@@ -4878,6 +4900,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
 
       this.index = result.length;
     },
+    // Funció que ens servix per a comprobar a què correspon cada element
     comproba_id_element: function comproba_id_element(id) {
       if (id >= 1000000) {
         if (id >= 2000000) {
@@ -5023,6 +5046,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+/**
+ * En aquest component es mostren tots els justificants de tots els permisos dels assessors, es pot buscar per assessor i per dades concretes
+ */
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -5042,6 +5069,7 @@ __webpack_require__.r(__webpack_exports__);
     Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   methods: {
+    // Filtra els resultats
     filterResults: function filterResults() {
       var _this = this;
 
@@ -5053,6 +5081,7 @@ __webpack_require__.r(__webpack_exports__);
         this.completa();
       }
     },
+    // Agafa a tots el usuaris
     agafa_users: function agafa_users() {
       var _this2 = this;
 
@@ -5064,6 +5093,7 @@ __webpack_require__.r(__webpack_exports__);
         console.error(err);
       });
     },
+    // Quan es canvia la data es mira si s'han d'actualtizar els resultats
     canvia_data: function canvia_data() {
       console.log(this.fins);
       console.log(this.desde);
@@ -5072,6 +5102,7 @@ __webpack_require__.r(__webpack_exports__);
         this.filterResults();
       }
     },
+    // Petició per a demanar tots els permisos
     agafa_dades_permisos: function agafa_dades_permisos() {
       var _this3 = this;
 
@@ -5091,6 +5122,7 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
+    // Petició per a demanar tots el permisos que no tinguen un arxiu pujat, es pot demanar el permís sense tindre encara el justificant
     agafa_dades_permisos_sense_arxius: function agafa_dades_permisos_sense_arxius() {
       var _this4 = this;
 
@@ -5102,6 +5134,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.$toast.error(err.response.data.message);
       });
     },
+    // Si no hi cap data seleccionada es busca tots els permisos del curs
     completa: function completa() {
       this.permisos = [];
 
@@ -5123,6 +5156,7 @@ __webpack_require__.r(__webpack_exports__);
         this.agafa_dades_permisos();
       }
     },
+    // Descarrega l'arxiu amb el nom permis.pdf
     mira_arxiu: function mira_arxiu(d) {
       var _this5 = this;
 
@@ -95165,7 +95199,6 @@ var render = function() {
                 attrs: { list: "llista" },
                 domProps: { value: _vm.busca_ass },
                 on: {
-                  keypress: _vm.pressEnter,
                   input: function($event) {
                     if ($event.target.composing) {
                       return
@@ -118403,6 +118436,13 @@ __webpack_require__(/*! ./home.js */ "./resources/js/home.js");
 //     encrypted: true,
 // });
 
+/**
+ * Es dona d'alta el websocket
+ *
+ * TODO: Crear element en configuració per a afegir el id des de l'aplicació
+ *
+ */
+
 window.pusher = new Pusher('e5f9e09fa9fe46c9b61e', {
   cluster: 'eu',
   encrypted: true
@@ -118473,6 +118513,9 @@ var app = new Vue({
     ajuda: ''
   },
   components: {
+    /**
+     * En funció del valor de la variable view es canviarà el component a mostrar
+     */
     'calendar': {
       template: '<div><calendar-component/></div>'
     },
@@ -118514,6 +118557,9 @@ var app = new Vue({
     }
   },
   methods: {
+    /**
+     * Tenim diferents metodes per a obrir i tancar alguns modals
+     */
     canvi: function canvi() {
       this.horari = false;
       this.calendar = true;
@@ -118544,6 +118590,7 @@ var app = new Vue({
     }
   },
   created: function created() {
+    // Creem els elements que es van a escoltar pel bus
     this.$eventBus.$on('tanca-avis', this.tanca_avis);
     this.$eventBus.$on('tanca-missatge', this.tanca_missatge);
     this.$eventBus.$on('tanca-edita', this.tanca_edita);
@@ -118570,6 +118617,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pusher_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 /* harmony import */ var pusher_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pusher_js__WEBPACK_IMPORTED_MODULE_0__);
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/**
+ * Utilitzarem en algun casos el framework uikit
+ */
+
 window.UIkit = __webpack_require__(/*! uikit */ "./node_modules/uikit/dist/js/uikit.js");
 window.Icons = __webpack_require__(/*! uikit/dist/js/uikit-icons */ "./node_modules/uikit/dist/js/uikit-icons.js");
 UIkit.use(window.Icons);
@@ -118598,6 +118649,10 @@ try {
   window.UIkit = __webpack_require__(/*! uikit */ "./node_modules/uikit/dist/js/uikit.js");
   UIkit.use(Icons);
 } catch (e) {}
+/**
+ * Hem d'importar la llibreria de pusher per al websocket
+ */
+
 
 
 pusher_js__WEBPACK_IMPORTED_MODULE_0___default.a.logToConsole = true;
@@ -118605,6 +118660,9 @@ pusher_js__WEBPACK_IMPORTED_MODULE_0___default.a.logToConsole = true;
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
+ *
+ * NO UTILITZAREM LARAVEL-ECHO JA QUE DONA RESULTATS INESPERATS, RESULTA MÉS CÒMODE CREAR LA PETICIÓ DIRECTAMENT
+ *
  */
 // import Echo from 'laravel-echo'
 // window.Pusher = require('pusher-js');
@@ -120685,6 +120743,13 @@ __webpack_require__.r(__webpack_exports__);
 
 var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
     delay = _require.delay;
+/**
+ *
+ * Aquesta funció canvia una data al format de la base de dades
+ *
+ * @param {*} data
+ */
+
 
 window.data_db = function (data) {
   var mes_s = '';
@@ -120720,6 +120785,13 @@ window.getDiumenge = function (d) {
 window.avis = function () {
   UIkit.modal('modal_avis').show();
 };
+/**
+ *
+ * Mostrem la data amb format natural
+ *
+ * @param {*} d
+ */
+
 
 window.fecha_format = function () {
   var d = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date();
@@ -120730,6 +120802,14 @@ window.fecha_format = function () {
   if (dia.length < 2) dia = '0' + dia;
   return "".concat(dia, "/").concat(mes, "/").concat(any);
 };
+/**
+ *
+ * Per obrir un element en una nova pestanya.
+ * No s'utiltiza, però es deixa a caràcter optatiu per als fulls dels permisos
+ *
+ * @param {*} url
+ */
+
 
 window.newTab = function (url) {
   var win = window.open(url);

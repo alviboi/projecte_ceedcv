@@ -17324,6 +17324,13 @@ module.exports = function(module) {
 
 var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
     delay = _require.delay;
+/**
+ *
+ * Aquesta funció canvia una data al format de la base de dades
+ *
+ * @param {*} data
+ */
+
 
 window.data_db = function (data) {
   var mes_s = '';
@@ -17359,6 +17366,13 @@ window.getDiumenge = function (d) {
 window.avis = function () {
   UIkit.modal('modal_avis').show();
 };
+/**
+ *
+ * Mostrem la data amb format natural
+ *
+ * @param {*} d
+ */
+
 
 window.fecha_format = function () {
   var d = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Date();
@@ -17369,6 +17383,14 @@ window.fecha_format = function () {
   if (dia.length < 2) dia = '0' + dia;
   return "".concat(dia, "/").concat(mes, "/").concat(any);
 };
+/**
+ *
+ * Per obrir un element en una nova pestanya.
+ * No s'utiltiza, però es deixa a caràcter optatiu per als fulls dels permisos
+ *
+ * @param {*} url
+ */
+
 
 window.newTab = function (url) {
   var win = window.open(url);
