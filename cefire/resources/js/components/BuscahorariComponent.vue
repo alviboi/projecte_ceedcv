@@ -243,10 +243,67 @@ export default {
                 assumpte: "En relació al element "+id+" del dia "+ data
             }
             this.$eventBus.$emit('missatge-variables',envia);
+        },
+        // Creem canal per a actualitzar les guardies en el cas de que algun assessor estiga treballant al mateix temps
+        channel_create_cefire(){
+            var aux;
+            var self=this;
+            let chan='CefireAfegidaGeneral';
+            channel.bind(chan,
+                function(data) {
+                    if (self.cefire) {
+                        var num=num=1000000;
+                        var ele = data.cefire;
+                        var clase="custom-date-class-blue";
+                        var text = '';
+                        // Les hores es convertixen un número per a poder comparar. La data donava errades
+                        let inici=ele.inici.replace(/:/g,'');
+                        let inici_int=Number(inici);
+                        let fi=ele.inici.replace(/:/g,'');
+                        console.log("Fi: "+fi);
+                        let fi_int=Number(fi);
+                        console.log("Fi_int: "+fi_int);
+                        // Es compara la data per a saber si es matí o vesprada, en funció de si és entre les 5 o les 15
+                        let mati = (inici_int>=50000 && inici_int<150000) ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                        let fechas = ele.data.split('-');
+                        // En cas de que l'element a mostrar siga unes hores es mostra el inici i el final
+
+                        text = ele['inici']+'-'+ele['fi'];
+
+                        // Es crea l'element ja formatat que anirà al calendari i s'afegix al array
+                        let i = {
+                            id: (ele.id+num),
+                            title: "<div id="+(ele.id+num)+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+text+"\">"+mati+" "+ele.nom+"</div>",
+                            startDate: Date.UTC(fechas[0], fechas[1]-1, fechas[2]),
+                            classes: clase+" uk-animation-scale-up",
+                        };
+                        self.items.push(i);
+                    }
+
+                }
+            );
+        },
+        // Canal per a rebre la informació de element borrat
+        channel_borra_cefire(){
+            var aux;
+            var self=this;
+            let chan='CefireBorratGeneral';
+            channel.bind(chan,
+                function(data) {
+                    aux=data.cefire;
+                    console.log(aux);
+                    var compara = 1000000 + aux.id;
+                    for (let index = 0; index < self.items.length; index++) {
+                        if(self.items[index].id == compara)
+                        self.items.splice(index,1);
+                    }
+                }
+            );
         }
     },
     mounted() {
-
+        this.channel_create_cefire();
+        this.channel_borra_cefire();
 
     },
     watch: {

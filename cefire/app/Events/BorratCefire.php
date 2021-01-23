@@ -18,7 +18,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 
-class AfegitCefire implements ShouldBroadcast
+class BorratCefire implements ShouldBroadcast
 {
 
     public $cefire = array();
@@ -55,7 +55,7 @@ class AfegitCefire implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'CefireAfegidaGeneral';
+        return 'CefireBorratGeneral';
     }
 }
 

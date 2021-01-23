@@ -122,7 +122,11 @@ class guardiaController extends Controller
         $dat->fi = $request->fi;
         $dat->user_id = auth()->id();
         $dat->save();
+        $env = $dat->toArray();
+        $env['nom'] = auth()->user()->name;
+        broadcast(new GuardiaAfegidaGeneral($env))->toOthers();
         return $dat->toArray();
+
     }
 
 

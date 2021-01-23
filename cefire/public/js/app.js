@@ -2459,9 +2459,61 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
         assumpte: "En relació al element " + id + " del dia " + data
       };
       this.$eventBus.$emit('missatge-variables', envia);
+    },
+    // Creem canal per a actualitzar les guardies en el cas de que algun assessor estiga treballant al mateix temps
+    channel_create_cefire: function channel_create_cefire() {
+      var aux;
+      var self = this;
+      var chan = 'CefireAfegidaGeneral';
+      channel.bind(chan, function (data) {
+        if (self.cefire) {
+          var num = num = 1000000;
+          var ele = data.cefire;
+          var clase = "custom-date-class-blue";
+          var text = ''; // Les hores es convertixen un número per a poder comparar. La data donava errades
+
+          var inici = ele.inici.replace(/:/g, '');
+          var inici_int = Number(inici);
+          var fi = ele.inici.replace(/:/g, '');
+          console.log("Fi: " + fi);
+          var fi_int = Number(fi);
+          console.log("Fi_int: " + fi_int); // Es compara la data per a saber si es matí o vesprada, en funció de si és entre les 5 o les 15
+
+          var mati = inici_int >= 50000 && inici_int < 150000 ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          var fechas = ele.data.split('-'); // En cas de que l'element a mostrar siga unes hores es mostra el inici i el final
+
+          text = ele['inici'] + '-' + ele['fi']; // Es crea l'element ja formatat que anirà al calendari i s'afegix al array
+
+          var i = {
+            id: ele.id + num,
+            title: "<div id=" + (ele.id + num) + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + text + "\">" + mati + " " + ele.nom + "</div>",
+            startDate: Date.UTC(fechas[0], fechas[1] - 1, fechas[2]),
+            classes: clase + " uk-animation-scale-up"
+          };
+          self.items.push(i);
+        }
+      });
+    },
+    // Canal per a rebre la informació de element borrat
+    channel_borra_cefire: function channel_borra_cefire() {
+      var aux;
+      var self = this;
+      var chan = 'CefireBorratGeneral';
+      channel.bind(chan, function (data) {
+        aux = data.cefire;
+        console.log(aux);
+        var compara = 1000000 + aux.id;
+
+        for (var index = 0; index < self.items.length; index++) {
+          if (self.items[index].id == compara) self.items.splice(index, 1);
+        }
+      });
     }
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.channel_create_cefire();
+    this.channel_borra_cefire();
+  },
   watch: {
     // Les següent funcions borren l'element buscant en totes les dades pel seu id.
     cefire: function cefire(newValue, oldValue) {
@@ -2772,7 +2824,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
           self.afegit.splice(self.afegit.indexOf(aux.id), 1);
         } else {
           var element = data.guardia;
-          var mati = element.inici == "09:00:00" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          var mati = element.inici == "9:00:00" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
           var fechas = element.data.split('-');
           var i = {
             id: element[3],
@@ -22328,7 +22380,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.titulet {\n  margin-left: 10px;\n  font-color: gray;\n  overflow: hidden;\n  transition: all 1s;\n}\n@media (min-width: 1480px) {\n.titulet {\n    font-size: 1.2em;\n}\n}\n@media (max-width: 1480px) {\n.titulet {\n    font-size: 0.8em;\n}\n}\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n  box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -webkit-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -moz-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n  min-height: 160px;\n}\n.dia .principal .s-, .dia .principal .s-permis, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 99%;\n  max-width: 140px;\n}\n.dia .principal .s-cefire {\n  background-color: #3490dc;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEFIRE\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEF...\";\n}\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n@media (min-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COMPENSA\";\n}\n}\n@media (max-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COM...\";\n}\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n@media (min-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUARDIA\";\n}\n}\n@media (max-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUA...\";\n}\n}\n.dia .principal .s-visita {\n  background-color: pink;\n}\n@media (min-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VISITA\";\n}\n}\n@media (max-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VIS...\";\n}\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-permis {\n  background-color: green;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PERM\\CDS\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PER...\";\n}\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .falta_fitxar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: red;\n  font-weight: bold;\n}\n.dia .falta_fitxar:before {\n  content: \"\\F4FD\";\n}\n.dia .arxiu {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .arxiu:before {\n  content: \"\\F15B\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: nowrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container button {\n  flex: 1 0 auto;\n  margin: 1px;\n  padding-left: 8px;\n  padding-right: 8px;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.titulet {\n  margin-left: 10px;\n  font-color: gray;\n  overflow: hidden;\n  transition: all 1s;\n}\n@media (min-width: 1480px) {\n.titulet {\n    font-size: 1.2em;\n}\n}\n@media (max-width: 1480px) {\n.titulet {\n    font-size: 0.7em;\n}\n}\n.dia {\n  max-width: 150px;\n  display: grid;\n  grid-template-columns: -webkit-min-content repeat(3, 1em);\n  grid-template-columns: min-content repeat(3, 1em);\n  grid-template-rows: repeat(5, 1fr);\n  grid-column-gap: 2px;\n  grid-row-gap: 2px;\n  border: 1px solid gray;\n  border-radius: 7px;\n  background-color: white;\n  box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -webkit-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n  -moz-box-shadow: 0px 0px 34px 5px rgba(187, 187, 187, 0.58);\n}\n.dia:hover > .lateral_esquerre {\n  visibility: visible;\n  opacity: 1;\n  transform: translate(-105%);\n  overflow-x: hidden;\n  white-space: nowrap;\n  -webkit-overflow-scrolling: touch;\n}\n.dia .lateral_esquerre {\n  grid-area: 1/1/6/2;\n  overflow-x: hidden;\n  white-space: nowrap;\n  visibility: hidden;\n  opacity: 0;\n  transform: translate(0px);\n  transition: transform 0.3s, visibility 1s, opacity 0.5s linear;\n  -webkit-overflow-scrolling: touch;\n  z-index: 0;\n}\n.dia .principal {\n  grid-area: 1/1/6/6;\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n  padding: 5px;\n  z-index: 1;\n  background-color: #f1faee;\n  border-radius: 10px;\n  min-height: 160px;\n}\n.dia .principal .s-, .dia .principal .s-permis, .dia .principal .s-curs, .dia .principal .s-visita, .dia .principal .s-guardia, .dia .principal .s-compensa, .dia .principal .s-cefire {\n  flex: 0 1 auto;\n  margin: 1px;\n  border: 1px solid;\n  border-radius: 5px;\n  padding: 3px;\n  font-weight: bold;\n  color: #373444;\n  width: 99%;\n  max-width: 140px;\n}\n.dia .principal .s-cefire {\n  background-color: #3490dc;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEFIRE\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-cefire:before {\n    content: \"CEF...\";\n}\n}\n.dia .principal .s-compensa {\n  background-color: gray;\n}\n@media (min-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COMPENSA\";\n}\n}\n@media (max-width: 1380px) {\n.dia .principal .s-compensa:before {\n    content: \"COM...\";\n}\n}\n.dia .principal .s-guardia {\n  background-color: red;\n}\n@media (min-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUARDIA\";\n}\n}\n@media (max-width: 1220px) {\n.dia .principal .s-guardia:before {\n    content: \"GUA...\";\n}\n}\n.dia .principal .s-visita {\n  background-color: pink;\n}\n@media (min-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VISITA\";\n}\n}\n@media (max-width: 1024px) {\n.dia .principal .s-visita:before {\n    content: \"VIS...\";\n}\n}\n.dia .principal .s-curs {\n  background-color: yellow;\n}\n.dia .principal .s-curs:before {\n  content: \"CURS\";\n}\n.dia .principal .s-permis {\n  background-color: green;\n}\n@media (min-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PERM\\CDS\";\n}\n}\n@media (max-width: 1280px) {\n.dia .principal .s-permis:before {\n    content: \"PER...\";\n}\n}\n.dia .cerrar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n}\n.dia .cerrar:before {\n  content: \"\\F2ED\";\n}\n.dia .falta_fitxar {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: red;\n  font-weight: bold;\n}\n.dia .falta_fitxar:before {\n  content: \"\\F4FD\";\n}\n.dia .arxiu {\n  font-family: \"Font Awesome 5 Free\";\n  text-align: right;\n  float: right;\n  margin-right: 3px;\n  color: #373444;\n  font-weight: bold;\n  cursor: pointer;\n  pointers: all;\n}\n.dia .arxiu:before {\n  content: \"\\F15B\";\n}\n.dia .flex-container {\n  display: flex;\n  flex-wrap: nowrap;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: auto;\n  align-content: flex-start;\n}\n.dia .flex-container button {\n  flex: 1 0 auto;\n  margin: 1px;\n  padding-left: 8px;\n  padding-right: 8px;\n}", ""]);
 
 // exports
 

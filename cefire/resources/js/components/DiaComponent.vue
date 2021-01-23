@@ -620,7 +620,7 @@ $fondo:  #f1faee
     @media (min-width: 1480px)
         font-size: 1.2em
     @media (max-width: 1480px)
-        font-size: 0.8em
+        font-size: 0.7em
 // Especificacions de dins del recuadre
 .dia
     max-width: 150px

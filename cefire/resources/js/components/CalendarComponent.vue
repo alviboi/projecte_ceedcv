@@ -217,7 +217,7 @@ export default {
                         self.afegit.splice(self.afegit.indexOf(aux.id), 1);
                     } else {
                         const element = data.guardia;
-                        let mati = (element.inici=="09:00:00") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                        let mati = (element.inici=="9:00:00") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
                         let fechas = element.data.split('-');
                         let i = {
                             id: element[3],

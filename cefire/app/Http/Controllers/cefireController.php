@@ -7,6 +7,9 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ControlController;
+use App\Events\AfegitCefire;
+use App\Events\BorratCefire;
+
 
 class cefireController extends Controller
 {
@@ -80,18 +83,21 @@ class cefireController extends Controller
                     $dat->fi = "00:00:00";
                     $dat->user_id = auth()->id();
                     $dat->save();
+
+                    $broad= array("data" => $dat->data,"nom" => auth()->user()->name,"id" => $dat->id, "inici" => $dat->inici->format('H:i:s'), "fi" => $dat->fi->format('H:i:s'));
                     $ret = array("id" => $dat->id,"inici" => $dat->inici->format('H:i:s'),"fi" => $dat->fi->format('H:i:s'));
-                    return $ret;
                     // return cefire::where('data','=',$request->data)->where('user_id','=',auth()->id())->get();
                 } else {
                     $cef=cefire::where('id','=',$request->id)->first();
                     $cef->fi = $hora;
                     $cef->save();
-                    $ret = array("id" => $cef->id,"inici" => $cef->inici->format('H:i:s'),"fi" => $cef->fi->format('H:i:s'));
-                    return $ret;
+                    $broad = array("data" => $cef->data, "nom" => auth()->user()->name, "id" => $cef->id, "inici" => $cef->inici->format('H:i:s'), "fi" => $cef->fi->format('H:i:s'));
+                    $ret = array("id"=>$cef->id,"inici" => $cef->inici->format('H:i:s'),"fi" => $cef->fi->format('H:i:s'));
                     // return cefire::where('data','=',$request->data)->where('user_id','=',auth()->id())->get();
-
                 }
+                broadcast(new AfegitCefire($broad))->toOthers();
+                return $ret;
+
             }
         } else {
             $hi_ha=cefire::where('user_id','=',auth()->id())->where('data','=',$request->data)->where('inici','=',$request->inici)->first();
@@ -105,8 +111,11 @@ class cefireController extends Controller
                 $dat->fi = $request->fi;
                 $dat->user_id = auth()->id();
                 $dat->save();
+                $broad = array("data" => $dat->data, "nom" => auth()->user()->name, "id" => $dat->id, "inici" => $dat->inici->format('H:i:s'), "fi" => $dat->fi->format('H:i:s'));
                 $ret = array("id" => $dat->id,"inici" => $dat->inici->format('H:i:s'),"fi" => $dat->fi->format('H:i:s'));
+                broadcast(new AfegitCefire($broad))->toOthers();
                 return $ret;
+
                 // return cefire::where('data','=',$request->data)->where('user_id','=',auth()->id())->get();
 
             }
@@ -134,6 +143,8 @@ class cefireController extends Controller
     public function destroy(cefire $cefire)
     {
         //
+        broadcast(new BorratCefire($cefire->toArray()))->toOthers();
+
         $cefire->delete();
     }
 

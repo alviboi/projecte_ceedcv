@@ -1,12 +1,7 @@
-
 <?php
-
-
 namespace App\Events;
 
-
 use Illuminate\Broadcasting\PrivateChannel;
-
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
