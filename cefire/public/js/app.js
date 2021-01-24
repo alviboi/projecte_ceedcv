@@ -3529,9 +3529,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /**
  * Component que mostra les dades de tots els assessors
@@ -3560,7 +3557,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.agafa_users();
 
-        _this.update = "Dades guardades correctament.";
+        _this.$toast.success("Dades guardades correctament");
       })["catch"](function (err) {
         console.error(err);
       });
@@ -4454,8 +4451,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /**
 En aquest component es crea el modal per a poder editar les dades de l'assessor
@@ -4508,7 +4503,8 @@ En aquest component es crea el modal per a poder editar les dades de l'assessor
         };
         axios.put("user/" + this.datos.id, params).then(function (res) {
           console.log(res);
-          _this2.update = "Dades guardades correctament.";
+
+          _this2.$toast.success("Dades guardades correctament");
         })["catch"](function (err) {
           console.error(err);
         });
@@ -93896,14 +93892,6 @@ var render = function() {
                   }
                 })
               ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "uk-margin" }, [
-              _vm._v(
-                "\n                      " +
-                  _vm._s(_vm.update) +
-                  "\n                  "
-              )
             ])
           ]),
           _vm._v(" "),
@@ -94978,12 +94966,6 @@ var render = function() {
               }
             })
           ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "uk-margin" }, [
-          _vm._v(
-            "\n                    " + _vm._s(_vm.update) + "\n                "
-          )
         ])
       ]),
       _vm._v(" "),

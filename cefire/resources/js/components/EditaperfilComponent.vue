@@ -52,9 +52,7 @@
                             <input v-model="contrasenya2" class="uk-input" type="text" placeholder="confirma contrasenya">
                         </div>
                     </div>
-                    <div class="uk-margin">
-                        {{update}}
-                    </div>
+
             </div>
             <div class="uk-modal-footer uk-text-right">
                 <button class="uk-button uk-button-default" @click="ix()" type="button">Cancel·la</button>
@@ -120,7 +118,7 @@ export default {
                 axios.put("user/"+this.datos.id,params)
                 .then(res => {
                     console.log(res);
-                    this.update="Dades guardades correctament."
+                    this.$toast.success("Dades guardades correctament");
                 })
                 .catch(err => {
                     console.error(err);

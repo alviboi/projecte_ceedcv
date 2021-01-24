@@ -73,9 +73,6 @@
                             <input v-model="edita_u.rfid" class="uk-input" type="text" placeholder="rfid">
                         </div>
                     </div>
-                    <div class="uk-margin">
-                        {{update}}
-                    </div>
             </div>
             <div class="uk-modal-footer uk-text-right">
                 <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
@@ -113,7 +110,7 @@ export default {
             .then(res => {
                 console.log(res);
                 this.agafa_users();
-                this.update="Dades guardades correctament."
+                this.$toast.success("Dades guardades correctament");
             })
             .catch(err => {
                 console.error(err);

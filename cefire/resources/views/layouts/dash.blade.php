@@ -41,7 +41,7 @@
 										<li class="uk-nav-divider"></li>
 										<li><a href="#" @click="view = 'personals'"><span data-uk-icon="icon: image"></span> Dades Personals</a></li>
 										<li class="uk-nav-divider"></li>
-                                        <li><a href="#"><span data-uk-icon="icon: sign-out"></span> Ix</a></li>
+                                        <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"  ><span data-uk-icon="icon: sign-out"></span> Ix</a></li>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             style="display: none;">
                                             @csrf
@@ -103,7 +103,7 @@
 								<li class="uk-nav-divider"></li>
 								<li><a href="#" @click.prevent="view = 'personals'"><span data-uk-icon="icon: image"></span> Les teues dades</a></li>
 								<li class="uk-nav-divider"></li>
-								<li><a href="{{ route('logout') }}"><span data-uk-icon="icon: sign-out"></span> Surt</a></li>
+								<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span data-uk-icon="icon: sign-out"></span> Surt</a></li>
 					    </ul>
 				    </div>
 				    <!-- /user dropdown -->
