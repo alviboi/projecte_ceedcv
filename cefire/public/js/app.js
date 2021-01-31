@@ -2467,8 +2467,14 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
       var chan = 'CefireAfegidaGeneral';
       channel.bind(chan, function (data) {
         if (self.cefire) {
-          var num = num = 1000000;
           var ele = data.cefire;
+          var num = 1000000;
+          var compara = num + ele.id;
+
+          for (var index = 0; index < self.items.length; index++) {
+            if (self.items[index].id == compara) self.items.splice(index, 1);
+          }
+
           var clase = "custom-date-class-blue";
           var text = ''; // Les hores es convertixen un número per a poder comparar. La data donava errades
 
@@ -2827,7 +2833,7 @@ __webpack_require__(/*! vue-simple-calendar/static/css/gcal.css */ "./node_modul
           var mati = element.inici == "9:00:00" ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
           var fechas = element.data.split('-');
           var i = {
-            id: element[3],
+            id: element.id,
             title: "<div id=" + element.user_id + " data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\"" + element.nom + "\">" + mati + " " + element.nom + "</div>",
             startDate: Date.UTC(fechas[0], fechas[1] - 1, fechas[2]),
             // endDate: Date.UTC(2020, 11, 10),

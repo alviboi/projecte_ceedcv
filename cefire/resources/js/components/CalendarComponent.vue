@@ -220,7 +220,7 @@ export default {
                         let mati = (element.inici=="9:00:00") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
                         let fechas = element.data.split('-');
                         let i = {
-                            id: element[3],
+                            id: element.id,
                             title: "<div id="+element.user_id+" data-uk-tooltip='pos: right; animation: true; offset: 12;' title=\""+element.nom+"\">"+mati+" "+element.nom+"</div>",
                             startDate: Date.UTC(fechas[0], fechas[1]-1, fechas[2]),
                             // endDate: Date.UTC(2020, 11, 10),

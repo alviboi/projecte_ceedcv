@@ -252,8 +252,14 @@ export default {
             channel.bind(chan,
                 function(data) {
                     if (self.cefire) {
-                        var num=num=1000000;
                         var ele = data.cefire;
+                        var num=1000000;
+                        var compara = num + ele.id;
+                        for (let index = 0; index < self.items.length; index++) {
+                            if(self.items[index].id == compara)
+                            self.items.splice(index,1);
+                        }
+
                         var clase="custom-date-class-blue";
                         var text = '';
                         // Les hores es convertixen un número per a poder comparar. La data donava errades

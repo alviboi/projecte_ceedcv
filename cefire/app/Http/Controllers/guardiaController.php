@@ -5,7 +5,7 @@ use App\Events\GuardiaBorrada;
 
 use App\Events\GuardiaAfegida;
 use App\Events\GuardiaBorradaGeneral;
-
+use App\Mail\EliminarGuardia;
 use App\Events\GuardiaAfegidaGeneral;
 use App\Mail\EnviarGuardia;
 
@@ -88,9 +88,9 @@ class guardiaController extends Controller
         broadcast(new GuardiaAfegida(auth()->id(), $guardia->toArray(),$request->mati))->toOthers();
         broadcast(new GuardiaAfegidaGeneral($env))->toOthers();
 
+        //https://calendar.google.com/calendar/u/0/r/eventedit?text=Example+Event&dates=20131124T010000Z/20131124T020000Z&details=Event+Details+Here&location=123+Main+St,+Example,+NY&sf=true
 
-
-        $link="https://calendar.google.com/calendar/render?action=TEMPLATE&text=GUARDIA+CEFIRE&dates=".$guardia->data."T".$guardia->inici."/".$guardia->data."T".$guardia->fi."&details=Guardia+del+Cefire+de+Valencia&location=Valencia&trp=false#eventpage_6";
+        $link= "https://calendar.google.com/calendar/u/0/r/eventedit?text=GUARDIA+CEFIRE&dates=". str_replace("-","",$guardia->data)."T". str_replace(":", "", $guardia->inici)."/". str_replace("-", "", $guardia->data)."T". str_replace(":", "", $guardia->fi)."&details=Guardia+del+Cefire+de+Valencia&location=Valencia&trp=false#eventpage_6";
 
         $datos = [
             'nombre' => $guardia->user['name'],
@@ -149,6 +149,15 @@ class guardiaController extends Controller
         broadcast(new GuardiaBorrada(auth()->id(), $guardia->toArray(),$m))->toOthers();
         broadcast(new GuardiaBorradaGeneral($guardia->toArray()))->toOthers();
 
+        $link2 = "https://calendar.google.com/calendar/u/0/r/eventedit?text=GUARDIA+CEFIRE+ELIMINADA&dates=" . str_replace("-", "", $guardia->data) . "T" . str_replace(":", "", $guardia->inici) . "/" . str_replace("-", "", $guardia->data) . "T" . str_replace(":", "", $guardia->fi) . "&details=Guardia+del+Cefire+de+Valencia+ELIMINADA&location=Valencia&trp=false#eventpage_6";
+
+        $datos2 = [
+            'nombre' => $guardia->user['name'],
+            'fecha' => date("d/m/Y", strtotime($guardia->data)),
+            'rato' => $m,
+            'link' => $link2
+        ];
+        Mail::to($guardia->user['email'])->send(new EliminarGuardia($datos2));
         $guardia->delete();
 
     }
