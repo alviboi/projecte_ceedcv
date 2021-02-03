@@ -9,8 +9,8 @@
                 <h5><b>Capçalera:</b> {{user.cap}}</h5>
                 <p>{{user.missatge}}</p>
                 <p class="uk-text-right">
-                    <button @click="borra(user.id)" class="uk-modal-button" type="button">Borra</button>
-                    <button class="uk-modal-close" type="button">Tanca</button>
+                    <button @click="borra(user.id)" class="uk-button uk-button-default uk-modal-button" type="button">Borra</button>
+                    <button class="uk-button uk-button-primary uk-modal-close" type="button">Tanca</button>
                 </p>
             </div>
         </div>

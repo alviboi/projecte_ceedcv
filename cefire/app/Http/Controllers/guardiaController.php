@@ -108,7 +108,7 @@ class guardiaController extends Controller
     }
 
     /**
-     * Guarda l'elememt creat.
+     * Guarda l'element creat.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
