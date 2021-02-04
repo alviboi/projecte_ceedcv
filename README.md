@@ -9,7 +9,8 @@ Per a clonar el projecte podem utilitzar el següent comandament:
 ```
 git clone --recurse-submodules https://github.com/alviboi/projecte_ceedcv
 ```
-Has de tenir instal·lat els paquets docker docker-compose:
+
+> Has de tenir instal·lat els **paquets docker docker-compose**:
 
 
 # Instal·lació de l'aplicació
@@ -98,7 +99,6 @@ Dins de l'arxiu .env de la carpeta laradock cal configurar els següents paràme
 ```
 WORKSPACE_INSTALL_LDAP=true
 
-### MYSQL #################################################
 
 MYSQL_VERSION=latest
 MYSQL_DATABASE=

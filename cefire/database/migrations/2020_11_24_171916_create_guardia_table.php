@@ -15,7 +15,7 @@ class CreateGuardiaTable extends Migration
     {
         Schema::create('guardia', function (Blueprint $table) {
             $table->id();
-            $table->integer('ass_id');
+            $table->integer('user_id');
             $table->date('data');
             $table->time('inici');
             $table->time('fi');
