@@ -93,9 +93,18 @@ MAIL_FROM_ADDRESS=
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
-Dins de l'arxiu .env de la carpeta laradock cal configurar els següents paràmetres:
+Dins de l'arxiu .env de la carpeta laradock cal configurar els següents paràmetres per a la teua base de dades  :
 
 ```
+WORKSPACE_INSTALL_LDAP=true
 
+### MYSQL #################################################
+
+MYSQL_VERSION=latest
+MYSQL_DATABASE=
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_PORT=3306
+MYSQL_ROOT_PASSWORD=
 
 ```
