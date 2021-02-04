@@ -108,3 +108,19 @@ MYSQL_PORT=3306
 MYSQL_ROOT_PASSWORD=
 
 ```
+
+# PHP Worker
+
+Has d'afegir l'arxiu cefire.conf dins de la carperta ./laradock/php-worker/supervisord.d/
+
+```
+[program:cefire]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/artisan queue:work --sleep=3 --tries=3 --daemon
+autostart=true
+autorestart=true
+user=root
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/var/www/storage/logs/supervisordcefire.log
+```
