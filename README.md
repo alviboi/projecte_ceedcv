@@ -93,7 +93,7 @@ MAIL_FROM_ADDRESS=
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
-Dins de l'arxiu .env de la carpeta laradock cal configurar els següents paràmetres per a la teua base de dades  :
+Dins de l'arxiu .env de la carpeta laradock cal configurar els següents paràmetres per a la teua base de dades:
 
 ```
 WORKSPACE_INSTALL_LDAP=true
