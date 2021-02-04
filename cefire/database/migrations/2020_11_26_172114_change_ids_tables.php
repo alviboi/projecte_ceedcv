@@ -13,27 +13,27 @@ class ChangeIdsTables extends Migration
      */
     public function up()
     {
-        // //
-        // Schema::table('centres', function (Blueprint $table) {
-        //     //
-        //     $table->renameColumn('ass_id', 'user_id');
+        //
+        Schema::table('centres', function (Blueprint $table) {
+            //
+            $table->renameColumn('ass_id', 'user_id');
 
-        // });
-        // Schema::table('compensa', function (Blueprint $table) {
-        //     //
-        //     $table->renameColumn('ass_id', 'user_id');
+        });
+        Schema::table('compensa', function (Blueprint $table) {
+            //
+            $table->renameColumn('ass_id', 'user_id');
 
-        // });
-        // Schema::table('curs', function (Blueprint $table) {
-        //     //
-        //     $table->renameColumn('ass_id', 'user_id');
+        });
+        Schema::table('curs', function (Blueprint $table) {
+            //
+            $table->renameColumn('ass_id', 'user_id');
 
-        // });
-        // Schema::table('guardia', function (Blueprint $table) {
-        //     //
-        //     $table->renameColumn('ass_id', 'user_id');
+        });
+        Schema::table('guardia', function (Blueprint $table) {
+            //
+            $table->renameColumn('ass_id', 'user_id');
 
-        // });
+        });
         Schema::table('notificacions', function (Blueprint $table) {
             //
             $table->renameColumn('ass_id', 'user_id');
