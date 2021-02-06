@@ -114,7 +114,8 @@ class UserController extends Controller
                 $dat = new User();
                 $dat->name=$input[$i]['name'];
                 $dat->email=$input[$i]['email'];
-                $passwd = Str::random(40);
+                $dat->Perfil = 0;
+                $passwd = Str::random(5);
                 $dat->password=Hash::make($passwd);
                 $dat->save();
                 $emailJob = (new SendPasswordMail($input[$i]['email'],$passwd))->delay(Carbon::now()->addSeconds(120));
@@ -124,7 +125,7 @@ class UserController extends Controller
         if ($message==""){
             return "Tots els usuaris s'han creat";
         } else {
-            return "Els usuaris amb mail: ".$message.", ja estan creats, per tant no s'han tornar a crear";
+            return "Els usuaris amb mail: ".$message.", ja estan creats, per tant no s'han tornat a crear";
         }
     }
 
