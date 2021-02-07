@@ -475,12 +475,12 @@ class UserController extends Controller
     public function get_all($de,$fins)
     {
         //
-        $cefire = User::find(auth()->id())->cefire()->where('data','>',$de)->where('fi','<',$fins)->get();
-        $compensa = User::find(auth()->id())->compensa()->where('data','>',$de)->where('fi','<',$fins)->get();
-        $curs = User::find(auth()->id())->curs()->where('data','>',$de)->where('fi','<',$fins)->get();
-        $guardia = User::find(auth()->id())->guardia()->where('data','>',$de)->where('fi','<',$fins)->get();
-        $permis = User::find(auth()->id())->permis()->where('data','>',$de)->where('fi','<',$fins)->get();
-        $visita = User::find(auth()->id())->visita()->where('data','>',$de)->where('fi','<',$fins)->get();
+        $cefire = User::find(auth()->id())->cefire()->where('data','>',$de)->where('data','<',$fins)->get();
+        $compensa = User::find(auth()->id())->compensa()->where('data','>',$de)->where('data','<',$fins)->get();
+        $curs = User::find(auth()->id())->curs()->where('data','>',$de)->where('data','<',$fins)->get();
+        $guardia = User::find(auth()->id())->guardia()->where('data','>',$de)->where('data','<',$fins)->get();
+        $permis = User::find(auth()->id())->permis()->where('data','>',$de)->where('data','<',$fins)->get();
+        $visita = User::find(auth()->id())->visita()->where('data','>',$de)->where('data','<',$fins)->get();
         $ret=[
             'cefire' => $cefire,
             'compensa' => $compensa,
