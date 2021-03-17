@@ -13,6 +13,8 @@ use App\Models\guardia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\SendGuardiaMail;
+
+use App\Jobs\SendGuardiaBorrarMail;
 use Carbon\Carbon;
 
 
@@ -157,7 +159,15 @@ class guardiaController extends Controller
             'rato' => $m,
             'link' => $link2
         ];
-        Mail::to($guardia->user['email'])->send(new EliminarGuardia($datos2));
+
+
+        $emailJob2 = (new SendGuardiaBorrarMail($guardia->user['email'], $datos2))->delay(Carbon::now()->addSeconds(120));
+        dispatch($emailJob2);
+
+        //Mail::to($guardia->user['email'])->send(new EliminarGuardia($datos2));
+
+
+
         $guardia->delete();
 
     }
