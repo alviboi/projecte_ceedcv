@@ -91,6 +91,11 @@ Vue.component('llistatpermisos-component', require('./components/Llistatpermisos
 
 Vue.component('ajuda-component', require('./components/Ajuda/AjudaComponent.vue').default);
 
+Vue.component('escriuincidencia-component', require('./components/Incidencia/EscriuincidenciaComponent.vue').default);
+Vue.component('incidencies-component', require('./components/Incidencia/IncidenciesComponent.vue').default);
+
+
+
 
 //L'error més comú que tens quan modifiques una cosa d'ací, no està funcionant npm run watch, o compila a npm run dev
 
@@ -122,6 +127,7 @@ const app = new Vue({
     data: {
         showMissatge: false,
         showModal: false,
+        showModalInc: false,
         // calendar: false,
         // horari: false,
         showEdita: false,
@@ -170,6 +176,9 @@ const app = new Vue({
         },
         'ajuda': {
             template: '<div><ajuda-component /></div>',
+        },
+        'incidencies': {
+            template: '<div><incidencies-component /></div>',
         }
 
 
@@ -194,6 +203,10 @@ const app = new Vue({
             // alert('hola');
             this.showEdita=false;
         },
+        tanca_incidencia() {
+            // alert('hola');
+            this.showModalInc=false;
+        },
         log() {
             axios.get("logat_id")
             .then(res => {
@@ -212,6 +225,7 @@ const app = new Vue({
     created() {
         // Creem els elements que es van a escoltar pel bus
         this.$eventBus.$on('tanca-avis', this.tanca_avis);
+        this.$eventBus.$on('tanca-incidencia', this.tanca_incidencia);
         this.$eventBus.$on('tanca-missatge', this.tanca_missatge);
         this.$eventBus.$on('tanca-edita', this.tanca_edita);
         this.log();
@@ -221,6 +235,7 @@ const app = new Vue({
         this.$eventBus.$off('tanca-avis');
         this.$eventBus.$off('tanca-missatge');
         this.$eventBus.$off('tanca-edita');
+        this.$eventBus.$off('tanca-incidencia');
 
     }
 

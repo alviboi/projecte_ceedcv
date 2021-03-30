@@ -279,6 +279,22 @@ class UserController extends Controller
         return $cefire;
     }
     /**
+     * dia_incidencies
+     *
+     * Torna la informació sol·licitada d'un moment concret del dia del recurs
+     *
+     * @param  mixed $dia
+     * @param  mixed $mati
+     * @return array $ret2 amb tota la informació
+     */
+    public function dia_incidencies($dia,$mati)
+    {
+        //
+        if ($mati == 'm') $control='<'; else $control='>';
+        $incidencies = User::find(auth()->id())->incidencies()->where('data','=',$dia)->where('fi',$control,'15:00:00')->get();
+        return $incidencies;
+    }
+    /**
      * dia_curs
      *
      * Torna la informació sol·licitada d'un moment concret del dia del recurs

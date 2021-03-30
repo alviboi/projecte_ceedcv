@@ -40,6 +40,7 @@
                                         <li><a href="#" @click="view = 'configuracio'"><span data-uk-icon="icon: settings"></span> Configuració</a></li>
                                         @endif
                                         <li><a href="#" @click="showModal = true"><span data-uk-icon="icon: warning"></span> Escriu Avís</a></li>
+										<li><a href="#" @click="showModalInc = true"><span data-uk-icon="icon: lifesaver"></span> Escriu Incidència</a></li>
 										<li class="uk-nav-divider"></li>
 										<li><a href="#" @click="view = 'personals'"><span data-uk-icon="icon: image"></span> Dades Personals</a></li>
 										<li class="uk-nav-divider"></li>
@@ -128,8 +129,10 @@
 						<a href="#"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Reports</a>
 						<ul class="uk-nav-sub">
 							<li><a href="#" @click="view='report1'">Personal</a></li>
-                            {{-- <li><a href="#" @click="view='report2'">General</a></li> --}}
+							@if (Auth::user()->Perfil == 1)
                             <li><a href="#" @click="view='llistatpermisos'">Llistat permisos</a></li>
+							<li><a href="#" @click="view='incidencies'">Incidències</a></li>
+							@endif
 						</ul>
 					</li>
 				</ul>

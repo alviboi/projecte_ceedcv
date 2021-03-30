@@ -111,6 +111,15 @@
             <span @click="borra_par('guardia', gua.id)" class="cerrar" />
           </div>
           <div
+            v-for="inc in incidencies"
+            class="s-incidencia list-complete-item"
+            :key="'inc' + inc.id"
+            data-uk-tooltip="pos: right; animation: true; offset: 12;"
+            :title="inc.incidencia"
+          >
+            <span @click="borra_par('incidencies', inc.id)" class="cerrar" />
+          </div>
+          <div
             v-for="perm in permis"
             class="s-permis list-complete-item"
             :key="'perm' + perm.id"
@@ -119,7 +128,6 @@
           >
             <span @click="borra_par('permis', perm.id)" class="cerrar" />
             <span @click="mira_arxiu('/'+perm.arxiu)" class="arxiu" />
-
           </div>
         </transition-group>
       </div>
@@ -281,6 +289,7 @@ export default {
       curs: {},
       visita: {},
       guardia: {},
+      incidencies: {},
       permis: {},
       curs_i: "",
       compensa_i: "",
@@ -540,6 +549,9 @@ export default {
       this.avis_pujada="";
       UIkit.modal("#"+desti+"-modal"+this._uid).hide();
     },
+    get_incidencia(){
+        this.get_de_bd("incidencies")
+    },
     // Afegix guardia al array de guàrdies
     afg_guardia(dat){
         this.guardia.push(dat);
@@ -587,12 +599,16 @@ export default {
     this.get_de_bd("curs");
     this.get_de_bd("visita");
     this.get_de_bd("guardia");
+    this.get_de_bd("incidencies");
     this.get_de_bd("permis");
     this.get_nom_dia();
     this.get_dia_mes();
     this.channel_create();
     this.channel_borra();
-
+    this.$eventBus.$on('incidencia-enviada', this.get_incidencia);
+  },
+  beforeDestroy() {
+      this.$eventBus.$off('incidencia-enviada');
   },
   computed: {
       // Mostra dia o nit en funció de l'hora
@@ -600,10 +616,7 @@ export default {
           let m = ((this.mati=='m') ? "<i class='fas fa-sun'></i>" : "<i class='fas fa-moon'></i>");
           return m;
       }
-  },
-  created() {
-
-  },
+  }
 };
 </script>
 
@@ -727,6 +740,14 @@ $fondo:  #f1faee
                         content: "PERMÍS"
                     @media (max-width: 1280px)
                         content: "PER..."
+            &incidencia
+                @extend .s-
+                background-color: MediumVioletRed
+                &:before
+                    @media (min-width: 1280px)
+                        content: "INCIDENCIA"
+                    @media (max-width: 1280px)
+                        content: "INC..."
 
 
     // Icones dels diferents elements a utilitzar

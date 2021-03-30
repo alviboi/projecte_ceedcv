@@ -53,6 +53,7 @@
                 <button type="button" class="pagina-link" v-if="pagina < pagines.length" @click="pagina++"> Posterior </button>
             </li>
         </ul>
+        <button type="button" class="uk-button uk-button-primary" @click="copia">Copia Mails</button>
     </nav>
 
 </div>
@@ -283,7 +284,50 @@ export default {
         tanca() {
             this.editant={};
             UIkit.modal("#edita-centre").hide();
+        },
+        copia() {
+            var element = '';
+            for (let index = 0; index < this.dadesFiltrades.length; index++) {
+                if (this.dadesFiltrades[index]['mail_contacte'].includes('@')){
+                    element+=this.dadesFiltrades[index]['mail_contacte']+', ';
+                }
+            }
+            this.copyText(element);
+            this.$toast.success("Mails copiats");
+        },
+        copyText (textToCopy) {
+            this.copied = false
+
+            // Create textarea element
+            const textarea = document.createElement('textarea')
+
+            // Set the value of the text
+            textarea.value = textToCopy
+
+            // Make sure we cant change the text of the textarea
+            textarea.setAttribute('readonly', '');
+
+            // Hide the textarea off the screnn
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+
+            // Add the textarea to the page
+            document.body.appendChild(textarea);
+
+            // Copy the textarea
+            textarea.select()
+
+            try {
+                var successful = document.execCommand('copy');
+                this.copied = true
+            } catch(err) {
+                this.copied = false
+            }
+
+            textarea.remove()
+
         }
+
     },
     watch: {
 		dadesFiltrades () {

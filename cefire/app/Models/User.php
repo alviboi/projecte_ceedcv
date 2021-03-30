@@ -74,7 +74,13 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\guardia');
     }
-
+    /**
+     * Get the comments guardia data.
+     */
+    public function incidencies()
+    {
+        return $this->hasMany('App\Models\Incidencies');
+    }
     /**
      * The attributes that are mass assignable.
      *

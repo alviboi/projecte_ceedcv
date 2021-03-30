@@ -79,6 +79,7 @@ export default {
     async emplena_lloc() {
       let aux_dia = getDiumenge(this.dia);
       this.lloc[0] = aux_dia;
+      // S'ha detectat un bug, la setmana de canvi d'hora, si et connectes entre les 23:00 i 00:00 el diumenge d'eixa setmana no apareix.
       for (let index = 1; index < 8; index++) {
         this.lloc[index] = new Date(
           aux_dia.setTime(aux_dia.getTime() + 1 * 86400000)
