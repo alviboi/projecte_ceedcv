@@ -52,8 +52,14 @@
             <li class="pagina-item">
                 <button type="button" class="pagina-link" v-if="pagina < pagines.length" @click="pagina++"> Posterior </button>
             </li>
+            <li>
+                <span style="margin-left: 10px;"><button type="button" class="uk-button uk-button-primary" @click="copia">Copia Mails</button></span>
+            </li>
+            <li>
+                <span style="margin-left: 10px;"><button type="button" class="uk-button uk-button-primary" @click="fullcalcul">Descarrega csv</button></span>
+            </li>
         </ul>
-        <button type="button" class="uk-button uk-button-primary" @click="copia">Copia Mails</button>
+        
     </nav>
 
 </div>
@@ -201,6 +207,52 @@ export default {
             .catch(err => {
                 console.error(err);
             })
+        },
+        fullcalcul () {
+            let csv;
+            let dat;
+
+            // Loop the array of objects
+            for(let row = 0; row < this.datos.length; row++){
+                let keysAmount = Object.keys(this.datos[row]).length
+                let keysCounter = 0
+
+                // If this is the first row, generate the headings
+                if(row === 0){
+                    // Loop each property of the object
+                    for(let key in this.datos[row]){
+                                        // This is to not add a comma at the last cell
+                                        // The '\r\n' adds a new line
+                        csv += key + (keysCounter+1 < keysAmount ? ',' : '\r\n' )
+                        keysCounter++
+                    }
+                } else {
+                for(let key in this.datos[row]){
+                    if (key == "Observacions"){
+                       if (this.datos[row][key] !== null){
+                           dat = this.datos[row][key].replace(/(\r\n|\n|\r)/gm,"   ");
+                       } else {
+                           dat = ""; 
+                       }
+                       
+                       csv += dat + (keysCounter+1 < keysAmount ? ',' : '\r\n' );
+                    } else {
+                        csv += this.datos[row][key] + (keysCounter+1 < keysAmount ? ',' : '\r\n' )
+                    }
+                    keysCounter++
+                }
+                }
+
+                keysCounter = 0
+            }
+
+            // Once we are done looping, download the .csv by creating a link
+            let link = document.createElement('a')
+            link.id = 'download-csv'
+            link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csv));
+            link.setAttribute('download', 'centresfiltrats.csv');
+            document.body.appendChild(link);
+            document.querySelector('#download-csv').click();
         },
         // Obre el modal per a editar un centre
         edita_centre(edit) {
